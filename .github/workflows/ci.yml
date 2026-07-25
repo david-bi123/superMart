@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-build:
+    name: Lint & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Restore next build cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .next/cache
+          key: ${{ runner.os }}-next-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
+          restore-keys: |
+            ${{ runner.os }}-next-${{ hashFiles('**/package-lock.json') }}-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Build Next.js
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          MONGODB_URI: mongodb://localhost:27017/test
+          AUTH_SECRET: ci-secret
+          CLOUDINARY_CLOUD_NAME: ci
+          CLOUDINARY_API_KEY: ci
+          CLOUDINARY_API_SECRET: ci
+          SMTP_HOST: localhost
+          SMTP_PORT: "587"
+          SMTP_USER: ci
+          SMTP_PASS: ci
+          EMAIL_FROM: ci@test.com
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+          ENCRYPTION_KEY: 0123456789abcdef0123456789abcdef
