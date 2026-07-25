@@ -102,8 +102,8 @@ function SortableHeader({
     <th
       className={cn(
         "p-3 text-left text-xs font-medium uppercase tracking-wider transition-colors",
-        isActive ? "text-white" : "text-white/50",
-        onSort && "cursor-pointer hover:text-white/80"
+        isActive ? "text-foreground" : "text-muted-foreground",
+        onSort && "cursor-pointer hover:text-foreground"
       )}
       onClick={() => onSort?.(column)}
     >
@@ -179,15 +179,15 @@ export function SalesTable({
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-white/10">
+            <tr className="border-b border-border/50">
               <SortableHeader column="invoiceNumber" label="Invoice#" sortColumn={sortColumn} sortDirection={sortDirection} onSort={onSort} />
               <SortableHeader column="createdAt" label="Date" sortColumn={sortColumn} sortDirection={sortDirection} onSort={onSort} />
-              <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Customer</th>
-              <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Items</th>
+              <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Customer</th>
+              <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Items</th>
               <SortableHeader column="grandTotal" label="Total" sortColumn={sortColumn} sortDirection={sortDirection} onSort={onSort} />
-              <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Payment</th>
+              <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Payment</th>
               <SortableHeader column="status" label="Status" sortColumn={sortColumn} sortDirection={sortDirection} onSort={onSort} />
-              <th className="w-16 p-3 text-right text-xs font-medium text-white/50 uppercase tracking-wider">Actions</th>
+              <th className="w-16 p-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -199,16 +199,16 @@ export function SalesTable({
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.03 }}
-                  className="border-b border-white/5 transition-colors hover:bg-white/[0.03] cursor-pointer"
+                  className="border-b border-border/20 transition-colors hover:bg-muted/30 cursor-pointer"
                   onClick={() => handleView(sale._id)}
                 >
                   <td className="p-3">
-                    <span className="text-sm font-mono font-medium text-white">
+                    <span className="text-sm font-mono font-medium text-foreground">
                       {sale.invoiceNumber}
                     </span>
                   </td>
                   <td className="p-3">
-                    <span className="text-sm text-white/70">
+                    <span className="text-sm text-muted-foreground">
                       {new Date(sale.createdAt).toLocaleDateString("en-US", {
                         month: "short",
                         day: "numeric",
@@ -216,7 +216,7 @@ export function SalesTable({
                       })}
                     </span>
                     <br />
-                    <span className="text-xs text-white/40">
+                    <span className="text-xs text-muted-foreground/50">
                       {new Date(sale.createdAt).toLocaleTimeString("en-US", {
                         hour: "2-digit",
                         minute: "2-digit",
@@ -224,18 +224,18 @@ export function SalesTable({
                     </span>
                   </td>
                   <td className="p-3">
-                    <span className="text-sm text-white/80">{sale.customerName}</span>
+                    <span className="text-sm text-foreground">{sale.customerName}</span>
                   </td>
                   <td className="p-3">
-                    <span className="text-sm text-white/60">{sale.itemsCount} item{sale.itemsCount !== 1 ? "s" : ""}</span>
+                    <span className="text-sm text-muted-foreground">{sale.itemsCount} item{sale.itemsCount !== 1 ? "s" : ""}</span>
                   </td>
                   <td className="p-3">
-                    <span className="text-sm font-semibold text-white">
+                    <span className="text-sm font-semibold text-foreground">
                       ${sale.grandTotal.toFixed(2)}
                     </span>
                   </td>
                   <td className="p-3">
-                    <span className="text-xs text-white/50 capitalize">
+                    <span className="text-xs text-muted-foreground capitalize">
                       {paymentLabels[sale.paymentMethod] || sale.paymentMethod}
                     </span>
                   </td>
@@ -284,7 +284,7 @@ export function SalesTable({
 
       {totalPages > 1 && onPageChange && (
         <div className="flex items-center justify-between pt-4">
-          <p className="text-sm text-white/40">
+          <p className="text-sm text-muted-foreground/50">
             Page {page} of {totalPages}
           </p>
           <div className="flex items-center gap-2">

@@ -79,7 +79,7 @@ export function ImageUpload({ images, onChange, maxImages = 10, className }: Ima
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              className="relative group h-24 w-24 rounded-xl overflow-hidden border border-white/10"
+              className="relative group h-24 w-24 rounded-xl overflow-hidden border border-border/50"
             >
               <img
                 src={url}
@@ -91,7 +91,7 @@ export function ImageUpload({ images, onChange, maxImages = 10, className }: Ima
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8 text-white hover:bg-white/20"
+                  className="h-8 w-8 text-white hover:bg-background/20"
                   onClick={() => removeImage(i)}
                 >
                   <X className="h-4 w-4" />
@@ -113,8 +113,8 @@ export function ImageUpload({ images, onChange, maxImages = 10, className }: Ima
             className={cn(
               "relative h-24 w-24 rounded-xl border-2 border-dashed transition-all duration-200 flex flex-col items-center justify-center gap-1 text-xs",
               dragOver
-                ? "border-violet-500 bg-violet-500/10 text-violet-400"
-                : "border-white/10 hover:border-white/20 text-white/40 hover:text-white/60 bg-white/5",
+                ? "border-primary bg-primary/10 text-primary"
+                : "border-border/50 hover:border-border text-muted-foreground/50 hover:text-muted-foreground bg-muted/50",
               uploading && "opacity-50 cursor-not-allowed"
             )}
           >
@@ -140,7 +140,7 @@ export function ImageUpload({ images, onChange, maxImages = 10, className }: Ima
         onChange={handleInput}
       />
       {images.length === 0 && !uploading && (
-        <div className="flex items-center gap-2 text-xs text-white/30">
+        <div className="flex items-center gap-2 text-xs text-muted-foreground/30">
           <ImageIcon className="h-3 w-3" />
           Drag & drop images or click to upload (max {maxImages})
         </div>

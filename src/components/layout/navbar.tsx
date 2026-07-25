@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useSession, signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils/cn";
+import { useSidebar } from "@/store/use-sidebar";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback, getInitials } from "@/components/ui/avatar";
@@ -20,12 +21,6 @@ import {
   DropdownMenuTrigger,
   DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { Sidebar } from "./sidebar";
 import {
   Menu,
   Search,
@@ -64,7 +59,7 @@ export function Navbar() {
   const user = session?.user;
   const { theme, setTheme } = useTheme();
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const { open } = useSidebar();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -92,14 +87,14 @@ export function Navbar() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setMobileSidebarOpen(true)}
+            onClick={() => open()}
             className="shrink-0"
           >
             <Menu size={20} />
           </Button>
         )}
 
-        <nav className="flex items-center gap-1.5 text-sm text-muted-foreground min-w-0">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-sm text-muted-foreground min-w-0">
           <Link href="/dashboard" className="hover:text-foreground transition-colors shrink-0">
             <Home size={16} />
           </Link>
@@ -112,6 +107,7 @@ export function Navbar() {
                   "truncate hover:text-foreground transition-colors",
                   i === breadcrumbs.length - 1 ? "text-foreground font-medium" : ""
                 )}
+                aria-current={i === breadcrumbs.length - 1 ? "page" : undefined}
               >
                 {crumb.label}
               </Link>
@@ -133,13 +129,13 @@ export function Navbar() {
             variant="outline"
             size="sm"
             onClick={() => setSearchOpen(true)}
-            className="hidden md:flex items-center gap-2 text-muted-foreground h-9 w-48 justify-between"
+            className="hidden md:flex items-center gap-2 text-muted-foreground h-9 w-48 justify-between bg-muted hover:bg-accent"
           >
             <span className="flex items-center gap-2">
               <Search size={14} />
               <span>Search...</span>
             </span>
-            <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+            <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
               <Command size={10} />K
             </kbd>
           </Button>
@@ -155,10 +151,10 @@ export function Navbar() {
             variant="ghost"
             size="icon"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="text-muted-foreground"
+            className="text-muted-foreground relative"
           >
-            <Sun size={18} className="rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon size={18} className="absolute rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            <Sun size={18} className="rotate-0 scale-100 transition-all duration-300 dark:-rotate-90 dark:scale-0" />
+            <Moon size={18} className="absolute rotate-90 scale-0 transition-all duration-300 dark:rotate-0 dark:scale-100" />
           </Button>
 
           <DropdownMenu>
@@ -173,7 +169,7 @@ export function Navbar() {
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{user?.name ?? "User"}</p>
+                  <p className="text-sm font-medium leading-none text-foreground">{user?.name ?? "User"}</p>
                   <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
                 </div>
               </DropdownMenuLabel>
@@ -189,7 +185,7 @@ export function Navbar() {
                 <DropdownMenuShortcut>⌘,</DropdownMenuShortcut>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/login" })} className="text-red-400 focus:text-red-400">
+              <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/login" })} className="text-destructive focus:text-destructive">
                 <LogOut size={16} className="mr-2" />
                 Sign out
                 <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
@@ -199,20 +195,13 @@ export function Navbar() {
         </div>
       </header>
 
-      <Sheet open={mobileSidebarOpen} onOpenChange={setMobileSidebarOpen}>
-        <SheetContent side="left" className="w-72 p-0">
-          <SheetTitle className="sr-only">Navigation</SheetTitle>
-          <Sidebar onItemClick={() => setMobileSidebarOpen(false)} />
-        </SheetContent>
-      </Sheet>
-
       <AnimatePresence>
         {searchOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] bg-background/80 backdrop-blur-sm"
             onClick={() => setSearchOpen(false)}
           >
             <motion.div
@@ -221,7 +210,7 @@ export function Navbar() {
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
               transition={{ duration: 0.15 }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-lg rounded-2xl border border-border bg-card shadow-2xl overflow-hidden"
+              className="w-full max-w-lg rounded-2xl border border-border bg-card shadow-2xl overflow-hidden premium-shadow"
             >
               <div className="flex items-center gap-3 border-b border-border px-4">
                 <Search size={18} className="text-muted-foreground shrink-0" />
@@ -248,7 +237,7 @@ export function Navbar() {
                     key={action.href}
                     href={action.href}
                     onClick={() => setSearchOpen(false)}
-                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
                   >
                     <ChevronRight size={16} className="opacity-40" />
                     {action.label}

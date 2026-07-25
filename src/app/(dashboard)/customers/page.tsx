@@ -124,8 +124,8 @@ export default function CustomersPage() {
             <Card key={stat.label} glass className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs font-medium text-white/50 uppercase tracking-wider">{stat.label}</p>
-                  <p className="mt-1 text-2xl font-bold text-white">{stat.value}</p>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{stat.label}</p>
+                  <p className="mt-1 text-2xl font-bold text-foreground">{stat.value}</p>
                 </div>
                 <Icon className={`h-8 w-8 ${stat.color} opacity-50`} />
               </div>
@@ -138,7 +138,7 @@ export default function CustomersPage() {
         <Card glass className="p-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 value={search}
                 onChange={handleSearch}

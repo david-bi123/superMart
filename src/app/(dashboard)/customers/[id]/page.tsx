@@ -121,7 +121,7 @@ export default function CustomerDetailPage() {
   if (!customer) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <p className="text-white/60 text-lg">Customer not found</p>
+        <p className="text-muted-foreground text-lg">Customer not found</p>
         <Button variant="outline" className="mt-4" onClick={() => router.push("/customers")}>
           Back to Customers
         </Button>
@@ -141,14 +141,14 @@ export default function CustomerDetailPage() {
           </Avatar>
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-white">{customer.name}</h1>
+              <h1 className="text-2xl font-bold text-foreground">{customer.name}</h1>
               {customer.isActive ? (
                 <Badge variant="success">Active</Badge>
               ) : (
                 <Badge variant="destructive">Inactive</Badge>
               )}
             </div>
-            <p className="text-sm text-white/50">Customer since {new Date(customer.createdAt).toLocaleDateString("en-US", { month: "long", year: "numeric" })}</p>
+            <p className="text-sm text-muted-foreground">Customer since {new Date(customer.createdAt).toLocaleDateString("en-US", { month: "long", year: "numeric" })}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -200,12 +200,12 @@ export default function CustomerDetailPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-white/10">
-                        <th className="pb-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Invoice</th>
-                        <th className="pb-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Date</th>
-                        <th className="pb-3 text-right text-xs font-medium text-white/50 uppercase tracking-wider">Items</th>
-                        <th className="pb-3 text-right text-xs font-medium text-white/50 uppercase tracking-wider">Total</th>
-                        <th className="pb-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Status</th>
+                      <tr className="border-b border-border/50">
+                        <th className="pb-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Invoice</th>
+                        <th className="pb-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Date</th>
+                        <th className="pb-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Items</th>
+                        <th className="pb-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Total</th>
+                        <th className="pb-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -215,14 +215,14 @@ export default function CustomerDetailPage() {
                           initial={{ opacity: 0, y: 4 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: index * 0.03 }}
-                          className="border-b border-white/5 cursor-pointer hover:bg-white/[0.03]"
+                          className="border-b border-border/20 cursor-pointer hover:bg-muted/30"
                           onClick={() => router.push(`/sales/${sale._id}`)}
                         >
                           <td className="py-3">
-                            <span className="text-sm font-mono font-medium text-white">{sale.invoiceNumber}</span>
+                            <span className="text-sm font-mono font-medium text-foreground">{sale.invoiceNumber}</span>
                           </td>
                           <td className="py-3">
-                            <span className="text-sm text-white/70">
+                            <span className="text-sm text-muted-foreground">
                               {new Date(sale.createdAt).toLocaleDateString("en-US", {
                                 month: "short",
                                 day: "numeric",
@@ -230,8 +230,8 @@ export default function CustomerDetailPage() {
                               })}
                             </span>
                           </td>
-                          <td className="py-3 text-right text-sm text-white/60">{sale.itemsCount}</td>
-                          <td className="py-3 text-right text-sm font-semibold text-white">
+                          <td className="py-3 text-right text-sm text-muted-foreground">{sale.itemsCount}</td>
+                          <td className="py-3 text-right text-sm font-semibold text-foreground">
                             ${sale.grandTotal.toFixed(2)}
                           </td>
                           <td className="py-3">
@@ -258,12 +258,12 @@ export default function CustomerDetailPage() {
             <Card glass>
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-white/50" />
+                  <FileText className="h-5 w-5 text-muted-foreground" />
                   Notes
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-white/70 whitespace-pre-wrap">{customer.notes}</p>
+                <p className="text-sm text-muted-foreground whitespace-pre-wrap">{customer.notes}</p>
               </CardContent>
             </Card>
           )}
@@ -280,7 +280,7 @@ export default function CustomerDetailPage() {
             <CardContent>
               <div className="text-center py-2">
                 <p className="text-4xl font-bold text-amber-400">{customer.loyaltyPoints}</p>
-                <p className="text-sm text-white/50 mt-1">Points</p>
+                <p className="text-sm text-muted-foreground mt-1">Points</p>
               </div>
               <Button
                 variant="outline"
@@ -297,38 +297,38 @@ export default function CustomerDetailPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <DollarSign className="h-5 w-5 text-white/50" />
-                Financial Summary
+              <DollarSign className="h-5 w-5 text-muted-foreground" />
+              Financial Summary
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 <div className="flex justify-between text-sm">
-                  <span className="text-white/50">Total Spent</span>
-                  <span className="text-white font-semibold">${customer.totalSpent.toFixed(2)}</span>
+                  <span className="text-muted-foreground">Total Spent</span>
+                  <span className="text-foreground font-semibold">${customer.totalSpent.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-white/50">Total Purchases</span>
-                  <span className="text-white">{customer.salesCount}</span>
+                  <span className="text-muted-foreground">Total Purchases</span>
+                  <span className="text-foreground">{customer.salesCount}</span>
                 </div>
                 <Separator className="my-1" />
                 <div className="flex justify-between text-sm">
-                  <span className="text-white/50">Balance</span>
-                  <span className={`font-semibold ${customer.balance > 0 ? "text-red-400" : "text-white/60"}`}>
+                  <span className="text-muted-foreground">Balance</span>
+                  <span className={`font-semibold ${customer.balance > 0 ? "text-red-400" : "text-muted-foreground"}`}>
                     ${customer.balance.toFixed(2)}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-white/50">Credit Limit</span>
-                  <span className="text-white/80">${customer.creditLimit.toFixed(2)}</span>
+                  <span className="text-muted-foreground">Credit Limit</span>
+                  <span className="text-foreground">${customer.creditLimit.toFixed(2)}</span>
                 </div>
                 {customer.creditLimit > 0 && (
                   <div className="mt-2">
-                    <div className="flex justify-between text-xs text-white/40 mb-1">
+                    <div className="flex justify-between text-xs text-muted-foreground/50 mb-1">
                       <span>Credit Used</span>
                       <span>{customer.creditLimit > 0 ? Math.round((customer.balance / customer.creditLimit) * 100) : 0}%</span>
                     </div>
-                    <div className="h-2 rounded-full bg-white/10 overflow-hidden">
+                    <div className="h-2 rounded-full bg-muted overflow-hidden">
                       <div
                         className="h-full rounded-full bg-gradient-to-r from-amber-500 to-red-500 transition-all duration-500"
                         style={{ width: `${customer.creditLimit > 0 ? Math.min((customer.balance / customer.creditLimit) * 100, 100) : 0}%` }}
@@ -343,32 +343,32 @@ export default function CustomerDetailPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <MapPin className="h-5 w-5 text-white/50" />
-                Contact Info
+              <MapPin className="h-5 w-5 text-muted-foreground" />
+              Contact Info
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {customer.email && (
                   <div className="flex items-center gap-3 text-sm">
-                    <Mail className="h-4 w-4 text-white/40" />
-                    <span className="text-white/80">{customer.email}</span>
+                    <Mail className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-foreground/80">{customer.email}</span>
                   </div>
                 )}
                 {customer.phone && (
                   <div className="flex items-center gap-3 text-sm">
-                    <Phone className="h-4 w-4 text-white/40" />
-                    <span className="text-white/80">{customer.phone}</span>
+                    <Phone className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-foreground/80">{customer.phone}</span>
                   </div>
                 )}
                 {customer.address && (
                   <div className="flex items-center gap-3 text-sm">
-                    <MapPin className="h-4 w-4 text-white/40" />
-                    <span className="text-white/80">{customer.address}</span>
+                    <MapPin className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-foreground/80">{customer.address}</span>
                   </div>
                 )}
                 {!customer.email && !customer.phone && !customer.address && (
-                  <p className="text-sm text-white/40">No contact information</p>
+                  <p className="text-sm text-muted-foreground">No contact information</p>
                 )}
               </div>
             </CardContent>
@@ -392,7 +392,7 @@ export default function CustomerDetailPage() {
               onChange={(e) => setPointsAmount(parseInt(e.target.value) || 0)}
               min={1}
             />
-            <p className="text-sm text-white/40">
+            <p className="text-sm text-muted-foreground">
               Current balance: <span className="text-amber-400 font-semibold">{customer.loyaltyPoints}</span> points
             </p>
           </div>

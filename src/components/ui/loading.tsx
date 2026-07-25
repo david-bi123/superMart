@@ -35,13 +35,13 @@ const Loading = React.forwardRef<HTMLDivElement, LoadingProps>(
         >
           <Loader2
             className={cn(
-              "text-violet-400",
+              "text-primary",
               sizeMap[size]
             )}
           />
         </motion.div>
         {text && (
-          <p className="text-sm text-white/50 animate-pulse">{text}</p>
+          <p className="text-sm text-muted-foreground animate-pulse">{text}</p>
         )}
       </motion.div>
     )

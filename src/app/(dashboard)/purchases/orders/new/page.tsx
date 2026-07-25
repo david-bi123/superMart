@@ -166,13 +166,13 @@ export default function NewPurchaseOrderPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Package className="h-5 w-5 text-violet-400" />
+                <Package className="h-5 w-5 text-primary" />
                 Items
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40 pointer-events-none" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                 <Input
                   value={productSearch}
                   onChange={(e) => { setProductSearch(e.target.value); setShowProductDropdown(true) }}
@@ -186,20 +186,20 @@ export default function NewPurchaseOrderPage() {
                       initial={{ opacity: 0, y: -4 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -4 }}
-                      className="absolute z-20 mt-1 w-full rounded-xl border border-white/10 bg-gray-900/95 backdrop-blur-2xl shadow-2xl max-h-60 overflow-y-auto"
+                      className="absolute z-20 mt-1 w-full rounded-xl border border-border/50 bg-background/95 backdrop-blur-2xl shadow-2xl max-h-60 overflow-y-auto"
                     >
                       {filteredProducts.length === 0 ? (
-                        <div className="p-4 text-sm text-white/40 text-center">No products found</div>
+                        <div className="p-4 text-sm text-muted-foreground text-center">No products found</div>
                       ) : (
                         filteredProducts.map((p) => (
                           <button
                             key={p._id}
                             type="button"
                             onClick={() => addItem(p)}
-                            className="w-full flex items-center justify-between px-4 py-3 text-sm text-white/80 hover:bg-white/10 transition-colors"
+                            className="w-full flex items-center justify-between px-4 py-3 text-sm text-foreground/80 hover:bg-muted transition-colors"
                           >
                             <span>{p.name}</span>
-                            <span className="text-white/40 text-xs">${p.purchasePrice.toFixed(2)}</span>
+                            <span className="text-muted-foreground text-xs">${p.purchasePrice.toFixed(2)}</span>
                           </button>
                         ))
                       )}
@@ -213,41 +213,41 @@ export default function NewPurchaseOrderPage() {
                   key={index}
                   initial={{ opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="flex items-end gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5"
+                  className="flex items-end gap-3 p-3 rounded-xl bg-muted/30 border border-border/30"
                 >
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-white truncate">{item.name}</p>
-                    {item.sku && <p className="text-xs text-white/30">{item.sku}</p>}
+                    <p className="text-sm font-medium text-foreground truncate">{item.name}</p>
+                    {item.sku && <p className="text-xs text-muted-foreground">{item.sku}</p>}
                   </div>
                   <div className="w-20">
-                    <Label className="text-[10px] text-white/40">Qty</Label>
+                    <Label className="text-[10px] text-muted-foreground">Qty</Label>
                     <input
                       type="number"
                       min="1"
                       value={item.quantity}
                       onChange={(e) => updateItem(index, "quantity", parseInt(e.target.value) || 0)}
-                      className="mt-1 flex h-9 w-full rounded-lg border border-white/10 bg-white/5 px-3 py-1 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+                      className="mt-1 flex h-9 w-full rounded-lg border border-border/50 bg-muted px-3 py-1 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                     />
                   </div>
                   <div className="w-24">
-                    <Label className="text-[10px] text-white/40">Price</Label>
+                    <Label className="text-[10px] text-muted-foreground">Price</Label>
                     <input
                       type="number"
                       min="0"
                       step="0.01"
                       value={item.price}
                       onChange={(e) => updateItem(index, "price", parseFloat(e.target.value) || 0)}
-                      className="mt-1 flex h-9 w-full rounded-lg border border-white/10 bg-white/5 px-3 py-1 text-sm text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+                      className="mt-1 flex h-9 w-full rounded-lg border border-border/50 bg-muted px-3 py-1 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
                     />
                   </div>
                   <div className="w-24 text-right">
-                    <Label className="text-[10px] text-white/40">Total</Label>
-                    <p className="mt-1 text-sm font-semibold text-white">${item.total.toFixed(2)}</p>
+                    <Label className="text-[10px] text-muted-foreground">Total</Label>
+                    <p className="mt-1 text-sm font-semibold text-foreground">${item.total.toFixed(2)}</p>
                   </div>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-9 w-9 text-red-400 hover:bg-red-500/10"
+                    className="h-9 w-9 text-destructive hover:bg-destructive/10"
                     onClick={() => removeItem(index)}
                   >
                     <Trash2 className="h-4 w-4" />
@@ -256,7 +256,7 @@ export default function NewPurchaseOrderPage() {
               ))}
 
               {items.length === 0 && (
-                <div className="text-center py-8 text-white/30 text-sm">
+                <div className="text-center py-8 text-muted-foreground text-sm">
                   Search and add products above
                 </div>
               )}
@@ -268,7 +268,7 @@ export default function NewPurchaseOrderPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Building2 className="h-5 w-5 text-violet-400" />
+                <Building2 className="h-5 w-5 text-primary" />
                 Supplier
               </CardTitle>
             </CardHeader>
@@ -294,24 +294,24 @@ export default function NewPurchaseOrderPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <DollarSign className="h-5 w-5 text-violet-400" />
+                <DollarSign className="h-5 w-5 text-primary" />
                 Summary
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-white/60">Subtotal</span>
-                <span className="text-white">${subtotal.toFixed(2)}</span>
+                <span className="text-muted-foreground">Subtotal</span>
+                <span className="text-foreground">${subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-white/60">Tax</span>
-                <span className="text-white">$0.00</span>
+                <span className="text-muted-foreground">Tax</span>
+                <span className="text-foreground">$0.00</span>
               </div>
-              <div className="flex justify-between text-lg font-bold pt-2 border-t border-white/10">
-                <span className="text-white">Total</span>
-                <span className="text-white">${grandTotal.toFixed(2)}</span>
+              <div className="flex justify-between text-lg font-bold pt-2 border-t border-border/50">
+                <span className="text-foreground">Total</span>
+                <span className="text-foreground">${grandTotal.toFixed(2)}</span>
               </div>
-              <div className="text-xs text-white/30">
+              <div className="text-xs text-muted-foreground">
                 {items.length} item{items.length !== 1 ? "s" : ""}
               </div>
             </CardContent>
@@ -320,7 +320,7 @@ export default function NewPurchaseOrderPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Hash className="h-5 w-5 text-violet-400" />
+                <Hash className="h-5 w-5 text-primary" />
                 Notes
               </CardTitle>
             </CardHeader>
@@ -330,7 +330,7 @@ export default function NewPurchaseOrderPage() {
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Additional notes..."
                 rows={3}
-                className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-white/30 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50 resize-none"
+                className="w-full rounded-xl border border-border/50 bg-muted px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
               />
             </CardContent>
           </Card>

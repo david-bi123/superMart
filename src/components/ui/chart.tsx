@@ -48,9 +48,9 @@ const ChartTooltip = ({
   if (!active || !payload?.length) return null
 
   return (
-    <div className="rounded-xl border border-white/10 bg-gray-900/95 backdrop-blur-2xl px-4 py-3 shadow-2xl">
+    <div className="rounded-xl border border-border/50 bg-background/95 backdrop-blur-2xl px-4 py-3 shadow-2xl">
       {label && (
-        <p className="mb-2 text-sm font-medium text-white/60">{label}</p>
+        <p className="mb-2 text-sm font-medium text-muted-foreground">{label}</p>
       )}
       <div className="space-y-1">
         {payload.map((entry, index) => (
@@ -59,10 +59,10 @@ const ChartTooltip = ({
               className="h-2.5 w-2.5 rounded-full"
               style={{ backgroundColor: config?.[entry.name]?.color || entry.fill }}
             />
-            <span className="text-white/80">
+            <span className="text-muted-foreground">
               {config?.[entry.name]?.label || entry.name}
             </span>
-            <span className="ml-auto font-medium text-white">
+            <span className="ml-auto font-medium text-foreground">
               {entry.value}
             </span>
           </div>
@@ -90,7 +90,7 @@ const ChartLegend = ({ payload, config }: ChartLegendProps) => {
               backgroundColor: config?.[entry.value]?.color || entry.color,
             }}
           />
-          <span className="text-white/60">
+          <span className="text-muted-foreground">
             {config?.[entry.value]?.label || entry.value}
           </span>
         </div>

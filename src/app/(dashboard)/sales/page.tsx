@@ -207,8 +207,8 @@ export default function SalesPage() {
       >
         {statCards.map((stat) => (
           <Card key={stat.label} glass className="p-4">
-            <p className="text-xs font-medium text-white/50 uppercase tracking-wider">{stat.label}</p>
-            <p className="mt-1 text-2xl font-bold text-white">
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{stat.label}</p>
+            <p className="mt-1 text-2xl font-bold text-foreground">
               {stat.format === "currency"
                 ? `$${(stat.value as number).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : (stat.value as number).toLocaleString()}
@@ -222,7 +222,7 @@ export default function SalesPage() {
           <Tabs value={statusTab} onValueChange={handleStatusTabChange}>
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
               <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   value={search}
                   onChange={handleSearch}
@@ -232,7 +232,7 @@ export default function SalesPage() {
               </div>
               <div className="flex items-center gap-2 flex-wrap">
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40 pointer-events-none" />
+                  <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                   <Input
                     type="date"
                     value={dateFrom}
@@ -240,9 +240,9 @@ export default function SalesPage() {
                     className="w-[150px] pl-10"
                   />
                 </div>
-                <span className="text-white/30">—</span>
+                <span className="text-muted-foreground/50">—</span>
                 <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40 pointer-events-none" />
+                  <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                   <Input
                     type="date"
                     value={dateTo}

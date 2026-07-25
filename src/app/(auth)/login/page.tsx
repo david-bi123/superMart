@@ -75,11 +75,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-emerald-900 via-emerald-800 to-teal-900 dark:from-gray-950 dark:via-emerald-950 dark:to-teal-950">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-primary/20 via-background to-background dark:from-primary/5 dark:via-background">
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-emerald-400/20 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-teal-400/20 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-primary/20 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl" />
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMSIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
       </div>
 
@@ -94,12 +94,12 @@ export default function LoginPage() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 shadow-lg shadow-emerald-500/25 mb-4"
+            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary text-primary-foreground shadow-lg shadow-primary/25 mb-4"
           >
-            <Store className="w-8 h-8 text-white" />
+            <Store className="w-8 h-8" />
           </motion.div>
-          <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-          <p className="text-emerald-100/60">Sign in to your RetailFlow account</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Welcome Back</h1>
+          <p className="text-muted-foreground">Sign in to your RetailFlow account</p>
         </motion.div>
 
         <AnimatePresence mode="wait">
@@ -110,14 +110,14 @@ export default function LoginPage() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
               onSubmit={handleTwoFactorSubmit}
-              className="glass-card rounded-2xl p-8 space-y-6"
+              className="bg-card border-border premium-shadow rounded-2xl p-8 space-y-6"
             >
               <div className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/20 mb-3">
-                  <ShieldCheck className="w-6 h-6 text-emerald-400" />
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 mb-3">
+                  <ShieldCheck className="w-6 h-6 text-primary" />
                 </div>
-                <h2 className="text-xl font-semibold text-white mb-1">Two-Factor Authentication</h2>
-                <p className="text-sm text-white/50">Enter the 6-digit code from your authenticator app</p>
+                <h2 className="text-xl font-semibold text-foreground mb-1">Two-Factor Authentication</h2>
+                <p className="text-sm text-muted-foreground">Enter the 6-digit code from your authenticator app</p>
               </div>
 
               <div className="space-y-2">
@@ -138,7 +138,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => setShowTwoFactor(false)}
-                className="w-full text-sm text-white/50 hover:text-white/80 transition-colors"
+                className="w-full text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 Back to login
               </button>
@@ -150,11 +150,11 @@ export default function LoginPage() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 50 }}
               onSubmit={handleSubmit(onSubmit)}
-              className="glass-card rounded-2xl p-8 space-y-5"
+              className="bg-card border-border premium-shadow rounded-2xl p-8 space-y-5"
             >
               <div className="space-y-1">
-                <h2 className="text-xl font-semibold text-white">Sign In</h2>
-                <p className="text-sm text-white/50">Enter your credentials to continue</p>
+                <h2 className="text-xl font-semibold text-foreground">Sign In</h2>
+                <p className="text-sm text-muted-foreground">Enter your credentials to continue</p>
               </div>
 
               <Input
@@ -180,16 +180,16 @@ export default function LoginPage() {
                   <label className="flex items-center gap-2 cursor-pointer group">
                     <input
                       type="checkbox"
-                      className="w-4 h-4 rounded border-white/20 bg-white/5 text-emerald-500 focus:ring-emerald-500/50 focus:ring-offset-0 cursor-pointer"
+                      className="w-4 h-4 rounded border-border bg-background text-primary focus:ring-primary/50 focus:ring-offset-0 cursor-pointer"
                       {...register("rememberMe")}
                     />
-                    <span className="text-xs text-white/50 group-hover:text-white/70 transition-colors">
+                    <span className="text-xs text-muted-foreground group-hover:text-foreground transition-colors">
                       Remember me
                     </span>
                   </label>
                   <Link
                     href="/forgot-password"
-                    className="text-xs text-emerald-400 hover:text-emerald-300 transition-colors"
+                    className="text-xs text-primary hover:text-primary/80 transition-colors"
                   >
                     Forgot password?
                   </Link>
@@ -203,18 +203,18 @@ export default function LoginPage() {
 
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-white/10" />
+                  <div className="w-full border-t border-border/50" />
                 </div>
                 <div className="relative flex justify-center text-xs">
-                  <span className="px-2 bg-[rgba(255,255,255,0.05)] text-white/30">or</span>
+                  <span className="px-2 bg-card text-muted-foreground/50">or</span>
                 </div>
               </div>
 
-              <p className="text-center text-sm text-white/50">
+              <p className="text-center text-sm text-muted-foreground">
                 Don&apos;t have an account?{" "}
                 <Link
                   href="/register"
-                  className="text-emerald-400 hover:text-emerald-300 font-medium transition-colors"
+                  className="text-primary hover:text-primary/80 font-medium transition-colors"
                 >
                   Create one
                 </Link>

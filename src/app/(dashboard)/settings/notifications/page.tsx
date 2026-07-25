@@ -66,7 +66,7 @@ export default function NotificationSettingsPage() {
         <Card glass>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
-              <Bell className="h-5 w-5 text-violet-400" />
+              <Bell className="h-5 w-5 text-primary" />
               Notification Types
             </CardTitle>
             <CardDescription>Choose which notifications you want to receive</CardDescription>
@@ -78,14 +78,14 @@ export default function NotificationSettingsPage() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.03 }}
-                className="flex items-start gap-4 rounded-xl p-4 transition-colors hover:bg-white/[0.03]"
+                className="flex items-start gap-4 rounded-xl p-4 transition-colors hover:bg-muted/50"
               >
-                <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-violet-500/10 to-indigo-500/10 flex items-center justify-center shrink-0">
-                  <pref.icon className="h-4 w-4 text-violet-400" />
+                <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center shrink-0">
+                  <pref.icon className="h-4 w-4 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white">{pref.title}</p>
-                  <p className="text-xs text-white/40 mt-0.5">{pref.description}</p>
+                  <p className="text-sm font-medium text-foreground">{pref.title}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{pref.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -96,7 +96,7 @@ export default function NotificationSettingsPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Mail className="h-5 w-5 text-violet-400" />
+                <Mail className="h-5 w-5 text-primary" />
                 Email Notifications
               </CardTitle>
               <CardDescription>Receive email alerts for important events</CardDescription>
@@ -111,8 +111,8 @@ export default function NotificationSettingsPage() {
                   className="flex items-center justify-between"
                 >
                   <div>
-                    <Label className="text-sm text-white/80">{pref.title}</Label>
-                    <p className="text-xs text-white/40">{pref.description}</p>
+                    <Label className="text-sm text-foreground/80">{pref.title}</Label>
+                    <p className="text-xs text-muted-foreground">{pref.description}</p>
                   </div>
                   <Switch
                     checked={pref.email}
@@ -126,7 +126,7 @@ export default function NotificationSettingsPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Bell className="h-5 w-5 text-violet-400" />
+                <Bell className="h-5 w-5 text-primary" />
                 In-App Notifications
               </CardTitle>
               <CardDescription>Show notifications within the dashboard</CardDescription>
@@ -141,8 +141,8 @@ export default function NotificationSettingsPage() {
                   className="flex items-center justify-between"
                 >
                   <div>
-                    <Label className="text-sm text-white/80">{pref.title}</Label>
-                    <p className="text-xs text-white/40">{pref.description}</p>
+                    <Label className="text-sm text-foreground/80">{pref.title}</Label>
+                    <p className="text-xs text-muted-foreground">{pref.description}</p>
                   </div>
                   <Switch
                     checked={pref.inApp}

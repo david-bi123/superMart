@@ -189,7 +189,7 @@ export default function NewProductPage() {
                       {...form.register("description")}
                       rows={3}
                       placeholder="Product description..."
-                      className="flex w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white placeholder:text-white/30 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-violet-500/50 resize-none"
+                      className="flex w-full rounded-xl border border-border/50 bg-muted px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
                     />
                   </FormField>
                 </div>
@@ -249,11 +249,11 @@ export default function NewProductPage() {
                   />
                 </FormField>
                 <FormField label=" " className="flex items-end">
-                  <label className="flex items-center gap-2 text-sm text-white/60 cursor-pointer">
+                  <label className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
                     <input
                       type="checkbox"
                       {...form.register("isActive")}
-                      className="rounded border-white/20 bg-white/5"
+                      className="rounded border-border/30 bg-muted"
                     />
                     Product is active
                   </label>
@@ -301,11 +301,11 @@ export default function NewProductPage() {
                 <FormField label=" " className="flex items-end">
                   <div className="space-y-2">
                     {(["trackSerial", "trackBatch", "trackExpiry"] as const).map((field) => (
-                      <label key={field} className="flex items-center gap-2 text-sm text-white/60 cursor-pointer">
+                      <label key={field} className="flex items-center gap-2 text-sm text-muted-foreground cursor-pointer">
                         <input
                           type="checkbox"
                           {...form.register(field)}
-                          className="rounded border-white/20 bg-white/5"
+                          className="rounded border-border/30 bg-muted"
                         />
                         {field === "trackSerial" ? "Track Serial Numbers" :
                          field === "trackBatch" ? "Track Batches" : "Track Expiry"}
@@ -321,8 +321,8 @@ export default function NewProductPage() {
             <Card glass className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="text-lg font-semibold text-white">Product Variants</h3>
-                  <p className="text-sm text-white/40">Add size, color, or other variations</p>
+                  <h3 className="text-lg font-semibold text-foreground">Product Variants</h3>
+                  <p className="text-sm text-muted-foreground">Add size, color, or other variations</p>
                 </div>
                 <Button
                   type="button"
@@ -340,7 +340,7 @@ export default function NewProductPage() {
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="text-center py-12 text-white/30 text-sm border border-dashed border-white/10 rounded-xl"
+                    className="text-center py-12 text-muted-foreground text-sm border border-dashed border-border/50 rounded-xl"
                   >
                     No variants added yet. Click "Add Variant" to create variations.
                   </motion.div>
@@ -354,9 +354,9 @@ export default function NewProductPage() {
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, x: -20 }}
-                      className="flex items-start gap-3 p-4 rounded-xl border border-white/10 bg-white/[0.02]"
+                      className="flex items-start gap-3 p-4 rounded-xl border border-border/50 bg-muted/20"
                     >
-                      <div className="pt-2 text-white/20">
+                      <div className="pt-2 text-muted-foreground/30">
                         <GripVertical className="h-4 w-4" />
                       </div>
                       <div className="flex-1 grid gap-3 sm:grid-cols-5">

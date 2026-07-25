@@ -22,18 +22,18 @@ interface ProfitChartProps {
 function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-xl border border-white/10 bg-gray-900/95 px-4 py-3 shadow-2xl backdrop-blur-2xl">
-      <p className="mb-2 text-sm font-medium text-white/60">{label}</p>
+    <div className="rounded-xl border border-border/50 bg-background/95 px-4 py-3 shadow-2xl backdrop-blur-2xl">
+      <p className="mb-2 text-sm font-medium text-muted-foreground">{label}</p>
       {payload.map((entry: any, index: number) => (
         <div key={index} className="flex items-center gap-2 text-sm">
           <span
             className="h-2.5 w-2.5 rounded-full"
             style={{ backgroundColor: entry.color }}
           />
-          <span className="text-white/80">
+          <span className="text-muted-foreground">
             {entry.name === "revenue" ? "Revenue" : "Profit"}
           </span>
-          <span className="ml-auto font-medium text-white">
+          <span className="ml-auto font-medium text-foreground">
             ${entry.value.toLocaleString()}
           </span>
         </div>
@@ -48,7 +48,7 @@ export function ProfitChart({ data, loading }: ProfitChartProps) {
   return (
     <Card glass className="overflow-hidden">
       <CardHeader className="pb-4">
-        <CardTitle className="text-lg font-semibold text-white">
+        <CardTitle className="text-lg font-semibold text-foreground">
           Profit vs Revenue
         </CardTitle>
       </CardHeader>
@@ -59,7 +59,7 @@ export function ProfitChart({ data, loading }: ProfitChartProps) {
           </div>
         ) : !last14Days.length ? (
           <div className="flex h-[300px] items-center justify-center">
-            <p className="text-sm text-white/40">No profit data available</p>
+            <p className="text-sm text-muted-foreground/50">No profit data available</p>
           </div>
         ) : (
           <motion.div

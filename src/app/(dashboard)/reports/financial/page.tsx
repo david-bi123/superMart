@@ -199,14 +199,14 @@ export default function FinancialReportsPage() {
 
       <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-3">
         <div className="flex items-center gap-2">
-          <CalendarRange className="h-4 w-4 text-white/40" />
+          <CalendarRange className="h-4 w-4 text-muted-foreground/50" />
           <Input
             type="date"
             value={dateFrom}
             onChange={(e) => setDateFrom(e.target.value)}
             className="w-[160px]"
           />
-          <span className="text-white/40">to</span>
+          <span className="text-muted-foreground/50">to</span>
           <Input
             type="date"
             value={dateTo}
@@ -235,24 +235,24 @@ export default function FinancialReportsPage() {
             <CardContent className="p-4">
               <div className="flex items-start justify-between">
                 <div className="space-y-1">
-                  <p className="text-xs font-medium text-white/50">{card.title}</p>
+                  <p className="text-xs font-medium text-muted-foreground">{card.title}</p>
                   <p className={cn(
                     "text-lg font-bold tracking-tight",
                     card.variant === "success" ? "text-emerald-400" :
                     card.variant === "danger" ? "text-red-400" :
                     card.variant === "primary" ? "text-blue-400" :
-                    "text-white"
+                    "text-foreground"
                   )}>
                     {card.value}
                   </p>
-                  <p className="text-[10px] text-white/40">{card.description}</p>
+                  <p className="text-[10px] text-muted-foreground/50">{card.description}</p>
                 </div>
                 <div className={cn(
                   "flex h-8 w-8 items-center justify-center rounded-lg",
                   card.variant === "success" ? "bg-emerald-500/15 text-emerald-400" :
                   card.variant === "danger" ? "bg-red-500/15 text-red-400" :
                   card.variant === "primary" ? "bg-blue-500/15 text-blue-400" :
-                  "bg-white/10 text-white"
+                  "bg-muted text-foreground"
                 )}>
                   <card.icon className="h-4 w-4" />
                 </div>
@@ -265,7 +265,7 @@ export default function FinancialReportsPage() {
       <motion.div variants={itemVariants} className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card glass>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white">Revenue Trend</CardTitle>
+            <CardTitle className="text-lg font-semibold text-foreground">Revenue Trend</CardTitle>
           </CardHeader>
           <CardContent>
             <AreaChart
@@ -283,7 +283,7 @@ export default function FinancialReportsPage() {
 
         <Card glass>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white">Expense Breakdown</CardTitle>
+            <CardTitle className="text-lg font-semibold text-foreground">Expense Breakdown</CardTitle>
           </CardHeader>
           <CardContent>
             <PieChart
@@ -300,7 +300,7 @@ export default function FinancialReportsPage() {
 
         <Card glass>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white">Profit Comparison</CardTitle>
+            <CardTitle className="text-lg font-semibold text-foreground">Profit Comparison</CardTitle>
           </CardHeader>
           <CardContent>
             <BarChart
@@ -320,7 +320,7 @@ export default function FinancialReportsPage() {
 
         <Card glass>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white">Cash Flow</CardTitle>
+            <CardTitle className="text-lg font-semibold text-foreground">Cash Flow</CardTitle>
           </CardHeader>
           <CardContent>
             <BarChart

@@ -141,7 +141,7 @@ export default function InventoryReportsPage() {
             <CardContent className="p-4">
               <div className="flex items-start justify-between">
                 <div className="space-y-1">
-                  <p className="text-xs font-medium text-white/50">{card.title}</p>
+                  <p className="text-xs font-medium text-muted-foreground">{card.title}</p>
                   <p className={cn(
                     "text-lg font-bold tracking-tight",
                     card.variant === "success" ? "text-emerald-400" :
@@ -170,7 +170,7 @@ export default function InventoryReportsPage() {
       <motion.div variants={itemVariants} className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card glass>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white">Stock Status Distribution</CardTitle>
+            <CardTitle className="text-lg font-semibold text-foreground">Stock Status Distribution</CardTitle>
           </CardHeader>
           <CardContent>
             <PieChart
@@ -187,7 +187,7 @@ export default function InventoryReportsPage() {
 
         <Card glass>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white">Category Breakdown</CardTitle>
+            <CardTitle className="text-lg font-semibold text-foreground">Category Breakdown</CardTitle>
           </CardHeader>
           <CardContent>
             <BarChart
@@ -204,7 +204,7 @@ export default function InventoryReportsPage() {
 
         <Card glass>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
+            <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 text-amber-400" />
               Low Stock Alerts
             </CardTitle>
@@ -213,7 +213,7 @@ export default function InventoryReportsPage() {
             {!data?.lowStockItems?.length ? (
               <EmptyState title="No low stock items" description="All products are well stocked" />
             ) : (
-              <div className="rounded-xl border border-white/10 overflow-hidden max-h-[400px] overflow-y-auto">
+              <div className="rounded-xl border border-border/50 overflow-hidden max-h-[400px] overflow-y-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -228,15 +228,15 @@ export default function InventoryReportsPage() {
                       <TableRow key={item._id}>
                         <TableCell>
                           <div>
-                            <p className="text-white font-medium">{item.name}</p>
-                            <p className="text-xs text-white/40">{item.sku}</p>
+                            <p className="text-foreground font-medium">{item.name}</p>
+                            <p className="text-xs text-muted-foreground/50">{item.sku}</p>
                           </div>
                         </TableCell>
                         <TableCell>
                           <Badge variant="warning">{item.currentStock}</Badge>
                         </TableCell>
-                        <TableCell className="text-white/60">{item.minStock}</TableCell>
-                        <TableCell className="text-white font-medium">
+                        <TableCell className="text-muted-foreground">{item.minStock}</TableCell>
+                        <TableCell className="text-foreground font-medium">
                           {formatCurrency(item.value)}
                         </TableCell>
                       </TableRow>
@@ -250,7 +250,7 @@ export default function InventoryReportsPage() {
 
         <Card glass>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
+            <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
               <Clock className="h-4 w-4 text-amber-400" />
               Expiring Products
             </CardTitle>
@@ -259,7 +259,7 @@ export default function InventoryReportsPage() {
             {!data?.expiringItems?.length ? (
               <EmptyState title="No expiring products" description="No products expiring in the next 30 days" />
             ) : (
-              <div className="rounded-xl border border-white/10 overflow-hidden max-h-[400px] overflow-y-auto">
+              <div className="rounded-xl border border-border/50 overflow-hidden max-h-[400px] overflow-y-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -273,15 +273,15 @@ export default function InventoryReportsPage() {
                     {data.expiringItems.map((item: any) => (
                       <TableRow key={item._id}>
                         <TableCell>
-                          <p className="text-white font-medium">{item.name}</p>
+                          <p className="text-foreground font-medium">{item.name}</p>
                         </TableCell>
-                        <TableCell className="text-white/60">{item.expiryDate}</TableCell>
+                        <TableCell className="text-muted-foreground">{item.expiryDate}</TableCell>
                         <TableCell>
                           <Badge variant={item.daysToExpiry <= 7 ? "destructive" : "warning"}>
                             {item.daysToExpiry}d
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-white/60">{item.currentStock}</TableCell>
+                        <TableCell className="text-muted-foreground">{item.currentStock}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -293,7 +293,7 @@ export default function InventoryReportsPage() {
 
         <Card glass>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
+            <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
               <TrendingDown className="h-4 w-4 text-red-400" />
               Dead Stock (No Sales in 90 Days)
             </CardTitle>
@@ -303,10 +303,10 @@ export default function InventoryReportsPage() {
               <EmptyState title="No dead stock" description="All products have been sold recently" />
             ) : (
               <>
-                <p className="mb-3 text-sm text-white/60">
+                <p className="mb-3 text-sm text-muted-foreground">
                   {deadStock.totalProducts} products — {formatCurrency(deadStock.totalValue)} tied up
                 </p>
-                <div className="rounded-xl border border-white/10 overflow-hidden max-h-[400px] overflow-y-auto">
+                <div className="rounded-xl border border-border/50 overflow-hidden max-h-[400px] overflow-y-auto">
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -320,14 +320,14 @@ export default function InventoryReportsPage() {
                         <TableRow key={item._id}>
                           <TableCell>
                             <div>
-                              <p className="text-white font-medium">{item.name}</p>
-                              <p className="text-xs text-white/40">{item.category}</p>
+                              <p className="text-foreground font-medium">{item.name}</p>
+                              <p className="text-xs text-muted-foreground/50">{item.category}</p>
                             </div>
                           </TableCell>
                           <TableCell>
                             <Badge variant="destructive">{item.currentStock}</Badge>
                           </TableCell>
-                          <TableCell className="text-white font-medium">
+                          <TableCell className="text-foreground font-medium">
                             {formatCurrency(item.stockValue)}
                           </TableCell>
                         </TableRow>
@@ -342,7 +342,7 @@ export default function InventoryReportsPage() {
 
         <Card glass>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
+            <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
               <Box className="h-4 w-4 text-emerald-400" />
               Top Products by Value
             </CardTitle>
@@ -351,7 +351,7 @@ export default function InventoryReportsPage() {
             {!data?.topByValue?.length ? (
               <EmptyState title="No products" description="Add products to see top by value" />
             ) : (
-              <div className="rounded-xl border border-white/10 overflow-hidden max-h-[400px] overflow-y-auto">
+              <div className="rounded-xl border border-border/50 overflow-hidden max-h-[400px] overflow-y-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -364,15 +364,15 @@ export default function InventoryReportsPage() {
                   <TableBody>
                     {data.topByValue.map((item: any, i: number) => (
                       <TableRow key={item._id}>
-                        <TableCell className="text-white/40">{i + 1}</TableCell>
+                        <TableCell className="text-muted-foreground">{i + 1}</TableCell>
                         <TableCell>
                           <div>
-                            <p className="text-white font-medium">{item.name}</p>
-                            <p className="text-xs text-white/40">{item.category}</p>
+                            <p className="text-foreground font-medium">{item.name}</p>
+                            <p className="text-xs text-muted-foreground/50">{item.category}</p>
                           </div>
                         </TableCell>
-                        <TableCell className="text-white/60">{item.stock}</TableCell>
-                        <TableCell className="text-white font-medium">
+                        <TableCell className="text-muted-foreground">{item.stock}</TableCell>
+                        <TableCell className="text-foreground font-medium">
                           {formatCurrency(item.value)}
                         </TableCell>
                       </TableRow>

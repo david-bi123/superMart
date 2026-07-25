@@ -138,7 +138,7 @@ export default function PurchaseOrdersPage() {
       <Card glass className="p-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1) }}
@@ -161,7 +161,7 @@ export default function PurchaseOrdersPage() {
               </SelectContent>
             </Select>
             <div className="relative">
-              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40 pointer-events-none" />
+              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
               <Input
                 type="date"
                 value={dateFrom}
@@ -169,9 +169,9 @@ export default function PurchaseOrdersPage() {
                 className="w-[140px] pl-10"
               />
             </div>
-            <span className="text-white/30">—</span>
+            <span className="text-muted-foreground/50">—</span>
             <div className="relative">
-              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40 pointer-events-none" />
+              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
               <Input
                 type="date"
                 value={dateTo}
@@ -213,14 +213,14 @@ export default function PurchaseOrdersPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-white/10">
-                  <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">PO#</th>
-                  <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Supplier</th>
-                  <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Date</th>
-                  <th className="p-3 text-right text-xs font-medium text-white/50 uppercase tracking-wider">Items</th>
-                  <th className="p-3 text-right text-xs font-medium text-white/50 uppercase tracking-wider">Total</th>
-                  <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Status</th>
-                  <th className="w-16 p-3 text-right text-xs font-medium text-white/50 uppercase tracking-wider">Actions</th>
+                  <tr className="border-b border-border/50">
+                  <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">PO#</th>
+                  <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Supplier</th>
+                  <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Date</th>
+                  <th className="p-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Items</th>
+                  <th className="p-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Total</th>
+                  <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
+                  <th className="w-16 p-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -232,29 +232,29 @@ export default function PurchaseOrdersPage() {
                       initial={{ opacity: 0, y: 4 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.03 }}
-                      className="border-b border-white/5 transition-colors hover:bg-white/[0.03]"
+                      className="border-b border-border/30 transition-colors hover:bg-muted/50"
                     >
                       <td className="p-3">
-                        <span className="text-sm font-mono font-medium text-white">{order.poNumber}</span>
+                        <span className="text-sm font-mono font-medium text-foreground">{order.poNumber}</span>
                       </td>
                       <td className="p-3">
                         <div>
-                          <p className="text-sm text-white">{order.supplierName}</p>
+                          <p className="text-sm text-foreground">{order.supplierName}</p>
                           {order.supplierCompany && (
-                            <p className="text-xs text-white/30">{order.supplierCompany}</p>
+                            <p className="text-xs text-muted-foreground">{order.supplierCompany}</p>
                           )}
                         </div>
                       </td>
                       <td className="p-3">
-                        <span className="text-sm text-white/60">
+                        <span className="text-sm text-muted-foreground">
                           {new Date(order.createdAt).toLocaleDateString()}
                         </span>
                       </td>
                       <td className="p-3 text-right">
-                        <span className="text-sm text-white/80">{order.itemsCount}</span>
+                        <span className="text-sm text-foreground/80">{order.itemsCount}</span>
                       </td>
                       <td className="p-3 text-right">
-                        <span className="text-sm font-semibold text-white">
+                        <span className="text-sm font-semibold text-foreground">
                           ${order.grandTotal.toFixed(2)}
                         </span>
                       </td>
@@ -304,8 +304,8 @@ export default function PurchaseOrdersPage() {
         )}
 
         {totalPages > 1 && (
-          <div className="flex items-center justify-between pt-4 mt-4 border-t border-white/5">
-            <p className="text-sm text-white/40">Page {page} of {totalPages}</p>
+          <div className="flex items-center justify-between pt-4 mt-4 border-t border-border/30">
+            <p className="text-sm text-muted-foreground">Page {page} of {totalPages}</p>
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>Previous</Button>
               <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>Next</Button>

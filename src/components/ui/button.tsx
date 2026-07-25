@@ -6,30 +6,33 @@ import { Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-xl text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none",
   {
     variants: {
       variant: {
         default:
-          "bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-500/25 hover:shadow-violet-500/40 hover:from-violet-500 hover:to-indigo-500",
+          "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
         primary:
-          "bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:from-blue-500 hover:to-cyan-500",
+          "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
         secondary:
-          "bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:from-emerald-500 hover:to-teal-500",
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-sm",
         destructive:
-          "bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-lg shadow-red-500/25 hover:shadow-red-500/40 hover:from-red-500 hover:to-rose-500",
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90 shadow-sm",
         outline:
-          "border border-white/20 bg-white/5 text-foreground backdrop-blur-sm hover:bg-white/10 hover:border-white/30",
+          "border border-border bg-background hover:bg-accent hover:text-accent-foreground",
         ghost:
-          "text-foreground/80 hover:text-foreground hover:bg-white/10",
+          "hover:bg-accent hover:text-accent-foreground",
         link:
-          "text-violet-400 underline-offset-4 hover:underline hover:text-violet-300",
+          "text-primary underline-offset-4 hover:underline",
+        gradient:
+          "bg-gradient-to-r from-emerald-600 to-emerald-500 text-white hover:from-emerald-500 hover:to-emerald-400 shadow-lg shadow-emerald-500/25",
       },
       size: {
-        default: "h-10 px-5 py-2 gap-2",
-        sm: "h-9 rounded-lg px-3 py-1.5 gap-1.5 text-xs",
-        lg: "h-12 rounded-xl px-8 py-3 gap-2.5 text-base",
-        icon: "h-10 w-10 rounded-xl",
+        default: "h-10 px-4 py-2 gap-2",
+        sm: "h-8 rounded-md px-3 py-1.5 gap-1.5 text-xs",
+        lg: "h-12 rounded-lg px-6 py-3 gap-2.5 text-base",
+        xl: "h-14 rounded-lg px-8 py-4 gap-3 text-lg",
+        icon: "h-10 w-10 rounded-lg",
       },
     },
     defaultVariants: {
@@ -44,6 +47,7 @@ interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
   loading?: boolean
+  loadingText?: string
   children?: React.ReactNode
 }
 
@@ -55,6 +59,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       size,
       asChild = false,
       loading = false,
+      loadingText,
       disabled,
       children,
       ...props
@@ -66,11 +71,11 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <Slot
           ref={ref}
           className={cn(buttonVariants({ variant, size, className }))}
-          {...({ disabled: disabled || loading } as any)}
+          disabled={disabled || loading}
           {...(props as any)}
         >
           {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-          {children}
+          {loading && loadingText ? loadingText : children}
         </Slot>
       )
     }
@@ -84,16 +89,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         whileTap={{ scale: 0.98 }}
         {...(props as any)}
       >
-        {loading && (
-          <motion.span
-            initial={{ opacity: 0, rotate: -180 }}
-            animate={{ opacity: 1, rotate: 0 }}
-            exit={{ opacity: 0, rotate: 180 }}
-          >
-            <Loader2 className="h-4 w-4 animate-spin" />
-          </motion.span>
-        )}
-        {children}
+        {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+        {loading && loadingText ? loadingText : children}
       </motion.button>
     )
   }

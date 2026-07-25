@@ -2,14 +2,26 @@ import * as React from "react"
 import * as AvatarPrimitive from "@radix-ui/react-avatar"
 import { cn } from "@/lib/utils/cn"
 
+interface AvatarProps extends React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> {
+  size?: "sm" | "default" | "lg" | "xl"
+}
+
+const sizeClasses = {
+  sm: "h-8 w-8",
+  default: "h-10 w-10",
+  lg: "h-12 w-12",
+  xl: "h-16 w-16",
+}
+
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
->(({ className, ...props }, ref) => (
+  AvatarProps
+>(({ className, size = "default", ...props }, ref) => (
   <AvatarPrimitive.Root
     ref={ref}
     className={cn(
-      "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full border border-white/10",
+      "relative flex shrink-0 overflow-hidden rounded-full border border-border",
+      sizeClasses[size],
       className
     )}
     {...props}
@@ -35,11 +47,11 @@ const AvatarFallback = React.forwardRef<
 >(({ className, ...props }, ref) => {
   const [bgColor] = React.useState(() => {
     const colors = [
-      "from-violet-500 to-purple-600",
-      "from-blue-500 to-cyan-600",
-      "from-emerald-500 to-teal-600",
-      "from-rose-500 to-pink-600",
-      "from-amber-500 to-orange-600",
+      "bg-primary/10 text-primary",
+      "bg-destructive/10 text-destructive",
+      "bg-amber-100 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400",
+      "bg-blue-100 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400",
+      "bg-purple-100 text-purple-700 dark:bg-purple-950/30 dark:text-purple-400",
     ]
     return colors[Math.floor(Math.random() * colors.length)]
   })
@@ -48,7 +60,7 @@ const AvatarFallback = React.forwardRef<
     <AvatarPrimitive.Fallback
       ref={ref}
       className={cn(
-        "flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br text-white text-sm font-semibold",
+        "flex h-full w-full items-center justify-center rounded-full text-sm font-semibold",
         bgColor,
         className
       )}

@@ -177,7 +177,7 @@ export default function SaleDetailPage() {
   if (!sale) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <p className="text-white/60 text-lg">Sale not found</p>
+        <p className="text-muted-foreground text-lg">Sale not found</p>
         <Button variant="outline" className="mt-4" onClick={() => router.push("/sales")}>
           Back to Sales
         </Button>
@@ -197,13 +197,13 @@ export default function SaleDetailPage() {
           </Button>
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-white">{sale.invoiceNumber}</h1>
+              <h1 className="text-2xl font-bold text-foreground">{sale.invoiceNumber}</h1>
               <Badge variant={statusCfg.variant} className="flex items-center gap-1.5">
                 <StatusIcon className="h-3.5 w-3.5" />
                 {statusCfg.label}
               </Badge>
             </div>
-            <p className="text-sm text-white/50">
+            <p className="text-sm text-muted-foreground">
               {new Date(sale.createdAt).toLocaleDateString("en-US", {
                 weekday: "long",
                 month: "long",
@@ -258,7 +258,7 @@ export default function SaleDetailPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Package className="h-5 w-5 text-white/50" />
+                <Package className="h-5 w-5 text-muted-foreground" />
                 Items
               </CardTitle>
             </CardHeader>
@@ -266,13 +266,13 @@ export default function SaleDetailPage() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-white/10">
-                      <th className="pb-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Product</th>
-                      <th className="pb-3 text-center text-xs font-medium text-white/50 uppercase tracking-wider">Qty</th>
-                      <th className="pb-3 text-right text-xs font-medium text-white/50 uppercase tracking-wider">Price</th>
-                      <th className="pb-3 text-right text-xs font-medium text-white/50 uppercase tracking-wider">Discount</th>
-                      <th className="pb-3 text-right text-xs font-medium text-white/50 uppercase tracking-wider">Tax</th>
-                      <th className="pb-3 text-right text-xs font-medium text-white/50 uppercase tracking-wider">Total</th>
+                    <tr className="border-b border-border/50">
+                      <th className="pb-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Product</th>
+                      <th className="pb-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider">Qty</th>
+                      <th className="pb-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Price</th>
+                      <th className="pb-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Discount</th>
+                      <th className="pb-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Tax</th>
+                      <th className="pb-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Total</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -282,25 +282,25 @@ export default function SaleDetailPage() {
                         initial={{ opacity: 0, y: 4 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.03 }}
-                        className="border-b border-white/5"
+                        className="border-b border-border/30"
                       >
                         <td className="py-3">
                           <div>
-                            <p className="text-sm font-medium text-white">{item.name}</p>
+                            <p className="text-sm font-medium text-foreground">{item.name}</p>
                             {item.sku && (
-                              <p className="text-xs text-white/40 font-mono">{item.sku}</p>
+                              <p className="text-xs text-muted-foreground font-mono">{item.sku}</p>
                             )}
                           </div>
                         </td>
-                        <td className="py-3 text-center text-sm text-white/80">{item.quantity}</td>
-                        <td className="py-3 text-right text-sm text-white/80">${item.price.toFixed(2)}</td>
-                        <td className="py-3 text-right text-sm text-white/60">
+                        <td className="py-3 text-center text-sm text-foreground/80">{item.quantity}</td>
+                        <td className="py-3 text-right text-sm text-foreground/80">${item.price.toFixed(2)}</td>
+                        <td className="py-3 text-right text-sm text-muted-foreground">
                           {item.discount > 0 ? `-$${item.discount.toFixed(2)}` : "—"}
                         </td>
-                        <td className="py-3 text-right text-sm text-white/60">
+                        <td className="py-3 text-right text-sm text-muted-foreground">
                           {item.tax > 0 ? `$${item.tax.toFixed(2)}` : "—"}
                         </td>
-                        <td className="py-3 text-right text-sm font-semibold text-white">
+                        <td className="py-3 text-right text-sm font-semibold text-foreground">
                           ${item.total.toFixed(2)}
                         </td>
                       </motion.tr>
@@ -313,25 +313,25 @@ export default function SaleDetailPage() {
 
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-white/50">Subtotal</span>
-                  <span className="text-white/80">${sale.subtotal.toFixed(2)}</span>
+                  <span className="text-muted-foreground">Subtotal</span>
+                  <span className="text-foreground/80">${sale.subtotal.toFixed(2)}</span>
                 </div>
                 {sale.discountTotal > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-white/50">Discount</span>
+                    <span className="text-muted-foreground">Discount</span>
                     <span className="text-red-400">-${sale.discountTotal.toFixed(2)}</span>
                   </div>
                 )}
                 {sale.taxTotal > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-white/50">Tax</span>
-                    <span className="text-white/80">${sale.taxTotal.toFixed(2)}</span>
+                    <span className="text-muted-foreground">Tax</span>
+                    <span className="text-foreground/80">${sale.taxTotal.toFixed(2)}</span>
                   </div>
                 )}
                 <Separator className="my-1" />
                 <div className="flex justify-between">
-                  <span className="text-base font-semibold text-white">Grand Total</span>
-                  <span className="text-base font-bold text-white">${sale.grandTotal.toFixed(2)}</span>
+                  <span className="text-base font-semibold text-foreground">Grand Total</span>
+                  <span className="text-base font-bold text-foreground">${sale.grandTotal.toFixed(2)}</span>
                 </div>
               </div>
             </CardContent>
@@ -340,33 +340,33 @@ export default function SaleDetailPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Clock className="h-5 w-5 text-white/50" />
+                <Clock className="h-5 w-5 text-muted-foreground" />
                 Activity Timeline
               </CardTitle>
             </CardHeader>
             <CardContent>
               {sale.timeline.length === 0 ? (
-                <p className="text-sm text-white/40">No activity recorded</p>
+                <p className="text-sm text-muted-foreground/50">No activity recorded</p>
               ) : (
                 <div className="space-y-4">
                   {sale.timeline.map((log, i) => (
                     <div key={log._id} className="flex gap-3">
                       <div className="relative flex flex-col items-center">
-                        <div className="h-2 w-2 rounded-full bg-violet-500 mt-2" />
+                        <div className="h-2 w-2 rounded-full bg-primary mt-2" />
                         {i < sale.timeline.length - 1 && (
-                          <div className="w-px flex-1 bg-white/10" />
+                          <div className="w-px flex-1 bg-border/50" />
                         )}
                       </div>
                       <div className="flex-1 pb-4">
-                        <p className="text-sm text-white/80">
+                        <p className="text-sm text-foreground">
                           <span className="font-medium capitalize">
                             {log.action.replace(/\./g, " ")}
                           </span>
                         </p>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs text-white/40">{log.user}</span>
-                          <span className="text-white/20">•</span>
-                          <span className="text-xs text-white/40">
+                          <span className="text-xs text-muted-foreground/50">{log.user}</span>
+                          <span className="text-muted-foreground/20">•</span>
+                          <span className="text-xs text-muted-foreground/50">
                             {new Date(log.createdAt).toLocaleString()}
                           </span>
                         </div>
@@ -376,10 +376,10 @@ export default function SaleDetailPage() {
                   <div className="flex gap-3">
                     <div className="h-2 w-2 rounded-full bg-emerald-500 mt-2" />
                     <div>
-                      <p className="text-sm text-white/80">
+                      <p className="text-sm text-foreground/80">
                         <span className="font-medium">Sale created</span>
                       </p>
-                      <p className="text-xs text-white/40 mt-1">
+                      <p className="text-xs text-muted-foreground mt-1">
                         {new Date(sale.createdAt).toLocaleString()}
                       </p>
                     </div>
@@ -398,7 +398,7 @@ export default function SaleDetailPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-white/70 whitespace-pre-wrap">{sale.notes}</p>
+                <p className="text-sm text-foreground/70 whitespace-pre-wrap">{sale.notes}</p>
               </CardContent>
             </Card>
           )}
@@ -409,7 +409,7 @@ export default function SaleDetailPage() {
             <Card glass>
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <User className="h-5 w-5 text-white/50" />
+                  <User className="h-5 w-5 text-muted-foreground" />
                   Customer
                 </CardTitle>
               </CardHeader>
@@ -419,19 +419,19 @@ export default function SaleDetailPage() {
                     <AvatarFallback>{getInitials(sale.customer.name)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="text-sm font-medium text-white">{sale.customer.name}</p>
-                    <p className="text-xs text-white/40">{sale.customer.loyaltyPoints} points</p>
+                    <p className="text-sm font-medium text-foreground">{sale.customer.name}</p>
+                    <p className="text-xs text-muted-foreground">{sale.customer.loyaltyPoints} points</p>
                   </div>
                 </div>
                 <div className="space-y-2 text-sm">
                   {sale.customer.email && (
-                    <div className="flex items-center gap-2 text-white/60">
+                    <div className="flex items-center gap-2 text-muted-foreground">
                       <Mail className="h-3.5 w-3.5" />
                       <span>{sale.customer.email}</span>
                     </div>
                   )}
                   {sale.customer.phone && (
-                    <div className="flex items-center gap-2 text-white/60">
+                    <div className="flex items-center gap-2 text-muted-foreground">
                       <User className="h-3.5 w-3.5" />
                       <span>{sale.customer.phone}</span>
                     </div>
@@ -452,15 +452,15 @@ export default function SaleDetailPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <CreditCard className="h-5 w-5 text-white/50" />
+                <CreditCard className="h-5 w-5 text-muted-foreground" />
                 Payment
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 <div className="flex justify-between text-sm">
-                  <span className="text-white/50">Method</span>
-                  <span className="text-white font-medium capitalize">
+                  <span className="text-muted-foreground">Method</span>
+                  <span className="text-foreground font-medium capitalize">
                     {paymentLabels[sale.paymentMethod] || sale.paymentMethod}
                   </span>
                 </div>
@@ -496,7 +496,7 @@ export default function SaleDetailPage() {
             <Card glass>
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <Building2 className="h-5 w-5 text-white/50" />
+                  <Building2 className="h-5 w-5 text-muted-foreground" />
                   Processed By
                 </CardTitle>
               </CardHeader>
@@ -506,8 +506,8 @@ export default function SaleDetailPage() {
                     <AvatarFallback>{getInitials(sale.user.name)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="text-sm font-medium text-white">{sale.user.name}</p>
-                    <p className="text-xs text-white/40">{sale.user.email}</p>
+                    <p className="text-sm font-medium text-foreground">{sale.user.name}</p>
+                    <p className="text-xs text-muted-foreground">{sale.user.email}</p>
                   </div>
                 </div>
               </CardContent>
@@ -518,19 +518,19 @@ export default function SaleDetailPage() {
             <Card glass>
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-white/50" />
+                  <FileText className="h-5 w-5 text-muted-foreground" />
                   Receipt
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm font-mono text-white/80">{sale.receipt.receiptNumber}</p>
+                <p className="text-sm font-mono text-foreground/80">{sale.receipt.receiptNumber}</p>
                 {sale.receipt.printedAt && (
-                  <p className="text-xs text-white/40 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     Printed: {new Date(sale.receipt.printedAt).toLocaleString()}
                   </p>
                 )}
                 {sale.receipt.emailedAt && (
-                  <p className="text-xs text-white/40">
+                  <p className="text-xs text-muted-foreground">
                     Emailed: {new Date(sale.receipt.emailedAt).toLocaleString()}
                   </p>
                 )}

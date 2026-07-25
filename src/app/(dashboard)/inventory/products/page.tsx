@@ -209,7 +209,7 @@ export default function ProductsPage() {
       <Card glass className="p-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               value={search}
               onChange={handleSearch}
@@ -288,22 +288,22 @@ export default function ProductsPage() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="border-b border-white/10">
+                  <tr className="border-b border-border/50">
                     <th className="w-10 p-3 text-left">
                       <input
                         type="checkbox"
                         checked={selected.length === products.length && products.length > 0}
                         onChange={toggleSelectAll}
-                        className="rounded border-white/20 bg-white/5"
+                        className="rounded border-border/20 bg-muted/50"
                       />
                     </th>
-                    <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Product</th>
-                    <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">SKU</th>
-                    <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Category</th>
-                    <th className="p-3 text-right text-xs font-medium text-white/50 uppercase tracking-wider">Price</th>
-                    <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Stock</th>
-                    <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Status</th>
-                    <th className="w-16 p-3 text-right text-xs font-medium text-white/50 uppercase tracking-wider">Actions</th>
+                    <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Product</th>
+                    <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">SKU</th>
+                    <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Category</th>
+                    <th className="p-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Price</th>
+                    <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Stock</th>
+                    <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
+                    <th className="w-16 p-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -313,7 +313,7 @@ export default function ProductsPage() {
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.03 }}
-                      className="border-b border-white/5 transition-colors hover:bg-white/[0.03] cursor-pointer"
+                      className="border-b border-border/20 transition-colors hover:bg-muted/30 cursor-pointer"
                       onClick={() => router.push(`/inventory/products/${product._id}`)}
                     >
                       <td className="p-3" onClick={(e) => e.stopPropagation()}>
@@ -321,47 +321,47 @@ export default function ProductsPage() {
                           type="checkbox"
                           checked={selected.includes(product._id)}
                           onChange={() => toggleSelect(product._id)}
-                          className="rounded border-white/20 bg-white/5"
+                          className="rounded border-border/20 bg-muted/50"
                         />
                       </td>
                       <td className="p-3">
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 rounded-xl overflow-hidden bg-white/5 flex-shrink-0">
+                          <div className="h-10 w-10 rounded-xl overflow-hidden bg-muted/50 flex-shrink-0">
                             {product.images?.[0] ? (
                               <img src={product.images[0]} alt="" className="h-full w-full object-cover" />
                             ) : (
                               <div className="h-full w-full flex items-center justify-center">
-                                <ImageOff className="h-4 w-4 text-white/20" />
+                                <ImageOff className="h-4 w-4 text-muted-foreground/50" />
                               </div>
                             )}
                           </div>
                           <div>
-                            <p className="text-sm font-medium text-white">{product.name}</p>
+                            <p className="text-sm font-medium text-foreground">{product.name}</p>
                             {product.barcode && (
-                              <p className="text-xs text-white/30">{product.barcode}</p>
+                              <p className="text-xs text-muted-foreground/30">{product.barcode}</p>
                             )}
                           </div>
                         </div>
                       </td>
                       <td className="p-3">
-                        <span className="text-sm text-white/60 font-mono">{product.sku || "—"}</span>
+                        <span className="text-sm text-muted-foreground font-mono">{product.sku || "—"}</span>
                       </td>
                       <td className="p-3">
                         {product.category ? (
                           <Badge variant="outline" className="text-xs">{product.category}</Badge>
                         ) : (
-                          <span className="text-sm text-white/30">—</span>
+                          <span className="text-sm text-muted-foreground">—</span>
                         )}
                       </td>
                       <td className="p-3 text-right">
-                        <span className="text-sm font-semibold text-white">
+                        <span className="text-sm font-semibold text-foreground">
                           ${product.sellingPrice.toFixed(2)}
                         </span>
                       </td>
                       <td className="p-3">
-                        <span className="text-sm text-white/80">{product.currentStock}</span>
+                        <span className="text-sm text-foreground/80">{product.currentStock}</span>
                         {product.minStock > 0 && (
-                          <span className="text-xs text-white/30 ml-1">/ {product.minStock} min</span>
+                          <span className="text-xs text-muted-foreground ml-1">/ {product.minStock} min</span>
                         )}
                       </td>
                       <td className="p-3">
@@ -405,7 +405,7 @@ export default function ProductsPage() {
             </div>
 
             <div className="flex items-center justify-between pt-4">
-              <p className="text-sm text-white/40">
+              <p className="text-sm text-muted-foreground">
                 Showing {Math.min((page - 1) * limit + 1, products.length)}–{Math.min(page * limit, products.length)} of {totalPages > 0 ? "many" : "0"}
               </p>
               <div className="flex items-center gap-2">

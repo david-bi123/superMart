@@ -160,17 +160,17 @@ export default function BrandsPage() {
                     </Button>
                   </div>
                   <div className="flex flex-col items-center text-center gap-3">
-                    <div className="h-16 w-16 rounded-2xl overflow-hidden bg-white/5 flex items-center justify-center">
+                    <div className="h-16 w-16 rounded-2xl overflow-hidden bg-muted flex items-center justify-center">
                       {brand.logo ? (
                         <img src={brand.logo} alt={brand.name} className="h-full w-full object-contain p-2" />
                       ) : (
-                        <Building2 className="h-7 w-7 text-white/20" />
+                        <Building2 className="h-7 w-7 text-muted-foreground/30" />
                       )}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-white">{brand.name}</h3>
+                      <h3 className="font-semibold text-foreground">{brand.name}</h3>
                       {brand.description && (
-                        <p className="text-xs text-white/40 mt-1 line-clamp-2">{brand.description}</p>
+                        <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{brand.description}</p>
                       )}
                     </div>
                   </div>
@@ -191,7 +191,7 @@ export default function BrandsPage() {
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-1.5">
+              <label className="block text-sm font-medium text-foreground/80 mb-1.5">
                 Name <span className="text-red-400">*</span>
               </label>
               <Input
@@ -201,24 +201,24 @@ export default function BrandsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-1.5">Description</label>
+              <label className="block text-sm font-medium text-foreground/80 mb-1.5">Description</label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData((p) => ({ ...p, description: e.target.value }))}
                 rows={2}
                 placeholder="Brief description..."
-                className="flex w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white placeholder:text-white/30 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-violet-500/50 resize-none"
+                className="flex w-full rounded-xl border border-border/50 bg-muted px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-1.5">Logo URL</label>
+              <label className="block text-sm font-medium text-foreground/80 mb-1.5">Logo URL</label>
               <Input
                 value={formData.logo}
                 onChange={(e) => setFormData((p) => ({ ...p, logo: e.target.value }))}
                 placeholder="https://..."
               />
               {formData.logo && (
-                <div className="mt-2 h-16 w-16 rounded-xl overflow-hidden border border-white/10">
+                <div className="mt-2 h-16 w-16 rounded-xl overflow-hidden border border-border/50">
                   <img src={formData.logo} alt="Preview" className="h-full w-full object-contain" />
                 </div>
               )}

@@ -34,7 +34,7 @@ const Command = React.forwardRef<HTMLDivElement, CommandProps>(
         <div
           ref={ref}
           className={cn(
-            "flex h-full w-full flex-col overflow-hidden rounded-xl bg-gray-900/95 text-white",
+            "flex h-full w-full flex-col overflow-hidden rounded-xl bg-background/95 text-foreground",
             className
           )}
           {...props}
@@ -53,7 +53,7 @@ const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
   return (
     <Dialog {...props}>
       <DialogContent className="overflow-hidden p-0 shadow-2xl sm:max-w-[500px]">
-        <Command className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-white/40">
+        <Command className="[&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground/50">
           {children}
         </Command>
       </DialogContent>
@@ -68,14 +68,14 @@ const CommandInput = React.forwardRef<
   const { search, setSearch } = React.useContext(CommandContext)
 
   return (
-    <div className="flex items-center border-b border-white/10 px-4">
-      <Search className="mr-2 h-4 w-4 shrink-0 text-white/40" />
+    <div className="flex items-center border-b border-border/50 px-4">
+      <Search className="mr-2 h-4 w-4 shrink-0 text-muted-foreground/50" />
       <input
         ref={ref}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className={cn(
-          "flex h-12 w-full rounded-xl bg-transparent py-3 text-sm text-white outline-none placeholder:text-white/30 disabled:cursor-not-allowed disabled:opacity-50",
+          "flex h-12 w-full rounded-xl bg-transparent py-3 text-sm text-foreground outline-none placeholder:text-muted-foreground/50 disabled:cursor-not-allowed disabled:opacity-50",
           className
         )}
         {...props}
@@ -106,7 +106,7 @@ const CommandEmpty = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("py-6 text-center text-sm text-white/40", className)}
+    className={cn("py-6 text-center text-sm text-muted-foreground/50", className)}
     {...props}
   />
 ))
@@ -121,13 +121,13 @@ const CommandGroup = React.forwardRef<HTMLDivElement, CommandGroupProps>(
     <div
       ref={ref}
       className={cn(
-        "overflow-hidden text-white [&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-white/40",
+        "overflow-hidden text-foreground [&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground/50",
         className
       )}
       {...props}
     >
       {heading && (
-        <div className="px-3 py-2 text-xs font-medium text-white/40">
+        <div className="px-3 py-2 text-xs font-medium text-muted-foreground/50">
           {heading}
         </div>
       )}
@@ -143,7 +143,7 @@ const CommandSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("-mx-1 h-px bg-white/10", className)}
+    className={cn("-mx-1 h-px bg-border/50", className)}
     {...props}
   />
 ))
@@ -173,9 +173,9 @@ const CommandItem = React.forwardRef<
         }
       }}
       className={cn(
-        "relative flex cursor-default select-none items-center rounded-lg px-3 py-2 text-sm text-white/80 outline-none transition-colors",
-        "hover:bg-white/10 hover:text-white",
-        "focus:bg-white/10 focus:text-white",
+        "relative flex cursor-default select-none items-center rounded-lg px-3 py-2 text-sm text-foreground outline-none transition-colors",
+        "hover:bg-muted hover:text-foreground",
+        "focus:bg-muted focus:text-foreground",
         "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className
       )}
@@ -194,7 +194,7 @@ const CommandShortcut = ({
   return (
     <span
       className={cn(
-        "ml-auto text-xs tracking-widest text-white/40",
+        "ml-auto text-xs tracking-widest text-muted-foreground/50",
         className
       )}
       {...props}

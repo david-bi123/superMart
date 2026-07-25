@@ -137,7 +137,7 @@ export default function SalesReportsPage() {
           onChange={(e) => setDateFrom(e.target.value)}
           className="w-[160px]"
         />
-        <span className="text-white/40">to</span>
+                  <span className="text-muted-foreground/50">to</span>
         <Input
           type="date"
           value={dateTo}
@@ -155,12 +155,12 @@ export default function SalesReportsPage() {
             <CardContent className="p-5">
               <div className="flex items-start justify-between">
                 <div className="space-y-1">
-                  <p className="text-xs font-medium text-white/50">{card.title}</p>
+                  <p className="text-xs font-medium text-muted-foreground">{card.title}</p>
                   <p className={cn(
                     "text-2xl font-bold tracking-tight",
                     card.variant === "success" ? "text-emerald-400" :
                     card.variant === "primary" ? "text-blue-400" :
-                    "text-white"
+                    "text-foreground"
                   )}>
                     {card.value}
                   </p>
@@ -169,7 +169,7 @@ export default function SalesReportsPage() {
                   "flex h-9 w-9 items-center justify-center rounded-lg",
                   card.variant === "success" ? "bg-emerald-500/15 text-emerald-400" :
                   card.variant === "primary" ? "bg-blue-500/15 text-blue-400" :
-                  "bg-white/10 text-white"
+                  "bg-muted text-foreground"
                 )}>
                   <card.icon className="h-4 w-4" />
                 </div>
@@ -182,7 +182,7 @@ export default function SalesReportsPage() {
       <motion.div variants={itemVariants} className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card glass>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white">Sales Trend</CardTitle>
+            <CardTitle className="text-lg font-semibold text-foreground">Sales Trend</CardTitle>
           </CardHeader>
           <CardContent>
             <AreaChart
@@ -200,7 +200,7 @@ export default function SalesReportsPage() {
 
         <Card glass>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white">Sales by Payment Method</CardTitle>
+            <CardTitle className="text-lg font-semibold text-foreground">Sales by Payment Method</CardTitle>
           </CardHeader>
           <CardContent>
             <PieChart
@@ -218,7 +218,7 @@ export default function SalesReportsPage() {
 
         <Card glass>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
+            <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
               <Clock className="h-4 w-4 text-blue-400" />
               Hourly Sales Distribution
             </CardTitle>
@@ -239,7 +239,7 @@ export default function SalesReportsPage() {
 
         <Card glass>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
+            <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
               <CalendarDays className="h-4 w-4 text-emerald-400" />
               Sales by Day of Week
             </CardTitle>
@@ -260,7 +260,7 @@ export default function SalesReportsPage() {
 
         <Card glass>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
+            <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
               <Crown className="h-4 w-4 text-amber-400" />
               Top Products
             </CardTitle>
@@ -269,7 +269,7 @@ export default function SalesReportsPage() {
             {!salesData?.topProducts?.length ? (
               <EmptyState title="No products sold" description="No sales data available" />
             ) : (
-              <div className="rounded-xl border border-white/10 overflow-hidden max-h-[350px] overflow-y-auto">
+              <div className="rounded-xl border border-border/50 overflow-hidden max-h-[350px] overflow-y-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -282,12 +282,12 @@ export default function SalesReportsPage() {
                   <TableBody>
                     {salesData.topProducts.map((item: any, i: number) => (
                       <TableRow key={item.productId}>
-                        <TableCell className="text-white/40">{i + 1}</TableCell>
-                        <TableCell className="text-white font-medium">{item.name}</TableCell>
+                        <TableCell className="text-muted-foreground/50">{i + 1}</TableCell>
+                        <TableCell className="text-foreground font-medium">{item.name}</TableCell>
                         <TableCell>
                           <Badge variant="primary">{item.quantity}</Badge>
                         </TableCell>
-                        <TableCell className="text-white font-medium">
+                        <TableCell className="text-foreground font-medium">
                           {formatCurrency(item.revenue)}
                         </TableCell>
                       </TableRow>
@@ -301,8 +301,8 @@ export default function SalesReportsPage() {
 
         <Card glass>
           <CardHeader>
-            <CardTitle className="text-lg font-semibold text-white flex items-center gap-2">
-              <Users className="h-4 w-4 text-violet-400" />
+            <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
+              <Users className="h-4 w-4 text-primary" />
               Top Customers
             </CardTitle>
           </CardHeader>
@@ -310,7 +310,7 @@ export default function SalesReportsPage() {
             {!salesData?.topCustomers?.length ? (
               <EmptyState title="No customer data" description="No customers with purchases yet" />
             ) : (
-              <div className="rounded-xl border border-white/10 overflow-hidden max-h-[350px] overflow-y-auto">
+              <div className="rounded-xl border border-border/50 overflow-hidden max-h-[350px] overflow-y-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -323,12 +323,12 @@ export default function SalesReportsPage() {
                   <TableBody>
                     {salesData.topCustomers.map((item: any, i: number) => (
                       <TableRow key={item.id}>
-                        <TableCell className="text-white/40">{i + 1}</TableCell>
-                        <TableCell className="text-white font-medium">{item.name}</TableCell>
+                        <TableCell className="text-muted-foreground/50">{i + 1}</TableCell>
+                        <TableCell className="text-foreground font-medium">{item.name}</TableCell>
                         <TableCell>
                           <Badge variant="outline">{item.transactionCount}</Badge>
                         </TableCell>
-                        <TableCell className="text-white font-medium">
+                        <TableCell className="text-foreground font-medium">
                           {formatCurrency(item.totalSpent)}
                         </TableCell>
                       </TableRow>

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,11 +7,11 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
+    --foreground: 240 6% 10%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 240 6% 10%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover-foreground: 240 6% 10%;
     --primary: 142 76% 36%;
     --primary-foreground: 0 0% 100%;
     --secondary: 240 5% 96%;
@@ -20,20 +22,19 @@
     --accent-foreground: 142 76% 36%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
     --border: 240 6% 90%;
     --input: 240 6% 90%;
     --ring: 142 76% 36%;
     --radius: 0.75rem;
-    --sidebar-background: 240 6% 10%;
-    --sidebar-foreground: 240 5% 84%;
-    --sidebar-border: 240 4% 20%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 240 6% 10%;
+    --sidebar-border: 240 6% 90%;
     --sidebar-accent: 142 76% 36%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --chart-1: 142 76% 36%;
-    --chart-2: 220 70% 50%;
-    --chart-3: 35 90% 50%;
-    --chart-4: 330 70% 50%;
-    --chart-5: 270 70% 50%;
   }
 
   .dark {
@@ -43,29 +44,28 @@
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 5.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 142 70% 45%;
+    --primary: 142 70% 50%;
     --primary-foreground: 0 0% 100%;
     --secondary: 240 4% 16%;
     --secondary-foreground: 0 0% 98%;
     --muted: 240 4% 16%;
     --muted-foreground: 240 5% 65%;
     --accent: 142 70% 15%;
-    --accent-foreground: 142 70% 45%;
+    --accent-foreground: 142 70% 50%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
+    --success: 142 70% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
     --border: 240 4% 16%;
     --input: 240 4% 16%;
-    --ring: 142 70% 45%;
+    --ring: 142 70% 50%;
     --sidebar-background: 240 10% 5.9%;
     --sidebar-foreground: 240 5% 84%;
     --sidebar-border: 240 4% 16%;
-    --sidebar-accent: 142 70% 45%;
+    --sidebar-accent: 142 70% 50%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --chart-1: 142 70% 45%;
-    --chart-2: 220 70% 55%;
-    --chart-3: 35 90% 55%;
-    --chart-4: 330 70% 55%;
-    --chart-5: 270 70% 55%;
   }
 }
 
@@ -74,7 +74,8 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 }
 
@@ -83,7 +84,10 @@
     @apply bg-white/70 dark:bg-black/50 backdrop-blur-xl border border-white/20 dark:border-white/10;
   }
   .glass-card {
-    @apply bg-white/80 dark:bg-white/5 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 shadow-xl shadow-black/5 dark:shadow-black/20;
+    @apply bg-white/80 dark:bg-white/[0.03] backdrop-blur-xl border border-gray-200/50 dark:border-white/[0.05] shadow-xl shadow-black/[0.03] dark:shadow-black/20;
+  }
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300 hover:shadow-2xl hover:shadow-black/[0.05] dark:hover:shadow-black/30 hover:border-gray-300/50 dark:hover:border-white/[0.08];
   }
   .gradient-primary {
     @apply bg-gradient-to-br from-emerald-500 to-emerald-700;
@@ -97,12 +101,60 @@
   .text-gradient {
     @apply bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent;
   }
+  .text-gradient-hero {
+    @apply bg-gradient-to-r from-emerald-400 via-emerald-500 to-teal-400 bg-clip-text text-transparent;
+  }
   .animate-in {
-    animation: fade-in 0.5s ease-out, slide-in 0.3s ease-out;
+    animation: fade-in 0.5s ease-out;
+  }
+  .animate-in-up {
+    animation: fade-in-up 0.5s ease-out;
+  }
+  .animate-scale {
+    animation: scale-in 0.3s ease-out;
+  }
+  .premium-shadow {
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.02), 0 2px 4px rgba(0,0,0,0.02), 0 8px 24px rgba(0,0,0,0.04);
+  }
+  .dark .premium-shadow {
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.03), 0 2px 4px rgba(0,0,0,0.1), 0 8px 24px rgba(0,0,0,0.2);
   }
 }
 
-/* Scrollbar */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--muted)/0.5) 50%, hsl(var(--muted)) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -111,20 +163,30 @@
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.3);
+  background: hsl(var(--muted-foreground) / 0.2);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.5);
+  background: hsl(var(--muted-foreground) / 0.4);
 }
 
-/* Receipt print styles */
+::selection {
+  background: hsl(var(--primary) / 0.2);
+  color: hsl(var(--primary));
+}
+
 @media print {
-  .no-print {
-    display: none !important;
+  .no-print { display: none !important; }
+  body { background: white !important; color: black !important; }
+}
+
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
-  body {
-    background: white !important;
-    color: black !important;
+  input[type="number"] {
+    -moz-appearance: textfield;
   }
 }

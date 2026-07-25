@@ -148,7 +148,7 @@ export default function BillingPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <CreditCard className="h-5 w-5 text-violet-400" />
+                <CreditCard className="h-5 w-5 text-primary" />
                 Current Plan
               </CardTitle>
             </CardHeader>
@@ -156,16 +156,16 @@ export default function BillingPage() {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className={`h-14 w-14 rounded-2xl bg-gradient-to-br ${TIER_COLORS[currentTier] || TIER_COLORS.free} flex items-center justify-center`}>
-                    {React.createElement(TIER_ICONS[currentTier] || TIER_ICONS.free, { className: "h-7 w-7 text-white" })}
+                    {React.createElement(TIER_ICONS[currentTier] || TIER_ICONS.free, { className: "h-7 w-7 text-primary-foreground" })}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h3 className="text-xl font-bold text-white capitalize">{currentPlan?.name || currentTier}</h3>
+                      <h3 className="text-xl font-bold text-foreground capitalize">{currentPlan?.name || currentTier}</h3>
                       <Badge variant={currentStatus === "active" ? "success" : currentStatus === "cancelled" ? "destructive" : "warning"}>
                         {currentStatus}
                       </Badge>
                     </div>
-                    <p className="text-sm text-white/50">
+                    <p className="text-sm text-muted-foreground">
                       {currentPlan?.price === 0 ? "Free" : `$${currentPlan?.price}/${currentPlan?.interval}`}
                       {subscriptionEndsAt && (
                         <> &middot; Renews {new Date(subscriptionEndsAt).toLocaleDateString()}</>
@@ -198,21 +198,21 @@ export default function BillingPage() {
                 >
                   <Card
                     glass
-                    className={`relative overflow-hidden h-full flex flex-col ${isCurrent ? `ring-2 ring-violet-500 ${TIER_BG[plan.tier]}` : "hover:border-white/20"}`}
+                    className={`relative overflow-hidden h-full flex flex-col ${isCurrent ? `ring-2 ring-primary ${TIER_BG[plan.tier]}` : "hover:border-muted-foreground/20"}`}
                   >
                     {isCurrent && (
-                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-violet-500 to-indigo-600" />
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-primary/80" />
                     )}
                     <CardHeader>
                       <div className={`h-10 w-10 rounded-xl bg-gradient-to-br ${TIER_COLORS[plan.tier]} flex items-center justify-center mb-2`}>
-                        {React.createElement(TIER_ICONS[plan.tier], { className: "h-5 w-5 text-white" })}
+                        {React.createElement(TIER_ICONS[plan.tier], { className: "h-5 w-5 text-primary-foreground" })}
                       </div>
                       <CardTitle className="text-xl">{plan.name}</CardTitle>
                       <CardDescription>
-                        <span className="text-3xl font-bold text-white">
+                        <span className="text-3xl font-bold text-foreground">
                           {plan.price === 0 ? "Free" : `$${plan.price}`}
                         </span>
-                        {plan.price > 0 && <span className="text-sm text-white/40">/{plan.interval}</span>}
+                        {plan.price > 0 && <span className="text-sm text-muted-foreground">/{plan.interval}</span>}
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="flex-1">
@@ -225,9 +225,9 @@ export default function BillingPage() {
                               {isEnabled ? (
                                 <Check className="h-4 w-4 text-emerald-400 shrink-0" />
                               ) : (
-                                <X className="h-4 w-4 text-white/20 shrink-0" />
+                                <X className="h-4 w-4 text-muted-foreground/30 shrink-0" />
                               )}
-                              <span className={isEnabled ? "text-white/80" : "text-white/30"}>
+                              <span className={isEnabled ? "text-foreground/80" : "text-muted-foreground/50"}>
                                 {typeof value === "number" && value === -1 ? "Unlimited" : typeof value === "number" ? `${value} ` : ""}
                                 {label}
                               </span>
@@ -271,24 +271,24 @@ export default function BillingPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Calendar className="h-5 w-5 text-violet-400" />
+                <Calendar className="h-5 w-5 text-primary" />
                 Invoice History
               </CardTitle>
             </CardHeader>
             <CardContent>
               {invoices.length === 0 ? (
-                <div className="text-center py-8 text-white/30 text-sm">No invoices yet</div>
+                <div className="text-center py-8 text-muted-foreground text-sm">No invoices yet</div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-white/10">
-                        <th className="p-3 text-left text-xs font-medium text-white/50 uppercase">Invoice</th>
-                        <th className="p-3 text-left text-xs font-medium text-white/50 uppercase">Plan</th>
-                        <th className="p-3 text-left text-xs font-medium text-white/50 uppercase">Period</th>
-                        <th className="p-3 text-right text-xs font-medium text-white/50 uppercase">Amount</th>
-                        <th className="p-3 text-left text-xs font-medium text-white/50 uppercase">Status</th>
-                        <th className="w-16 p-3 text-right text-xs font-medium text-white/50 uppercase">Action</th>
+                      <tr className="border-b border-border/50">
+                        <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase">Invoice</th>
+                        <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase">Plan</th>
+                        <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase">Period</th>
+                        <th className="p-3 text-right text-xs font-medium text-muted-foreground uppercase">Amount</th>
+                        <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase">Status</th>
+                        <th className="w-16 p-3 text-right text-xs font-medium text-muted-foreground uppercase">Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -298,21 +298,21 @@ export default function BillingPage() {
                           initial={{ opacity: 0, y: 4 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: index * 0.03 }}
-                          className="border-b border-white/5"
+                          className="border-b border-border/30"
                         >
                           <td className="p-3">
-                            <span className="text-sm font-mono text-white">{inv.invoiceNumber}</span>
+                            <span className="text-sm font-mono text-foreground">{inv.invoiceNumber}</span>
                           </td>
                           <td className="p-3">
-                            <span className="text-sm text-white capitalize">{inv.plan}</span>
+                            <span className="text-sm text-foreground capitalize">{inv.plan}</span>
                           </td>
                           <td className="p-3">
-                            <span className="text-sm text-white/60">
+                            <span className="text-sm text-muted-foreground">
                               {new Date(inv.periodStart).toLocaleDateString()} - {new Date(inv.periodEnd).toLocaleDateString()}
                             </span>
                           </td>
                           <td className="p-3 text-right">
-                            <span className="text-sm font-semibold text-white">
+                            <span className="text-sm font-semibold text-foreground">
                               ${inv.amount.toFixed(2)}
                             </span>
                           </td>
@@ -339,20 +339,20 @@ export default function BillingPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <CreditCard className="h-5 w-5 text-violet-400" />
+                <CreditCard className="h-5 w-5 text-primary" />
                 Payment Method
               </CardTitle>
               <CardDescription>Manage your payment information</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/[0.02]">
+              <div className="flex items-center justify-between p-4 rounded-xl border border-border/50 bg-muted/20">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-14 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-xs font-bold text-white/60">
+                  <div className="h-10 w-14 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-xs font-bold text-muted-foreground">
                     ****
                   </div>
                   <div>
-                    <p className="text-sm text-white/80">No card on file</p>
-                    <p className="text-xs text-white/30">Add a payment method to upgrade</p>
+                    <p className="text-sm text-foreground/80">No card on file</p>
+                    <p className="text-xs text-muted-foreground">Add a payment method to upgrade</p>
                   </div>
                 </div>
                 <Button variant="outline" size="sm">Add Card</Button>

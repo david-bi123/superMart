@@ -92,11 +92,13 @@ const iconMap = {
 
 const colorMap = {
   success:
-    "border-emerald-500/30 bg-emerald-500/10 text-emerald-300 shadow-emerald-500/10",
-  error: "border-red-500/30 bg-red-500/10 text-red-300 shadow-red-500/10",
+    "bg-emerald-50 border-emerald-200 dark:bg-emerald-950/50 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400",
+  error:
+    "bg-destructive/10 border-destructive/20 text-destructive",
   warning:
-    "border-amber-500/30 bg-amber-500/10 text-amber-300 shadow-amber-500/10",
-  info: "border-blue-500/30 bg-blue-500/10 text-blue-300 shadow-blue-500/10",
+    "bg-amber-50 border-amber-200 dark:bg-amber-950/50 dark:border-amber-800 text-amber-700 dark:text-amber-400",
+  info:
+    "bg-muted border-border text-foreground",
 }
 
 function Toaster() {
@@ -115,7 +117,7 @@ function Toaster() {
               exit={{ opacity: 0, x: 100, scale: 0.9 }}
               transition={{ type: "spring", damping: 20, stiffness: 300 }}
               className={cn(
-                "pointer-events-auto flex items-start gap-3 rounded-xl border p-4 shadow-xl backdrop-blur-xl",
+                "pointer-events-auto flex items-start gap-3 rounded-xl border p-4 shadow-lg backdrop-blur-xl bg-background/80",
                 colorMap[t.type]
               )}
             >
@@ -123,7 +125,7 @@ function Toaster() {
               <p className="text-sm font-medium flex-1">{t.message}</p>
               <button
                 onClick={() => dismiss(t.id)}
-                className="shrink-0 rounded-lg p-1 opacity-60 hover:opacity-100 transition-opacity"
+                className="shrink-0 rounded-lg p-1 opacity-60 hover:opacity-100 transition-opacity hover:bg-accent"
               >
                 <X className="h-4 w-4" />
               </button>

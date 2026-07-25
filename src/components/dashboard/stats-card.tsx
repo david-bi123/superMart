@@ -22,9 +22,9 @@ const variantStyles: Record<
   { circle: string; gradient: string; text: string }
 > = {
   default: {
-    circle: "bg-white/10 text-white",
+    circle: "bg-muted text-foreground",
     gradient: "from-white/5 to-transparent",
-    text: "text-white",
+    text: "text-foreground",
   },
   primary: {
     circle: "bg-blue-500/15 text-blue-400",
@@ -118,9 +118,9 @@ export function StatsCard({
     >
       <Card
         glass
-        className={cn(
-          "group relative overflow-hidden transition-shadow duration-300 hover:shadow-xl hover:shadow-white/5",
-        )}
+          className={cn(
+            "group relative overflow-hidden transition-shadow duration-300 hover:shadow-xl hover:shadow-primary/5",
+          )}
       >
         <div
           className={cn(
@@ -131,13 +131,13 @@ export function StatsCard({
         <CardContent className="relative p-6">
           <div className="flex items-start justify-between">
             <div className="space-y-2">
-              <p className="text-sm font-medium text-white/50">{title}</p>
+              <p className="text-sm font-medium text-muted-foreground">{title}</p>
               <div className="flex items-baseline gap-2">
                 <motion.p
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, ease: "easeOut" as const }}
-                  className="text-3xl font-bold tracking-tight text-white"
+                  className="text-3xl font-bold tracking-tight text-foreground"
                 >
                   {typeof value === "number" && !isNaN(value) ? (
                     <>
@@ -167,7 +167,7 @@ export function StatsCard({
                 )}
               </div>
               {description && (
-                <p className="text-xs text-white/40">{description}</p>
+                <p className="text-xs text-muted-foreground/50">{description}</p>
               )}
             </div>
             <motion.div

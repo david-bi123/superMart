@@ -38,19 +38,19 @@ function CustomTooltip({ active, payload, valueFormatter }: any) {
     <motion.div
       initial={{ opacity: 0, scale: 0.9, y: 10 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      className="rounded-xl border border-white/10 bg-gray-900/95 px-4 py-3 shadow-2xl backdrop-blur-2xl"
+      className="rounded-xl border border-border/50 bg-background/95 px-4 py-3 shadow-2xl backdrop-blur-2xl"
     >
       <div className="flex items-center gap-2 text-sm">
         <span
           className="h-2.5 w-2.5 rounded-full"
           style={{ backgroundColor: entry.payload.fill || entry.color }}
         />
-        <span className="text-white/80">{entry.name}</span>
-        <span className="ml-auto font-semibold text-white">
+        <span className="text-muted-foreground">{entry.name}</span>
+        <span className="ml-auto font-semibold text-foreground">
           {valueFormatter ? valueFormatter(entry.value) : entry.value.toLocaleString()}
         </span>
       </div>
-      <p className="mt-1 text-xs text-white/40">
+      <p className="mt-1 text-xs text-muted-foreground/50">
         {(entry.payload.percent || entry.payload.percentage || 0).toFixed(1)}% of total
       </p>
     </motion.div>
@@ -73,7 +73,7 @@ export function PieChart({
   if (loading) {
     return (
       <div className={cn("flex items-center justify-center", className)} style={{ height }}>
-        <div className="h-full w-full animate-pulse rounded-full bg-white/5" />
+        <div className="h-full w-full animate-pulse rounded-full bg-muted/50" />
       </div>
     );
   }
@@ -81,7 +81,7 @@ export function PieChart({
   if (!data?.length) {
     return (
       <div className={cn("flex items-center justify-center", className)} style={{ height }}>
-        <p className="text-sm text-white/40">No data available</p>
+        <p className="text-sm text-muted-foreground/50">No data available</p>
       </div>
     );
   }
@@ -126,7 +126,7 @@ export function PieChart({
             <Legend
               wrapperStyle={{ paddingTop: 10 }}
               formatter={(value: string) => (
-                <span className="text-sm text-white/60">{value}</span>
+                <span className="text-sm text-muted-foreground">{value}</span>
               )}
             />
           )}

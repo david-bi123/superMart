@@ -92,12 +92,12 @@ function DataTable<TData, TValue>({
         <div className="flex items-center gap-4">
           {searchable && (
             <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
               <input
                 value={globalFilter ?? ""}
                 onChange={(e) => setGlobalFilter(e.target.value)}
                 placeholder="Search..."
-                className="flex h-9 w-full rounded-lg border border-white/10 bg-white/5 pl-9 pr-3 py-2 text-sm text-white placeholder:text-white/30 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+                className="flex h-9 w-full rounded-lg border border-border/50 bg-muted/50 pl-9 pr-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50"
               />
             </div>
           )}
@@ -117,7 +117,7 @@ function DataTable<TData, TValue>({
         </div>
       )}
 
-      <div className="rounded-xl border border-white/10 overflow-hidden">
+      <div className="rounded-xl border border-border/50 overflow-hidden">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup: any) => (
@@ -150,7 +150,7 @@ function DataTable<TData, TValue>({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="border-b border-white/5 transition-colors hover:bg-white/5"
+                    className="border-b border-border/20 transition-colors hover:bg-muted/50"
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell: any) => (
@@ -167,7 +167,7 @@ function DataTable<TData, TValue>({
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center text-white/40"
+                    className="h-24 text-center text-muted-foreground/50"
                   >
                     No results.
                   </TableCell>
@@ -179,7 +179,7 @@ function DataTable<TData, TValue>({
       </div>
 
       <div className="flex items-center justify-between">
-        <p className="text-sm text-white/40">
+        <p className="text-sm text-muted-foreground/50">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()}
         </p>

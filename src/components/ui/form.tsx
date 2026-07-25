@@ -29,14 +29,14 @@ function FormField<TFieldValues extends FieldValues>({
   return (
     <div className={cn("space-y-2", className)}>
       {label && (
-        <label className="block text-sm font-medium text-white/80">
+        <label className="block text-sm font-medium text-foreground">
           {label}
           {required && <span className="ml-1 text-red-400">*</span>}
         </label>
       )}
       {children}
       {helpText && !error && (
-        <p className="text-xs text-white/40">{helpText}</p>
+        <p className="text-xs text-muted-foreground/50">{helpText}</p>
       )}
       {error && (
         <motion.p
@@ -77,7 +77,7 @@ const FormLabel = React.forwardRef<
   <label
     ref={ref}
     className={cn(
-      "block text-sm font-medium text-white/80",
+      "block text-sm font-medium text-foreground",
       className
     )}
     {...props}
@@ -110,7 +110,7 @@ const FormDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-xs text-white/40", className)}
+    className={cn("text-xs text-muted-foreground/50", className)}
     {...props}
   />
 ))

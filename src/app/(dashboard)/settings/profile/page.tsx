@@ -105,7 +105,7 @@ export default function ProfileSettingsPage() {
         <Card glass className="p-8">
           <div className="space-y-4 animate-pulse">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="h-10 rounded-xl bg-white/5" />
+              <div key={i} className="h-10 rounded-xl bg-muted" />
             ))}
           </div>
         </Card>
@@ -130,7 +130,7 @@ export default function ProfileSettingsPage() {
         <Card glass className="lg:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
-              <Building2 className="h-5 w-5 text-violet-400" />
+              <Building2 className="h-5 w-5 text-primary" />
               Business Details
             </CardTitle>
           </CardHeader>
@@ -159,17 +159,17 @@ export default function ProfileSettingsPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Upload className="h-5 w-5 text-violet-400" />
+                <Upload className="h-5 w-5 text-primary" />
                 Logo
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-col items-center gap-4">
-                <div className="h-32 w-32 rounded-2xl overflow-hidden border-2 border-dashed border-white/10 bg-white/5 flex items-center justify-center">
+                <div className="h-32 w-32 rounded-2xl overflow-hidden border-2 border-dashed border-border/50 bg-muted flex items-center justify-center">
                   {form.logo ? (
                     <img src={form.logo} alt="Logo" className="h-full w-full object-contain" />
                   ) : (
-                    <Store className="h-12 w-12 text-white/20" />
+                    <Store className="h-12 w-12 text-muted-foreground/30" />
                   )}
                 </div>
                 <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleLogoUpload} />
@@ -184,7 +184,7 @@ export default function ProfileSettingsPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Globe className="h-5 w-5 text-violet-400" />
+                <Globe className="h-5 w-5 text-primary" />
                 Regional Settings
               </CardTitle>
             </CardHeader>
@@ -194,7 +194,7 @@ export default function ProfileSettingsPage() {
                 <select
                   value={form.currency}
                   onChange={(e) => update("currency", e.target.value)}
-                  className="mt-1.5 flex h-10 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+                  className="mt-1.5 flex h-10 w-full rounded-xl border border-border/50 bg-muted px-4 py-2 text-sm text-foreground backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                 >
                   {CURRENCIES.map((c) => (
                     <option key={c.code} value={c.code}>{c.symbol} - {c.name} ({c.code})</option>
@@ -206,7 +206,7 @@ export default function ProfileSettingsPage() {
                 <select
                   value={form.timezone}
                   onChange={(e) => update("timezone", e.target.value)}
-                  className="mt-1.5 flex h-10 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+                  className="mt-1.5 flex h-10 w-full rounded-xl border border-border/50 bg-muted px-4 py-2 text-sm text-foreground backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                 >
                   {TIMEZONES.map((tz) => (
                     <option key={tz} value={tz}>{tz.replace("_", " ")}</option>

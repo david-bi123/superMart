@@ -85,28 +85,28 @@ function CategoryRow({
     >
       <div
         className={cn(
-          "flex items-center gap-3 px-4 py-3 rounded-xl transition-colors hover:bg-white/[0.03] group",
+          "flex items-center gap-3 px-4 py-3 rounded-xl transition-colors hover:bg-muted/50 group",
           depth > 0 && "ml-8"
         )}
       >
         <button
           onClick={() => setExpanded(!expanded)}
-          className={cn("text-white/30 hover:text-white/60 transition-colors", !hasChildren && "invisible")}
+          className={cn("text-muted-foreground/50 hover:text-muted-foreground transition-colors", !hasChildren && "invisible")}
         >
           {expanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
         </button>
-        <div className="h-10 w-10 rounded-xl overflow-hidden bg-white/5 flex-shrink-0">
+        <div className="h-10 w-10 rounded-xl overflow-hidden bg-muted flex-shrink-0">
           {category.image ? (
             <img src={category.image} alt="" className="h-full w-full object-cover" />
           ) : (
             <div className="h-full w-full flex items-center justify-center">
-              <FolderTree className="h-4 w-4 text-white/20" />
+              <FolderTree className="h-4 w-4 text-muted-foreground/30" />
             </div>
           )}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-white truncate">{category.name}</p>
-          <p className="text-xs text-white/40 truncate">
+          <p className="text-sm font-medium text-foreground truncate">{category.name}</p>
+          <p className="text-xs text-muted-foreground truncate">
             {category.description || category.slug}
           </p>
         </div>
@@ -252,7 +252,7 @@ export default function CategoriesPage() {
             }
           />
         ) : (
-          <div className="divide-y divide-white/5">
+          <div className="divide-y divide-border/30">
             {categories.map((cat) => (
               <CategoryRow
                 key={cat._id}
@@ -275,7 +275,7 @@ export default function CategoriesPage() {
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-1.5">
+              <label className="block text-sm font-medium text-foreground/80 mb-1.5">
                 Name <span className="text-red-400">*</span>
               </label>
               <Input
@@ -285,17 +285,17 @@ export default function CategoriesPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-1.5">Description</label>
+              <label className="block text-sm font-medium text-foreground/80 mb-1.5">Description</label>
               <textarea
                 value={formData.description}
                 onChange={(e) => setFormData((p) => ({ ...p, description: e.target.value }))}
                 rows={2}
                 placeholder="Brief description..."
-                className="flex w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white placeholder:text-white/30 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-violet-500/50 resize-none"
+                className="flex w-full rounded-xl border border-border/50 bg-muted px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 backdrop-blur-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary/50 resize-none"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-1.5">Parent Category</label>
+              <label className="block text-sm font-medium text-foreground/80 mb-1.5">Parent Category</label>
               <Select
                 value={formData.parentId}
                 onValueChange={(v) => setFormData((p) => ({ ...p, parentId: v }))}
@@ -314,7 +314,7 @@ export default function CategoriesPage() {
               </Select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-1.5">Image URL</label>
+              <label className="block text-sm font-medium text-foreground/80 mb-1.5">Image URL</label>
               <Input
                 value={formData.image}
                 onChange={(e) => setFormData((p) => ({ ...p, image: e.target.value }))}

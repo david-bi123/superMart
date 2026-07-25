@@ -107,12 +107,12 @@ export function CustomerSelect({ open, onOpenChange, onSelect }: CustomerSelectP
         </DialogHeader>
 
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name, email, or phone..."
-            className="w-full h-10 rounded-xl border border-white/10 bg-white/5 pl-10 pr-4 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-violet-500/50"
+            className="w-full h-10 rounded-xl border border-border/50 bg-muted/50 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-2 focus:ring-primary/50"
           />
         </div>
 
@@ -134,8 +134,8 @@ export function CustomerSelect({ open, onOpenChange, onSelect }: CustomerSelectP
                 animate={{ opacity: 1 }}
                 className="text-center py-8"
               >
-                <User className="h-8 w-8 text-white/20 mx-auto mb-2" />
-                <p className="text-sm text-white/50">No customers found</p>
+                <User className="h-8 w-8 text-muted-foreground/50 mx-auto mb-2" />
+                <p className="text-sm text-muted-foreground">No customers found</p>
               </motion.div>
             ) : (
               <motion.div
@@ -149,18 +149,18 @@ export function CustomerSelect({ open, onOpenChange, onSelect }: CustomerSelectP
                     onSelect("walk-in", "Walk-in Customer");
                     onOpenChange(false);
                   }}
-                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-colors text-left"
+                  className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-muted/50 transition-colors text-left"
                 >
-                  <div className="h-8 w-8 rounded-full bg-violet-600/20 flex items-center justify-center">
-                    <User className="h-4 w-4 text-violet-400" />
+                  <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center">
+                    <User className="h-4 w-4 text-primary" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white">Walk-in Customer</p>
-                    <p className="text-xs text-white/40">Default anonymous customer</p>
+                    <p className="text-sm font-medium text-foreground">Walk-in Customer</p>
+                    <p className="text-xs text-muted-foreground/50">Default anonymous customer</p>
                   </div>
-                  <Check className="h-4 w-4 text-violet-400 ml-auto" />
+                  <Check className="h-4 w-4 text-primary ml-auto" />
                 </button>
-                <div className="border-t border-white/5 my-1" />
+                <div className="border-t border-border/20 my-1" />
                 {customers.map((customer) => (
                   <button
                     key={customer._id}
@@ -168,14 +168,14 @@ export function CustomerSelect({ open, onOpenChange, onSelect }: CustomerSelectP
                       onSelect(customer._id, customer.name);
                       onOpenChange(false);
                     }}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/5 transition-colors text-left"
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-muted/50 transition-colors text-left"
                   >
-                    <div className="h-8 w-8 rounded-full bg-white/5 flex items-center justify-center">
-                      <User className="h-4 w-4 text-white/40" />
+                    <div className="h-8 w-8 rounded-full bg-muted/50 flex items-center justify-center">
+                      <User className="h-4 w-4 text-muted-foreground/50" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-white truncate">{customer.name}</p>
-                      <div className="flex items-center gap-3 text-xs text-white/40">
+                      <p className="text-sm font-medium text-foreground truncate">{customer.name}</p>
+                      <div className="flex items-center gap-3 text-xs text-muted-foreground/50">
                         {customer.email && (
                           <span className="flex items-center gap-1">
                             <Mail className="h-3 w-3" />
@@ -201,7 +201,7 @@ export function CustomerSelect({ open, onOpenChange, onSelect }: CustomerSelectP
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            className="space-y-3 pt-2 border-t border-white/10"
+            className="space-y-3 pt-2 border-t border-border/50"
           >
             <Input
               label="Name *"
@@ -236,7 +236,7 @@ export function CustomerSelect({ open, onOpenChange, onSelect }: CustomerSelectP
             </div>
           </motion.div>
         ) : (
-          <div className="pt-2 border-t border-white/10">
+          <div className="pt-2 border-t border-border/50">
             <Button
               variant="ghost"
               size="sm"

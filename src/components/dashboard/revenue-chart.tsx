@@ -29,18 +29,18 @@ const ranges = [
 function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-xl border border-white/10 bg-gray-900/95 px-4 py-3 shadow-2xl backdrop-blur-2xl">
-      <p className="mb-2 text-sm font-medium text-white/60">{label}</p>
+    <div className="rounded-xl border border-border/50 bg-background/95 px-4 py-3 shadow-2xl backdrop-blur-2xl">
+      <p className="mb-2 text-sm font-medium text-muted-foreground">{label}</p>
       {payload.map((entry: any, index: number) => (
         <div key={index} className="flex items-center gap-2 text-sm">
           <span
             className="h-2.5 w-2.5 rounded-full"
             style={{ backgroundColor: entry.color }}
           />
-          <span className="text-white/80">
+          <span className="text-muted-foreground">
             {entry.name === "revenue" ? "Revenue" : "Profit"}
           </span>
-          <span className="ml-auto font-medium text-white">
+          <span className="ml-auto font-medium text-foreground">
             ${entry.value.toLocaleString()}
           </span>
         </div>
@@ -62,10 +62,10 @@ export function RevenueChart({ data, loading }: RevenueChartProps) {
   return (
     <Card glass className="overflow-hidden">
       <CardHeader className="flex flex-row items-center justify-between pb-4">
-        <CardTitle className="text-lg font-semibold text-white">
+        <CardTitle className="text-lg font-semibold text-foreground">
           Revenue Overview
         </CardTitle>
-        <div className="flex gap-1 rounded-lg border border-white/10 bg-white/5 p-0.5">
+        <div className="flex gap-1 rounded-lg border border-border/50 bg-muted/50 p-0.5">
           {ranges.map((r) => (
             <button
               key={r.value}
@@ -73,8 +73,8 @@ export function RevenueChart({ data, loading }: RevenueChartProps) {
               className={cn(
                 "rounded-md px-3 py-1 text-xs font-medium transition-all duration-200",
                 range === r.value
-                  ? "bg-white/10 text-white shadow-sm"
-                  : "text-white/40 hover:text-white/70",
+                  ? "bg-muted text-foreground shadow-sm"
+                  : "text-muted-foreground/50 hover:text-foreground",
               )}
             >
               {r.label}
@@ -89,7 +89,7 @@ export function RevenueChart({ data, loading }: RevenueChartProps) {
           </div>
         ) : !filtered.length ? (
           <div className="flex h-[300px] items-center justify-center">
-            <p className="text-sm text-white/40">No revenue data available</p>
+            <p className="text-sm text-muted-foreground/50">No revenue data available</p>
           </div>
         ) : (
           <motion.div

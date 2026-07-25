@@ -33,9 +33,9 @@ function CustomTooltip({ active, payload, label, series, valueFormatter }: any) 
     <motion.div
       initial={{ opacity: 0, scale: 0.9, y: 10 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      className="rounded-xl border border-white/10 bg-gray-900/95 px-4 py-3 shadow-2xl backdrop-blur-2xl"
+      className="rounded-xl border border-border/50 bg-background/95 px-4 py-3 shadow-2xl backdrop-blur-2xl"
     >
-      <p className="mb-2 text-sm font-medium text-white/60">{label}</p>
+      <p className="mb-2 text-sm font-medium text-muted-foreground">{label}</p>
       <div className="space-y-1.5">
         {payload.map((entry: any, index: number) => {
           const s = series?.find((ser: any) => ser.key === entry.dataKey || ser.name === entry.name);
@@ -45,8 +45,8 @@ function CustomTooltip({ active, payload, label, series, valueFormatter }: any) 
                 className="h-2.5 w-2.5 rounded-full"
                 style={{ backgroundColor: s?.color || entry.color }}
               />
-              <span className="text-white/80">{s?.name || entry.name}</span>
-              <span className="ml-auto font-semibold text-white">
+              <span className="text-muted-foreground">{s?.name || entry.name}</span>
+              <span className="ml-auto font-semibold text-foreground">
                 {valueFormatter ? valueFormatter(entry.value) : entry.value.toLocaleString()}
               </span>
             </div>
@@ -73,7 +73,7 @@ export function LineChart({
   if (loading) {
     return (
       <div className={cn("flex items-center justify-center", className)} style={{ height }}>
-        <div className="h-full w-full animate-pulse rounded-xl bg-white/5" />
+        <div className="h-full w-full animate-pulse rounded-xl bg-muted/50" />
       </div>
     );
   }
@@ -81,7 +81,7 @@ export function LineChart({
   if (!data?.length) {
     return (
       <div className={cn("flex items-center justify-center", className)} style={{ height }}>
-        <p className="text-sm text-white/40">No data available</p>
+        <p className="text-sm text-muted-foreground/50">No data available</p>
       </div>
     );
   }
@@ -123,7 +123,7 @@ export function LineChart({
             <Legend
               wrapperStyle={{ paddingTop: 10 }}
               formatter={(value: string) => (
-                <span className="text-sm text-white/60">{value}</span>
+                <span className="text-sm text-muted-foreground">{value}</span>
               )}
             />
           )}

@@ -54,16 +54,16 @@ function CartItemRow({ item, onUpdateQuantity, onRemove, onUpdateDiscount }: {
     <motion.div
       variants={itemVariants}
       layout
-      className="rounded-xl border border-white/10 bg-white/[0.03] p-3 space-y-2 group"
+      className="rounded-xl border border-border/50 bg-muted/50 p-3 space-y-2 group"
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-white truncate">{item.name}</p>
-          <p className="text-xs text-white/40 truncate">{item.sku}</p>
+          <p className="text-sm font-medium text-foreground truncate">{item.name}</p>
+          <p className="text-xs text-muted-foreground/50 truncate">{item.sku}</p>
         </div>
         <button
           onClick={() => onRemove(item.productId)}
-          className="h-7 w-7 rounded-lg bg-white/5 hover:bg-red-500/20 text-white/40 hover:text-red-400 flex items-center justify-center transition-all shrink-0 opacity-0 group-hover:opacity-100"
+          className="h-7 w-7 rounded-lg bg-muted/50 hover:bg-red-500/20 text-muted-foreground/50 hover:text-red-400 flex items-center justify-center transition-all shrink-0 opacity-0 group-hover:opacity-100"
         >
           <Trash2 className="h-3.5 w-3.5" />
         </button>
@@ -74,24 +74,24 @@ function CartItemRow({ item, onUpdateQuantity, onRemove, onUpdateDiscount }: {
           <motion.button
             whileTap={{ scale: 0.9 }}
             onClick={() => onUpdateQuantity(item.productId, Math.max(0, item.quantity - 1))}
-            className="h-7 w-7 rounded-lg border border-white/10 bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+            className="h-7 w-7 rounded-lg border border-border/50 bg-muted/50 flex items-center justify-center hover:bg-muted transition-colors"
           >
-            <Minus className="h-3 w-3 text-white/70" />
+            <Minus className="h-3 w-3 text-muted-foreground" />
           </motion.button>
-          <span className="w-8 text-center text-sm font-semibold text-white tabular-nums">
+          <span className="w-8 text-center text-sm font-semibold text-foreground tabular-nums">
             {item.quantity}
           </span>
           <motion.button
             whileTap={{ scale: 0.9 }}
             onClick={() => onUpdateQuantity(item.productId, item.quantity + 1)}
-            className="h-7 w-7 rounded-lg border border-white/10 bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors"
+            className="h-7 w-7 rounded-lg border border-border/50 bg-muted/50 flex items-center justify-center hover:bg-muted transition-colors"
           >
-            <Plus className="h-3 w-3 text-white/70" />
+            <Plus className="h-3 w-3 text-muted-foreground" />
           </motion.button>
         </div>
 
         <div className="ml-auto text-right">
-          <p className="text-sm font-semibold text-white">
+          <p className="text-sm font-semibold text-foreground">
             ${(item.price * item.quantity).toFixed(2)}
           </p>
           {item.discount > 0 && (
@@ -102,7 +102,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove, onUpdateDiscount }: {
 
       <div className="flex items-center gap-2">
         <div className="relative flex-1">
-          <Percent className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-white/30" />
+          <Percent className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground/50" />
           <input
             type="number"
             min="0"
@@ -110,10 +110,10 @@ function CartItemRow({ item, onUpdateQuantity, onRemove, onUpdateDiscount }: {
             value={item.discount || ""}
             onChange={(e) => onUpdateDiscount(item.productId, parseFloat(e.target.value) || 0)}
             placeholder="Discount"
-            className="w-full h-7 pl-7 pr-2 rounded-lg border border-white/10 bg-white/5 text-xs text-white/80 placeholder:text-white/20 focus:outline-none focus:border-violet-500/50"
+            className="w-full h-7 pl-7 pr-2 rounded-lg border border-border/50 bg-muted/50 text-xs text-foreground placeholder:text-muted-foreground/20 focus:outline-none focus:border-primary/50"
           />
         </div>
-        <span className="text-xs text-white/40 w-16 text-right">
+        <span className="text-xs text-muted-foreground/50 w-16 text-right">
           @${item.price.toFixed(2)}
         </span>
       </div>
@@ -211,10 +211,10 @@ export function CartPanel() {
 
   const cartContent = (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 shrink-0">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border/50 shrink-0">
         <div className="flex items-center gap-2">
-          <ShoppingCart className="h-5 w-5 text-white/70" />
-          <h2 className="text-sm font-semibold text-white">Cart</h2>
+          <ShoppingCart className="h-5 w-5 text-muted-foreground" />
+          <h2 className="text-sm font-semibold text-foreground">Cart</h2>
           <Badge variant="default" className="ml-1 text-[10px] px-1.5 py-0">
             {items.length}
           </Badge>
@@ -232,21 +232,21 @@ export function CartPanel() {
         </div>
       </div>
 
-      <div className="px-4 py-2 border-b border-white/10 shrink-0">
+      <div className="px-4 py-2 border-b border-border/50 shrink-0">
         <button
           onClick={() => setShowCustomerSelect(true)}
-          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-violet-500/30 transition-all duration-200"
+          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl border border-border/50 bg-muted/50 hover:bg-muted hover:border-primary/30 transition-all duration-200"
         >
-          <div className="h-7 w-7 rounded-full bg-violet-600/20 flex items-center justify-center">
-            <User className="h-3.5 w-3.5 text-violet-400" />
+          <div className="h-7 w-7 rounded-full bg-primary/20 flex items-center justify-center">
+            <User className="h-3.5 w-3.5 text-primary" />
           </div>
           <div className="flex-1 text-left min-w-0">
-            <p className="text-xs font-medium text-white truncate">
+            <p className="text-xs font-medium text-foreground truncate">
               {customerName || "Walk-in Customer"}
             </p>
-            <p className="text-[10px] text-white/40">Tap to change</p>
+            <p className="text-[10px] text-muted-foreground/50">Tap to change</p>
           </div>
-          <ChevronDown className="h-3.5 w-3.5 text-white/30" />
+          <ChevronDown className="h-3.5 w-3.5 text-muted-foreground/50" />
         </button>
       </div>
 
@@ -259,9 +259,9 @@ export function CartPanel() {
               animate={{ opacity: 1 }}
               className="flex flex-col items-center justify-center h-48 text-center"
             >
-              <ShoppingCart className="h-10 w-10 text-white/10 mb-3" />
-              <p className="text-sm text-white/40">Cart is empty</p>
-              <p className="text-xs text-white/20 mt-1">Tap products to add them</p>
+              <ShoppingCart className="h-10 w-10 text-muted-foreground/20 mb-3" />
+              <p className="text-sm text-muted-foreground/50">Cart is empty</p>
+              <p className="text-xs text-muted-foreground/20 mt-1">Tap products to add them</p>
             </motion.div>
           ) : (
             <motion.div
@@ -286,27 +286,27 @@ export function CartPanel() {
         </AnimatePresence>
       </ScrollArea>
 
-      <div className="border-t border-white/10 px-4 py-3 space-y-3 shrink-0">
+      <div className="border-t border-border/50 px-4 py-3 space-y-3 shrink-0">
         <div className="space-y-1">
           <div className="flex justify-between text-xs">
-            <span className="text-white/50">Subtotal</span>
-            <span className="text-white/80">${totals.subtotal.toFixed(2)}</span>
+            <span className="text-muted-foreground">Subtotal</span>
+            <span className="text-muted-foreground">${totals.subtotal.toFixed(2)}</span>
           </div>
           {totals.discountTotal > 0 && (
             <div className="flex justify-between text-xs">
-              <span className="text-white/50">Discount</span>
+              <span className="text-muted-foreground">Discount</span>
               <span className="text-red-400">-${totals.discountTotal.toFixed(2)}</span>
             </div>
           )}
           {totals.taxTotal > 0 && (
             <div className="flex justify-between text-xs">
-              <span className="text-white/50">Tax</span>
-              <span className="text-white/80">${totals.taxTotal.toFixed(2)}</span>
+              <span className="text-muted-foreground">Tax</span>
+              <span className="text-muted-foreground">${totals.taxTotal.toFixed(2)}</span>
             </div>
           )}
-          <div className="flex justify-between pt-1 border-t border-white/10">
-            <span className="text-sm font-bold text-white">Total</span>
-            <span className="text-lg font-bold text-white">${totals.grandTotal.toFixed(2)}</span>
+          <div className="flex justify-between pt-1 border-t border-border/50">
+            <span className="text-sm font-bold text-foreground">Total</span>
+            <span className="text-lg font-bold text-foreground">${totals.grandTotal.toFixed(2)}</span>
           </div>
         </div>
 
@@ -321,12 +321,12 @@ export function CartPanel() {
                 className={cn(
                   "flex flex-col items-center gap-1 py-1.5 rounded-lg border transition-all duration-200",
                   isActive
-                    ? "border-violet-500/50 bg-violet-600/10"
-                    : "border-white/5 bg-white/[0.02] hover:border-white/20"
+                    ? "border-primary/50 bg-primary/10"
+                    : "border-border/20 bg-muted/30 hover:border-border"
                 )}
               >
-                <Icon className={cn("h-3.5 w-3.5", isActive ? "text-violet-400" : "text-white/40")} />
-                <span className={cn("text-[8px] font-medium", isActive ? "text-violet-300" : "text-white/40")}>
+                <Icon className={cn("h-3.5 w-3.5", isActive ? "text-primary" : "text-muted-foreground/50")} />
+                <span className={cn("text-[8px] font-medium", isActive ? "text-primary" : "text-muted-foreground/50")}>
                   {method.label}
                 </span>
               </button>
@@ -352,7 +352,7 @@ export function CartPanel() {
         <>
           <button
             onClick={() => setMobileCartOpen(!mobileCartOpen)}
-            className="fixed bottom-6 right-6 z-40 h-14 w-14 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-500/30 flex items-center justify-center"
+            className="fixed bottom-6 right-6 z-40 h-14 w-14 rounded-full bg-gradient-to-r from-primary to-primary/80 text-primary-foreground shadow-lg shadow-primary/30 flex items-center justify-center"
           >
             <ShoppingCart className="h-6 w-6" />
             {items.length > 0 && (
@@ -377,10 +377,10 @@ export function CartPanel() {
                   animate={{ y: 0 }}
                   exit={{ y: "100%" }}
                   transition={{ type: "spring", damping: 30, stiffness: 300 }}
-                  className="fixed bottom-0 left-0 right-0 z-50 h-[85vh] rounded-t-2xl border-t border-white/10 bg-gray-950 backdrop-blur-2xl"
+                  className="fixed bottom-0 left-0 right-0 z-50 h-[85vh] rounded-t-2xl border-t border-border/50 bg-background backdrop-blur-2xl"
                 >
                   <div className="flex items-center justify-center pt-2 pb-1">
-                    <div className="h-1 w-10 rounded-full bg-white/20" />
+                    <div className="h-1 w-10 rounded-full bg-muted-foreground/20" />
                   </div>
                   {cartContent}
                 </motion.div>
@@ -389,7 +389,7 @@ export function CartPanel() {
           </AnimatePresence>
         </>
       ) : (
-        <div className="w-[420px] shrink-0 border-l border-white/10 bg-white/[0.02] flex flex-col h-full">
+        <div className="w-[420px] shrink-0 border-l border-border/50 bg-muted/30 flex flex-col h-full">
           {cartContent}
         </div>
       )}

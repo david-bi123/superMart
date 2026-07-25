@@ -31,11 +31,11 @@ export function ProductCard({ product, onEdit, onDuplicate, onArchive, className
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className={cn(
-        "group relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden transition-all duration-300 hover:border-white/20 hover:bg-white/[0.07] hover:shadow-xl hover:shadow-violet-500/5",
+        "group relative rounded-2xl border border-border/50 bg-muted/50 backdrop-blur-xl overflow-hidden transition-all duration-300 hover:border-border hover:bg-muted hover:shadow-xl hover:shadow-primary/5",
         className
       )}
     >
-      <div className="aspect-square relative overflow-hidden bg-white/5">
+      <div className="aspect-square relative overflow-hidden bg-muted/50">
         {product.images?.[0] ? (
           <img
             src={product.images[0]}
@@ -43,7 +43,7 @@ export function ProductCard({ product, onEdit, onDuplicate, onArchive, className
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
         ) : (
-          <div className="h-full w-full flex items-center justify-center text-white/20">
+          <div className="h-full w-full flex items-center justify-center text-muted-foreground/50">
             <ImageOff className="h-10 w-10" />
           </div>
         )}
@@ -82,11 +82,11 @@ export function ProductCard({ product, onEdit, onDuplicate, onArchive, className
       </div>
       <div className="p-4 space-y-3">
         <div>
-          <h3 className="font-semibold text-white truncate">{product.name}</h3>
-          <p className="text-xs text-white/40 mt-0.5">SKU: {product.sku || "—"}</p>
+          <h3 className="font-semibold text-foreground truncate">{product.name}</h3>
+          <p className="text-xs text-muted-foreground/50 mt-0.5">SKU: {product.sku || "—"}</p>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-lg font-bold text-white">
+          <span className="text-lg font-bold text-foreground">
             ${product.sellingPrice.toFixed(2)}
           </span>
           <StockBadge
@@ -96,7 +96,7 @@ export function ProductCard({ product, onEdit, onDuplicate, onArchive, className
           />
         </div>
         {product.category && (
-          <p className="text-xs text-white/30">{product.category}</p>
+          <p className="text-xs text-muted-foreground/30">{product.category}</p>
         )}
       </div>
     </motion.div>

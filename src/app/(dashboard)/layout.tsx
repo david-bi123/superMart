@@ -1,9 +1,10 @@
+import type { Metadata } from "next";
 import { ThemeProvider } from "@/providers/theme-provider";
 import { QueryProvider } from "@/providers/query-provider";
 import { AuthProvider } from "@/providers/session-provider";
 import { DashboardLayout } from "@/components/layout/dashboard-layout";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "RetailFlow - Dashboard",
   description: "Retail management system",
 };

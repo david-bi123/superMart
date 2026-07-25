@@ -118,7 +118,7 @@ export default function AuditLogsPage() {
       <Card glass className="p-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
             <Input
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1) }}
@@ -157,7 +157,7 @@ export default function AuditLogsPage() {
               </SelectContent>
             </Select>
             <div className="relative">
-              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40 pointer-events-none" />
+              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50 pointer-events-none" />
               <Input
                 type="date"
                 value={dateFrom}
@@ -165,9 +165,9 @@ export default function AuditLogsPage() {
                 className="w-[140px] pl-10"
               />
             </div>
-            <span className="text-white/30">—</span>
+            <span className="text-muted-foreground/30">—</span>
             <div className="relative">
-              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40 pointer-events-none" />
+              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50 pointer-events-none" />
               <Input
                 type="date"
                 value={dateTo}
@@ -200,13 +200,13 @@ export default function AuditLogsPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-white/10">
-                  <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Timestamp</th>
-                  <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">User</th>
-                  <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Action</th>
-                  <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Resource</th>
-                  <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider hidden lg:table-cell">IP</th>
-                  <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider hidden xl:table-cell">User Agent</th>
+                <tr className="border-b border-border/50">
+                  <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Timestamp</th>
+                  <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">User</th>
+                  <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Action</th>
+                  <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Resource</th>
+                  <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider hidden lg:table-cell">IP</th>
+                  <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider hidden xl:table-cell">User Agent</th>
                 </tr>
               </thead>
               <tbody>
@@ -216,38 +216,38 @@ export default function AuditLogsPage() {
                     initial={{ opacity: 0, y: 4 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.015 }}
-                    className="border-b border-white/5 transition-colors hover:bg-white/[0.03]"
+                    className="border-b border-border/20 transition-colors hover:bg-muted/30"
                   >
                     <td className="p-3">
-                      <span className="text-sm text-white/70 whitespace-nowrap font-mono">
+                      <span className="text-sm text-muted-foreground whitespace-nowrap font-mono">
                         {new Date(log.createdAt).toLocaleDateString()} {new Date(log.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                     </td>
                     <td className="p-3">
                       <div className="flex items-center gap-2">
-                        <div className="h-7 w-7 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white text-[10px] font-semibold shrink-0">
+                        <div className="h-7 w-7 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center text-primary-foreground text-[10px] font-semibold shrink-0">
                           {log.userName.charAt(0).toUpperCase()}
                         </div>
                         <div>
-                          <p className="text-sm text-white truncate max-w-[120px]">{log.userName}</p>
-                          <p className="text-[10px] text-white/30 truncate max-w-[120px]">{log.userEmail}</p>
+                          <p className="text-sm text-foreground truncate max-w-[120px]">{log.userName}</p>
+                          <p className="text-[10px] text-muted-foreground/30 truncate max-w-[120px]">{log.userEmail}</p>
                         </div>
                       </div>
                     </td>
                     <td className="p-3">{getActionBadge(log.action)}</td>
                     <td className="p-3">
                       <div>
-                        <span className="text-sm text-white">{log.resource}</span>
+                        <span className="text-sm text-foreground">{log.resource}</span>
                         {log.resourceId && (
-                          <p className="text-[10px] text-white/30 font-mono truncate max-w-[100px]">ID: {log.resourceId}</p>
+                          <p className="text-[10px] text-muted-foreground/30 font-mono truncate max-w-[100px]">ID: {log.resourceId}</p>
                         )}
                       </div>
                     </td>
                     <td className="p-3 hidden lg:table-cell">
-                      <span className="text-xs text-white/40 font-mono">{log.ip || "—"}</span>
+                      <span className="text-xs text-muted-foreground/50 font-mono">{log.ip || "—"}</span>
                     </td>
                     <td className="p-3 hidden xl:table-cell">
-                      <span className="text-xs text-white/30 font-mono" title={log.userAgent}>
+                      <span className="text-xs text-muted-foreground/30 font-mono" title={log.userAgent}>
                         {formatUA(log.userAgent)}
                       </span>
                     </td>
@@ -259,8 +259,8 @@ export default function AuditLogsPage() {
         )}
 
         {totalPages > 1 && (
-          <div className="flex items-center justify-between pt-4 mt-4 border-t border-white/5">
-            <p className="text-sm text-white/40">Page {page} of {totalPages} ({logs.length} results)</p>
+          <div className="flex items-center justify-between pt-4 mt-4 border-t border-border/20">
+            <p className="text-sm text-muted-foreground/50">Page {page} of {totalPages} ({logs.length} results)</p>
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>Previous</Button>
               <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>Next</Button>

@@ -102,37 +102,37 @@ export function PaymentDialog({ open, onOpenChange, onConfirm }: PaymentDialogPr
         </DialogHeader>
 
         <div className="space-y-4">
-          <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 space-y-2">
+          <div className="rounded-xl border border-border/50 bg-muted/50 p-4 space-y-2">
             <div className="flex justify-between text-sm">
-              <span className="text-white/60">Items ({items.length})</span>
-              <span className="text-white/90">${totals.subtotal.toFixed(2)}</span>
+              <span className="text-muted-foreground">Items ({items.length})</span>
+              <span className="text-muted-foreground">${totals.subtotal.toFixed(2)}</span>
             </div>
             {totals.discountTotal > 0 && (
               <div className="flex justify-between text-sm">
-                <span className="text-white/60">Discount</span>
+                <span className="text-muted-foreground">Discount</span>
                 <span className="text-red-400">-${totals.discountTotal.toFixed(2)}</span>
               </div>
             )}
             {totals.taxTotal > 0 && (
               <div className="flex justify-between text-sm">
-                <span className="text-white/60">Tax</span>
-                <span className="text-white/90">${totals.taxTotal.toFixed(2)}</span>
+                <span className="text-muted-foreground">Tax</span>
+                <span className="text-muted-foreground">${totals.taxTotal.toFixed(2)}</span>
               </div>
             )}
-            <div className="border-t border-white/10 pt-2 flex justify-between">
-              <span className="text-sm font-semibold text-white">Grand Total</span>
-              <span className="text-lg font-bold text-white">${totals.grandTotal.toFixed(2)}</span>
+            <div className="border-t border-border/50 pt-2 flex justify-between">
+              <span className="text-sm font-semibold text-foreground">Grand Total</span>
+              <span className="text-lg font-bold text-foreground">${totals.grandTotal.toFixed(2)}</span>
             </div>
           </div>
 
           {customerName && (
-            <div className="text-sm text-white/50">
-              Customer: <span className="text-white/80 font-medium">{customerName}</span>
+            <div className="text-sm text-muted-foreground">
+              Customer: <span className="text-foreground font-medium">{customerName}</span>
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-medium text-white/80 mb-2">Payment Method</label>
+            <label className="block text-sm font-medium text-foreground mb-2">Payment Method</label>
             <div className="grid grid-cols-5 gap-2">
               {paymentMethods.map((method) => {
                 const Icon = method.icon;
@@ -146,17 +146,17 @@ export function PaymentDialog({ open, onOpenChange, onConfirm }: PaymentDialogPr
                     className={cn(
                       "flex flex-col items-center gap-1.5 p-2.5 rounded-xl border transition-all duration-200",
                       isActive
-                        ? "border-violet-500/50 bg-violet-600/10"
-                        : "border-white/10 bg-white/[0.03] hover:border-white/20"
+                        ? "border-primary/50 bg-primary/10"
+                        : "border-border/50 bg-muted/50 hover:border-border"
                     )}
                   >
                     <Icon className={cn(
                       "h-5 w-5",
-                      isActive ? "text-violet-400" : "text-white/50"
+                      isActive ? "text-primary" : "text-muted-foreground"
                     )} />
                     <span className={cn(
                       "text-[10px] font-medium leading-tight text-center",
-                      isActive ? "text-violet-300" : "text-white/50"
+                      isActive ? "text-primary" : "text-muted-foreground"
                     )}>
                       {method.label}
                     </span>
@@ -185,7 +185,7 @@ export function PaymentDialog({ open, onOpenChange, onConfirm }: PaymentDialogPr
               />
               {parseFloat(amountPaid) >= totals.grandTotal && (
                 <div className="flex justify-between text-sm px-1">
-                  <span className="text-white/60">Change</span>
+                  <span className="text-muted-foreground">Change</span>
                   <span className="text-emerald-400 font-semibold">${change.toFixed(2)}</span>
                 </div>
               )}

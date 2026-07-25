@@ -30,7 +30,7 @@ export function Numpad({ onInput, onBackspace, onClear, className }: NumpadProps
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={onBackspace}
-                className="h-14 rounded-xl border border-white/10 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-150 flex items-center justify-center"
+                className="h-14 rounded-xl border border-border/50 bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground transition-all duration-150 flex items-center justify-center"
               >
                 <Delete className="h-5 w-5" />
               </motion.button>
@@ -46,8 +46,8 @@ export function Numpad({ onInput, onBackspace, onClear, className }: NumpadProps
               className={cn(
                 "h-14 rounded-xl border text-lg font-semibold transition-all duration-150 flex items-center justify-center",
                 key === "."
-                  ? "border-white/10 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
-                  : "border-white/10 bg-white/[0.04] text-white/90 hover:bg-white/10 hover:text-white"
+                  ? "border-border/50 bg-muted/50 text-muted-foreground hover:bg-muted hover:text-foreground"
+                  : "border-border/50 bg-muted/30 text-foreground hover:bg-muted hover:text-foreground"
               )}
             >
               {key}

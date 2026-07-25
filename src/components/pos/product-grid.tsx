@@ -50,7 +50,7 @@ const cardVariants = {
 
 function ProductSkeleton() {
   return (
-    <div className="rounded-2xl border border-white/5 bg-white/[0.03] overflow-hidden">
+    <div className="rounded-2xl border border-border/50 bg-muted/50 overflow-hidden">
       <Skeleton variant="rectangular" className="aspect-square rounded-none" />
       <div className="p-3 space-y-2">
         <Skeleton variant="text" className="h-4 w-3/4" />
@@ -170,8 +170,8 @@ export function ProductGrid({ onCartToggle }: ProductGridProps) {
           className={cn(
             "shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 border",
             !selectedCategory
-              ? "bg-violet-600/20 text-violet-300 border-violet-500/30"
-              : "text-white/60 border-white/10 hover:text-white/80 hover:border-white/20"
+              ? "bg-primary/20 text-primary border-primary/30"
+              : "text-muted-foreground border-border/50 hover:text-foreground hover:border-border"
           )}
         >
           All
@@ -183,8 +183,8 @@ export function ProductGrid({ onCartToggle }: ProductGridProps) {
             className={cn(
               "shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 border whitespace-nowrap",
               selectedCategory === cat.id
-                ? "bg-violet-600/20 text-violet-300 border-violet-500/30"
-                : "text-white/60 border-white/10 hover:text-white/80 hover:border-white/20"
+                ? "bg-primary/20 text-primary border-primary/30"
+                : "text-muted-foreground border-border/50 hover:text-foreground hover:border-border"
             )}
           >
             {cat.name}
@@ -206,9 +206,9 @@ export function ProductGrid({ onCartToggle }: ProductGridProps) {
           </div>
         ) : products.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-center">
-            <Package className="h-12 w-12 text-white/20 mb-3" />
-            <p className="text-white/50 text-sm">No products found</p>
-            <p className="text-white/30 text-xs mt-1">Try a different search or category</p>
+            <Package className="h-12 w-12 text-muted-foreground/50 mb-3" />
+            <p className="text-muted-foreground text-sm">No products found</p>
+            <p className="text-muted-foreground/50 text-xs mt-1">Try a different search or category</p>
           </div>
         ) : (
           <>
@@ -243,13 +243,13 @@ export function ProductGrid({ onCartToggle }: ProductGridProps) {
                       className={cn(
                         "relative rounded-2xl border text-left transition-all duration-200 overflow-hidden group",
                         outOfStock
-                          ? "border-white/5 bg-white/[0.02] opacity-50 cursor-not-allowed"
-                          : "border-white/10 bg-white/[0.03] hover:border-violet-500/30 hover:bg-white/[0.06] hover:shadow-lg hover:shadow-violet-500/5",
+                          ? "border-border/20 bg-muted/30 opacity-50 cursor-not-allowed"
+                          : "border-border/50 bg-muted/50 hover:border-primary/30 hover:bg-muted hover:shadow-lg hover:shadow-primary/5",
                         viewMode === "list" && "flex items-center gap-4"
                       )}
                     >
                       <div className={cn(
-                        "relative overflow-hidden bg-white/[0.02]",
+                        "relative overflow-hidden bg-muted/30",
                         viewMode === "grid" ? "aspect-square" : "h-16 w-16 shrink-0 rounded-xl m-2"
                       )}>
                         {product.image ? (
@@ -261,7 +261,7 @@ export function ProductGrid({ onCartToggle }: ProductGridProps) {
                         ) : (
                           <div className="flex items-center justify-center w-full h-full">
                             <Package className={cn(
-                              "text-white/20",
+                              "text-muted-foreground/50",
                               viewMode === "grid" ? "h-8 w-8" : "h-5 w-5"
                             )} />
                           </div>
@@ -278,17 +278,17 @@ export function ProductGrid({ onCartToggle }: ProductGridProps) {
                       <div className={cn(
                         viewMode === "grid" ? "p-3" : "flex-1 py-2 pr-3"
                       )}>
-                        <p className="text-sm font-medium text-white/90 truncate leading-tight">
+                        <p className="text-sm font-medium text-foreground truncate leading-tight">
                           {product.name}
                         </p>
-                        <p className="text-xs text-white/40 mt-0.5 truncate">
+                        <p className="text-xs text-muted-foreground/50 mt-0.5 truncate">
                           {product.sku}
                         </p>
                         <div className={cn(
                           "flex items-center gap-2",
                           viewMode === "grid" ? "mt-2" : "mt-1"
                         )}>
-                          <span className="text-sm font-bold text-white">
+                          <span className="text-sm font-bold text-foreground">
                             ${product.price.toFixed(2)}
                           </span>
                           <Badge
@@ -301,8 +301,8 @@ export function ProductGrid({ onCartToggle }: ProductGridProps) {
                       </div>
 
                       {cartItem && (
-                        <div className="absolute top-2 right-2 h-5 w-5 rounded-full bg-violet-600 flex items-center justify-center">
-                          <span className="text-[10px] font-bold text-white">{cartItem.quantity}</span>
+                        <div className="absolute top-2 right-2 h-5 w-5 rounded-full bg-primary flex items-center justify-center">
+                          <span className="text-[10px] font-bold text-primary-foreground">{cartItem.quantity}</span>
                         </div>
                       )}
                     </motion.button>
@@ -321,7 +321,7 @@ export function ProductGrid({ onCartToggle }: ProductGridProps) {
                 >
                   Previous
                 </Button>
-                <span className="text-xs text-white/50">
+                <span className="text-xs text-muted-foreground">
                   Page {page} of {totalPages}
                 </span>
                 <Button

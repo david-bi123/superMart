@@ -15,7 +15,7 @@ const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto rounded-xl border border-white/10">
+  <div className="relative w-full overflow-auto rounded-lg border border-border">
     <table
       ref={ref}
       className={cn("w-full caption-bottom text-sm", className)}
@@ -29,7 +29,7 @@ const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("[&_tr]:border-b border-white/10 bg-white/5", className)} {...props} />
+  <thead ref={ref} className={cn("[&_tr]:border-b border-border bg-muted/50", className)} {...props} />
 ))
 TableHeader.displayName = "TableHeader"
 
@@ -52,7 +52,7 @@ const TableFooter = React.forwardRef<
   <tfoot
     ref={ref}
     className={cn(
-      "border-t border-white/10 bg-white/5 font-medium",
+      "border-t border-border bg-muted/50 font-medium text-foreground",
       className
     )}
     {...props}
@@ -67,7 +67,7 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "border-b border-white/5 transition-colors hover:bg-white/5 data-[state=selected]:bg-white/10",
+      "border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
       className
     )}
     {...props}
@@ -82,7 +82,7 @@ const TableHead = React.forwardRef<
   <th
     ref={ref}
     className={cn(
-      "h-12 px-4 text-left align-middle font-medium text-white/60 [&:has([role=checkbox])]:pr-0",
+      "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
       className
     )}
     {...props}
@@ -111,7 +111,7 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <caption
     ref={ref}
-    className={cn("mt-4 text-sm text-white/40", className)}
+    className={cn("mt-4 text-sm text-muted-foreground", className)}
     {...props}
   />
 ))
@@ -136,7 +136,7 @@ function SortableHeader({
     <TableHead className={cn("cursor-pointer select-none", className)}>
       <button
         onClick={() => onSort(column)}
-        className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
+        className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors text-muted-foreground"
       >
         {label}
         <Icon className="h-3.5 w-3.5" />

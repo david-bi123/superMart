@@ -71,8 +71,8 @@ function SortableHeader({
     <th
       className={cn(
         "p-3 text-left text-xs font-medium uppercase tracking-wider transition-colors",
-        isActive ? "text-white" : "text-white/50",
-        onSort && "cursor-pointer hover:text-white/80",
+        isActive ? "text-foreground" : "text-muted-foreground",
+        onSort && "cursor-pointer hover:text-foreground",
         className
       )}
       onClick={() => onSort?.(column)}
@@ -144,14 +144,14 @@ export function CustomersTable({
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-white/10">
+            <tr className="border-b border-border/50">
               <SortableHeader column="name" label="Customer" sortColumn={sortColumn} sortDirection={sortDirection} onSort={onSort} />
-              <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Contact</th>
+              <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Contact</th>
               <SortableHeader column="loyaltyPoints" label="Points" sortColumn={sortColumn} sortDirection={sortDirection} onSort={onSort} className="text-right" />
               <SortableHeader column="totalPurchases" label="Total Purchases" sortColumn={sortColumn} sortDirection={sortDirection} onSort={onSort} className="text-right" />
               <SortableHeader column="balance" label="Balance" sortColumn={sortColumn} sortDirection={sortDirection} onSort={onSort} className="text-right" />
-              <th className="p-3 text-left text-xs font-medium text-white/50 uppercase tracking-wider">Status</th>
-              <th className="w-16 p-3 text-right text-xs font-medium text-white/50 uppercase tracking-wider">Actions</th>
+              <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Status</th>
+              <th className="w-16 p-3 text-right text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -161,7 +161,7 @@ export function CustomersTable({
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.03 }}
-                className="border-b border-white/5 transition-colors hover:bg-white/[0.03] cursor-pointer"
+                className="border-b border-border/20 transition-colors hover:bg-muted/30 cursor-pointer"
                 onClick={() => handleView(customer._id)}
               >
                 <td className="p-3">
@@ -170,18 +170,18 @@ export function CustomersTable({
                       <AvatarFallback>{getInitials(customer.name)}</AvatarFallback>
                     </Avatar>
                     <div>
-                      <p className="text-sm font-medium text-white">{customer.name}</p>
+                      <p className="text-sm font-medium text-foreground">{customer.name}</p>
                       {customer.email && (
-                        <p className="text-xs text-white/40">{customer.email}</p>
+                        <p className="text-xs text-muted-foreground/50">{customer.email}</p>
                       )}
                     </div>
                   </div>
                 </td>
                 <td className="p-3">
                   {customer.phone ? (
-                    <span className="text-sm text-white/70">{customer.phone}</span>
+                    <span className="text-sm text-muted-foreground">{customer.phone}</span>
                   ) : (
-                    <span className="text-sm text-white/30">—</span>
+                    <span className="text-sm text-muted-foreground/30">—</span>
                   )}
                 </td>
                 <td className="p-3 text-right">
@@ -190,14 +190,14 @@ export function CustomersTable({
                   </span>
                 </td>
                 <td className="p-3 text-right">
-                  <span className="text-sm text-white/80">
-                    ${customer.totalPurchases.toFixed(2)}
-                  </span>
+                    <span className="text-sm text-foreground">
+                      ${customer.totalPurchases.toFixed(2)}
+                    </span>
                 </td>
                 <td className="p-3 text-right">
                   <span className={cn(
                     "text-sm font-semibold",
-                    customer.balance > 0 ? "text-red-400" : "text-white/60"
+                    customer.balance > 0 ? "text-red-400" : "text-muted-foreground"
                   )}>
                     ${customer.balance.toFixed(2)}
                   </span>
@@ -236,7 +236,7 @@ export function CustomersTable({
 
       {totalPages > 1 && onPageChange && (
         <div className="flex items-center justify-between pt-4">
-          <p className="text-sm text-white/40">
+          <p className="text-sm text-muted-foreground/50">
             Page {page} of {totalPages}
           </p>
           <div className="flex items-center gap-2">

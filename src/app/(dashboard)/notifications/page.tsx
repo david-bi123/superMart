@@ -64,9 +64,9 @@ const TYPE_COLORS: Record<string, string> = {
   low_stock: "from-amber-500/10 to-yellow-500/10 text-amber-400",
   out_of_stock: "from-red-500/10 to-rose-500/10 text-red-400",
   daily_report: "from-blue-500/10 to-cyan-500/10 text-blue-400",
-  purchase_order: "from-violet-500/10 to-indigo-500/10 text-violet-400",
+  purchase_order: "from-primary/10 to-primary/5 text-primary",
   expiry_alert: "from-orange-500/10 to-red-500/10 text-orange-400",
-  system_update: "from-gray-500/10 to-slate-500/10 text-gray-400",
+  system_update: "from-gray-500/10 to-slate-500/10 text-muted-foreground",
   invoice_reminder: "from-purple-500/10 to-pink-500/10 text-purple-400",
 }
 
@@ -185,30 +185,30 @@ export default function NotificationsPage() {
                     exit={{ opacity: 0, x: -20 }}
                     className={`relative flex items-start gap-4 rounded-xl p-4 transition-colors cursor-pointer ${
                       n.read
-                        ? "hover:bg-white/[0.02]"
-                        : "bg-gradient-to-r from-violet-500/5 to-indigo-500/5 border border-violet-500/10 hover:from-violet-500/10 hover:to-indigo-500/10"
+                        ? "hover:bg-muted/30"
+                        : "bg-gradient-to-r from-primary/5 to-primary/5 border border-primary/10 hover:from-primary/10 hover:to-primary/10"
                     }`}
                     onClick={() => !n.read && handleMarkRead(n._id)}
                   >
                     {!n.read && (
-                      <span className="absolute top-4 left-2 w-2 h-2 rounded-full bg-violet-500" />
+                      <span className="absolute top-4 left-2 w-2 h-2 rounded-full bg-primary" />
                     )}
-                    <div className={`h-10 w-10 rounded-xl bg-gradient-to-br flex items-center justify-center shrink-0 ${TYPE_COLORS[n.type] || "from-white/5 to-white/10 text-white/40"}`}>
+                    <div className={`h-10 w-10 rounded-xl bg-gradient-to-br flex items-center justify-center shrink-0 ${TYPE_COLORS[n.type] || "from-muted/50 to-muted text-muted-foreground/50"}`}>
                       <Icon className="h-5 w-5" />
                     </div>
                     <div className="flex-1 min-w-0 pl-2">
                       <div className="flex items-center gap-2">
-                        <p className={`text-sm ${n.read ? "text-white/60" : "text-white font-medium"}`}>
+                        <p className={`text-sm ${n.read ? "text-muted-foreground" : "text-foreground font-medium"}`}>
                           {n.title}
                         </p>
                         {n.read && <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />}
                       </div>
-                      <p className={`text-xs mt-0.5 ${n.read ? "text-white/30" : "text-white/50"}`}>
+                      <p className={`text-xs mt-0.5 ${n.read ? "text-muted-foreground/30" : "text-muted-foreground"}`}>
                         {n.message}
                       </p>
                       <div className="flex items-center gap-2 mt-1.5">
-                        <Clock className="h-3 w-3 text-white/20" />
-                        <span className="text-[10px] text-white/20">
+                        <Clock className="h-3 w-3 text-muted-foreground/20" />
+                        <span className="text-[10px] text-muted-foreground/20">
                           {new Date(n.sentAt).toLocaleDateString()} at {new Date(n.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                         <Badge variant="outline" className="text-[10px]">{n.type.replace(/_/g, " ")}</Badge>
@@ -222,8 +222,8 @@ export default function NotificationsPage() {
         )}
 
         {totalPages > 1 && (
-          <div className="flex items-center justify-between pt-4 mt-4 border-t border-white/5">
-            <p className="text-sm text-white/40">Page {page} of {totalPages}</p>
+          <div className="flex items-center justify-between pt-4 mt-4 border-t border-border/20">
+            <p className="text-sm text-muted-foreground/50">Page {page} of {totalPages}</p>
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>Previous</Button>
               <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>Next</Button>

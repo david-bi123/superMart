@@ -4,20 +4,20 @@ import { motion } from "framer-motion"
 
 interface CardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag'> {
   glass?: boolean
+  hover?: boolean
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, glass, children, ...props }, ref) => (
+  ({ className, glass, hover, children, ...props }, ref) => (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
       className={cn(
-        "rounded-2xl border text-card-foreground shadow-sm",
-        glass
-          ? "border-white/10 bg-white/5 backdrop-blur-xl"
-          : "border-border bg-card",
+        "rounded-xl border bg-card text-card-foreground premium-shadow",
+        glass && "bg-background/70 dark:bg-background/50 backdrop-blur-xl border-border/50",
+        hover && "transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5",
         className
       )}
       {...props}
@@ -47,7 +47,7 @@ const CardTitle = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      "text-2xl font-semibold leading-none tracking-tight",
+      "text-lg font-semibold leading-none tracking-tight text-foreground",
       className
     )}
     {...props}

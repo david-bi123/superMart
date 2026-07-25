@@ -156,7 +156,7 @@ export default function UsersPage() {
       <Card glass className="p-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
           <div className="relative flex-1 max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1) }}
@@ -194,14 +194,14 @@ export default function UsersPage() {
                 key={user._id}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex items-center gap-4 rounded-xl border border-white/5 bg-white/[0.02] p-4 transition-colors hover:bg-white/[0.05]"
+                className="flex items-center gap-4 rounded-xl border border-border/30 bg-muted/20 p-4 transition-colors hover:bg-muted/40"
               >
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center text-white text-sm font-semibold shrink-0">
+                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center text-primary-foreground text-sm font-semibold shrink-0">
                   {user.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="text-sm font-medium text-white truncate">{user.name}</p>
+                    <p className="text-sm font-medium text-foreground truncate">{user.name}</p>
                     {!user.isActive && (
                       <Badge variant="outline" className="text-[10px]">Inactive</Badge>
                     )}
@@ -210,12 +210,12 @@ export default function UsersPage() {
                     )}
                   </div>
                   <div className="flex items-center gap-3 mt-0.5">
-                    <span className="flex items-center gap-1 text-xs text-white/40">
+                    <span className="flex items-center gap-1 text-xs text-muted-foreground">
                       <Mail className="h-3 w-3" />
                       {user.email}
                     </span>
                     {user.phone && (
-                      <span className="flex items-center gap-1 text-xs text-white/40">
+                      <span className="flex items-center gap-1 text-xs text-muted-foreground">
                         <Phone className="h-3 w-3" />
                         {user.phone}
                       </span>
@@ -223,7 +223,7 @@ export default function UsersPage() {
                   </div>
                 </div>
                 <div className="hidden sm:block">{roleBadge(user.role)}</div>
-                <div className="text-xs text-white/30 hidden md:block">
+                <div className="text-xs text-muted-foreground/60 hidden md:block">
                   {user.lastLogin
                     ? new Date(user.lastLogin).toLocaleDateString()
                     : "Never"}
@@ -259,8 +259,8 @@ export default function UsersPage() {
         )}
 
         {totalPages > 1 && (
-          <div className="flex items-center justify-between pt-4 mt-4 border-t border-white/5">
-            <p className="text-sm text-white/40">Page {page} of {totalPages}</p>
+          <div className="flex items-center justify-between pt-4 mt-4 border-t border-border/30">
+            <p className="text-sm text-muted-foreground">Page {page} of {totalPages}</p>
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>Previous</Button>
               <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>Next</Button>
@@ -285,7 +285,7 @@ export default function UsersPage() {
             )}
             <Input label="Phone" value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} />
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-1.5">Role</label>
+              <label className="block text-sm font-medium text-foreground/80 mb-1.5">Role</label>
               <Select value={form.role} onValueChange={(v) => setForm((f) => ({ ...f, role: v }))}>
                 <SelectTrigger>
                   <SelectValue />

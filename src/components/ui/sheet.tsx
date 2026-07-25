@@ -26,7 +26,7 @@ const SheetOverlay = React.forwardRef<
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName
 
 const sheetVariants = cva(
-  "fixed z-50 gap-4 bg-gray-900/95 backdrop-blur-2xl p-6 shadow-2xl transition ease-in-out border-white/10",
+  "fixed z-50 gap-4 bg-background/95 backdrop-blur-2xl p-6 shadow-2xl transition ease-in-out border-border/50",
   {
     variants: {
       side: {
@@ -71,7 +71,7 @@ const SheetContent = React.forwardRef<
           className={cn(sheetVariants({ side }), className)}
         >
           {children}
-          <SheetPrimitive.Close className="absolute right-4 top-4 rounded-lg p-1 text-white/50 opacity-70 transition-opacity hover:opacity-100 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-violet-500">
+          <SheetPrimitive.Close className="absolute right-4 top-4 rounded-lg p-1 text-muted-foreground opacity-70 transition-opacity hover:opacity-100 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary">
             <X className="h-4 w-4" />
             <span className="sr-only">Close</span>
           </SheetPrimitive.Close>
@@ -116,7 +116,7 @@ const SheetTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Title
     ref={ref}
-    className={cn("text-lg font-semibold text-white", className)}
+    className={cn("text-lg font-semibold text-foreground", className)}
     {...props}
   />
 ))
@@ -128,7 +128,7 @@ const SheetDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Description
     ref={ref}
-    className={cn("text-sm text-white/60", className)}
+    className={cn("text-sm text-muted-foreground", className)}
     {...props}
   />
 ))
