@@ -5,17 +5,9 @@ import { motion } from "framer-motion"
 import {
   Store,
   Printer,
-  Download,
   CheckCircle2,
-  XCircle,
   Receipt,
-  Phone,
-  MapPin,
-  Hash,
-  Calendar,
   CreditCard,
-  ChevronDown,
-  ChevronUp,
   ShieldCheck,
 } from "lucide-react"
 import { QRCodeSVG } from "qrcode.react"
@@ -53,7 +45,6 @@ export default function ReceiptPage({ params }: { params: Promise<{ id: string }
   const [verified, setVerified] = React.useState(false)
   const [loading, setLoading] = React.useState(true)
   const [verifying, setVerifying] = React.useState(false)
-  const [showDetails, setShowDetails] = React.useState(false)
 
   React.useEffect(() => {
     getPublicReceipt(resolved.id).then((res) => {
@@ -283,14 +274,14 @@ export default function ReceiptPage({ params }: { params: Promise<{ id: string }
         </motion.div>
 
         {/* Actions */}
-        <div className="flex gap-3 mt-6 justify-center">
-          <Button variant="outline" onClick={handlePrint} className="flex-1 max-w-[200px]">
+        <div className="flex gap-3 mt-6 justify-center no-print">
+          <Button variant="outline" onClick={handlePrint} className="flex-1 max-w-[200px] bg-white/10 border-white/10 text-white hover:bg-white/20">
             <Printer className="h-4 w-4" />
             Print Receipt
           </Button>
         </div>
 
-        <p className="text-xs text-white/20 text-center mt-8">
+        <p className="text-xs text-white/20 text-center mt-8 no-print">
           RetailFlow - Secure Receipt Verification System
         </p>
       </div>

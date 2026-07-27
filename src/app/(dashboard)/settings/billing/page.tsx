@@ -22,6 +22,7 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "@/components/ui/toast"
 import { getSubscription, getPlans, upgradePlan, cancelSubscription, getInvoices } from "@/actions/subscriptions.actions"
+import { cn } from "@/lib/utils/cn"
 
 const TIER_ORDER = ["free", "starter", "professional", "enterprise"]
 const TIER_ICONS: Record<string, React.ElementType> = {
@@ -31,16 +32,10 @@ const TIER_ICONS: Record<string, React.ElementType> = {
   enterprise: Building2,
 }
 const TIER_COLORS: Record<string, string> = {
-  free: "from-gray-500 to-slate-600",
+  free: "from-muted-foreground/60 to-muted-foreground/40",
   starter: "from-blue-500 to-cyan-600",
   professional: "from-violet-500 to-indigo-600",
   enterprise: "from-amber-500 to-orange-600",
-}
-const TIER_BG: Record<string, string> = {
-  free: "border-gray-500/30",
-  starter: "border-blue-500/30",
-  professional: "border-violet-500/30",
-  enterprise: "border-amber-500/30",
 }
 
 interface Plan {
@@ -144,8 +139,10 @@ export default function BillingPage() {
         </div>
       ) : (
         <>
-          {/* Current Plan */}
-          <Card glass>
+          <Card
+            glass
+            className="ring-2 ring-emerald-500/30 border-emerald-500/20 shadow-[0_0_30px_-8px_rgba(16,185,129,0.15)]"
+          >
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
                 <CreditCard className="h-5 w-5 text-primary" />
@@ -155,7 +152,7 @@ export default function BillingPage() {
             <CardContent>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex items-center gap-4">
-                  <div className={`h-14 w-14 rounded-2xl bg-gradient-to-br ${TIER_COLORS[currentTier] || TIER_COLORS.free} flex items-center justify-center`}>
+                  <div className={cn("h-14 w-14 rounded-2xl bg-gradient-to-br flex items-center justify-center", TIER_COLORS[currentTier] || TIER_COLORS.free)}>
                     {React.createElement(TIER_ICONS[currentTier] || TIER_ICONS.free, { className: "h-7 w-7 text-primary-foreground" })}
                   </div>
                   <div>
@@ -182,7 +179,6 @@ export default function BillingPage() {
             </CardContent>
           </Card>
 
-          {/* Plans Grid */}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {plans.map((plan, index) => {
               const isCurrent = plan.tier === currentTier
@@ -198,13 +194,18 @@ export default function BillingPage() {
                 >
                   <Card
                     glass
-                    className={`relative overflow-hidden h-full flex flex-col ${isCurrent ? `ring-2 ring-primary ${TIER_BG[plan.tier]}` : "hover:border-muted-foreground/20"}`}
+                    className={cn(
+                      "relative overflow-hidden h-full flex flex-col",
+                      isCurrent
+                        ? "ring-2 ring-emerald-500/40 border-emerald-500/20"
+                        : "hover:border-muted-foreground/20"
+                    )}
                   >
                     {isCurrent && (
-                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary to-primary/80" />
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-emerald-400" />
                     )}
                     <CardHeader>
-                      <div className={`h-10 w-10 rounded-xl bg-gradient-to-br ${TIER_COLORS[plan.tier]} flex items-center justify-center mb-2`}>
+                      <div className={cn("h-10 w-10 rounded-xl bg-gradient-to-br flex items-center justify-center mb-2", TIER_COLORS[plan.tier])}>
                         {React.createElement(TIER_ICONS[plan.tier], { className: "h-5 w-5 text-primary-foreground" })}
                       </div>
                       <CardTitle className="text-xl">{plan.name}</CardTitle>
@@ -223,7 +224,7 @@ export default function BillingPage() {
                           return (
                             <li key={key} className="flex items-center gap-2 text-sm">
                               {isEnabled ? (
-                                <Check className="h-4 w-4 text-emerald-400 shrink-0" />
+                                <Check className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                               ) : (
                                 <X className="h-4 w-4 text-muted-foreground/30 shrink-0" />
                               )}
@@ -267,7 +268,6 @@ export default function BillingPage() {
             })}
           </div>
 
-          {/* Invoice History */}
           <Card glass>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
@@ -335,7 +335,6 @@ export default function BillingPage() {
             </CardContent>
           </Card>
 
-          {/* Payment Method */}
           <Card glass>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-lg">
@@ -347,7 +346,7 @@ export default function BillingPage() {
             <CardContent>
               <div className="flex items-center justify-between p-4 rounded-xl border border-border/50 bg-muted/20">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-14 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-xs font-bold text-muted-foreground">
+                  <div className="h-10 w-14 rounded-lg bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center text-xs font-bold text-muted-foreground">
                     ****
                   </div>
                   <div>

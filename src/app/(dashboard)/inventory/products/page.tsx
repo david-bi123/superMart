@@ -13,7 +13,6 @@ import {
   Eye,
   Pencil,
   Trash2,
-  RotateCcw,
 } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
 import { PageHeader } from "@/components/ui/page-header"
@@ -74,6 +73,7 @@ export default function ProductsPage() {
   const [selected, setSelected] = React.useState<string[]>([])
   const [page, setPage] = React.useState(1)
   const [totalPages, setTotalPages] = React.useState(1)
+  const [totalCount, setTotalCount] = React.useState(0)
   const limit = 15
 
   const fetchProducts = React.useCallback(async () => {
@@ -91,6 +91,7 @@ export default function ProductsPage() {
     if (res.success) {
       setProducts(res.data as ProductRow[])
       setTotalPages(res.pagination.totalPages)
+      setTotalCount(res.pagination.total || 0)
     }
     setLoading(false)
   }, [search, categoryFilter, brandFilter, statusFilter, page])
@@ -214,12 +215,12 @@ export default function ProductsPage() {
               value={search}
               onChange={handleSearch}
               placeholder="Search products..."
-              className="pl-10"
+              className="pl-10 rounded-xl"
             />
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             <Select value={categoryFilter} onValueChange={(v) => { setCategoryFilter(v); setPage(1) }}>
-              <SelectTrigger className="w-[160px]">
+              <SelectTrigger className="w-[160px] rounded-xl">
                 <SelectValue placeholder="Category" />
               </SelectTrigger>
               <SelectContent>
@@ -230,7 +231,7 @@ export default function ProductsPage() {
               </SelectContent>
             </Select>
             <Select value={brandFilter} onValueChange={(v) => { setBrandFilter(v); setPage(1) }}>
-              <SelectTrigger className="w-[160px]">
+              <SelectTrigger className="w-[160px] rounded-xl">
                 <SelectValue placeholder="Brand" />
               </SelectTrigger>
               <SelectContent>
@@ -241,7 +242,7 @@ export default function ProductsPage() {
               </SelectContent>
             </Select>
             <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(1) }}>
-              <SelectTrigger className="w-[140px]">
+              <SelectTrigger className="w-[140px] rounded-xl">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
@@ -338,7 +339,7 @@ export default function ProductsPage() {
                           <div>
                             <p className="text-sm font-medium text-foreground">{product.name}</p>
                             {product.barcode && (
-                              <p className="text-xs text-muted-foreground/30">{product.barcode}</p>
+                              <p className="text-xs text-muted-foreground/50">{product.barcode}</p>
                             )}
                           </div>
                         </div>
@@ -374,7 +375,7 @@ export default function ProductsPage() {
                       <td className="p-3 text-right" onClick={(e) => e.stopPropagation()}>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                            <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg">
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
@@ -389,7 +390,7 @@ export default function ProductsPage() {
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
-                              className="text-red-400"
+                              className="text-destructive focus:text-destructive"
                               onClick={() => handleArchive(product._id)}
                             >
                               <Trash2 className="h-4 w-4 mr-2" />
@@ -406,7 +407,8 @@ export default function ProductsPage() {
 
             <div className="flex items-center justify-between pt-4">
               <p className="text-sm text-muted-foreground">
-                Showing {Math.min((page - 1) * limit + 1, products.length)}–{Math.min(page * limit, products.length)} of {totalPages > 0 ? "many" : "0"}
+                Page {page} of {totalPages}
+                {totalCount > 0 && <span className="ml-1">· {totalCount} total</span>}
               </p>
               <div className="flex items-center gap-2">
                 <Button
@@ -426,7 +428,7 @@ export default function ProductsPage() {
                         key={pageNum}
                         variant={pageNum === page ? "default" : "ghost"}
                         size="sm"
-                        className="h-8 w-8 p-0"
+                        className="h-8 w-8 p-0 rounded-lg"
                         onClick={() => setPage(pageNum)}
                       >
                         {pageNum}

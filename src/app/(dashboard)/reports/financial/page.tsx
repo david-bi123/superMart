@@ -238,9 +238,9 @@ export default function FinancialReportsPage() {
                   <p className="text-xs font-medium text-muted-foreground">{card.title}</p>
                   <p className={cn(
                     "text-lg font-bold tracking-tight",
-                    card.variant === "success" ? "text-emerald-400" :
-                    card.variant === "danger" ? "text-red-400" :
-                    card.variant === "primary" ? "text-blue-400" :
+                    card.variant === "success" ? "text-emerald-600 dark:text-emerald-400" :
+                    card.variant === "danger" ? "text-red-600 dark:text-red-400" :
+                    card.variant === "primary" ? "text-primary" :
                     "text-foreground"
                   )}>
                     {card.value}
@@ -249,10 +249,10 @@ export default function FinancialReportsPage() {
                 </div>
                 <div className={cn(
                   "flex h-8 w-8 items-center justify-center rounded-lg",
-                  card.variant === "success" ? "bg-emerald-500/15 text-emerald-400" :
-                  card.variant === "danger" ? "bg-red-500/15 text-red-400" :
-                  card.variant === "primary" ? "bg-blue-500/15 text-blue-400" :
-                  "bg-muted text-foreground"
+                  card.variant === "success" ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400" :
+                  card.variant === "danger" ? "bg-red-500/15 text-red-600 dark:text-red-400" :
+                  card.variant === "primary" ? "bg-primary/15 text-primary" :
+                  "bg-muted text-muted-foreground"
                 )}>
                   <card.icon className="h-4 w-4" />
                 </div>

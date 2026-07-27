@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import {
   Area,
   AreaChart,
@@ -29,8 +28,8 @@ const ranges = [
 function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-xl border border-border/50 bg-background/95 px-4 py-3 shadow-2xl backdrop-blur-2xl">
-      <p className="mb-2 text-sm font-medium text-muted-foreground">{label}</p>
+    <div className="rounded-xl border border-border/60 bg-background/95 px-4 py-3 shadow-xl backdrop-blur-2xl">
+      <p className="mb-2 text-xs font-medium text-muted-foreground">{label}</p>
       {payload.map((entry: any, index: number) => (
         <div key={index} className="flex items-center gap-2 text-sm">
           <span
@@ -40,7 +39,7 @@ function CustomTooltip({ active, payload, label }: any) {
           <span className="text-muted-foreground">
             {entry.name === "revenue" ? "Revenue" : "Profit"}
           </span>
-          <span className="ml-auto font-medium text-foreground">
+          <span className="ml-auto font-semibold text-foreground">
             ${entry.value.toLocaleString()}
           </span>
         </div>
@@ -51,6 +50,9 @@ function CustomTooltip({ active, payload, label }: any) {
 
 export function RevenueChart({ data, loading }: RevenueChartProps) {
   const [range, setRange] = useState(30);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   const filtered =
     data?.filter((_, i) => {
@@ -60,21 +62,21 @@ export function RevenueChart({ data, loading }: RevenueChartProps) {
     }) || [];
 
   return (
-    <Card glass className="overflow-hidden">
+    <Card className="overflow-hidden">
       <CardHeader className="flex flex-row items-center justify-between pb-4">
-        <CardTitle className="text-lg font-semibold text-foreground">
+        <CardTitle className="text-base font-semibold text-foreground">
           Revenue Overview
         </CardTitle>
-        <div className="flex gap-1 rounded-lg border border-border/50 bg-muted/50 p-0.5">
+        <div className="flex gap-0.5 rounded-lg border border-border/50 bg-muted/50 p-0.5">
           {ranges.map((r) => (
             <button
               key={r.value}
               onClick={() => setRange(r.value)}
               className={cn(
-                "rounded-md px-3 py-1 text-xs font-medium transition-all duration-200",
+                "rounded-md px-2.5 py-1 text-xs font-medium transition-all duration-200",
                 range === r.value
-                  ? "bg-muted text-foreground shadow-sm"
-                  : "text-muted-foreground/50 hover:text-foreground",
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground/60 hover:text-foreground",
               )}
             >
               {r.label}
@@ -84,42 +86,35 @@ export function RevenueChart({ data, loading }: RevenueChartProps) {
       </CardHeader>
       <CardContent>
         {loading ? (
-          <div className="space-y-4">
-            <Skeleton variant="rectangular" className="h-[300px] w-full" />
-          </div>
+          <Skeleton className="h-[280px] w-full rounded-xl" />
         ) : !filtered.length ? (
-          <div className="flex h-[300px] items-center justify-center">
+          <div className="flex h-[280px] items-center justify-center">
             <p className="text-sm text-muted-foreground/50">No revenue data available</p>
           </div>
         ) : (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="h-[300px]"
-          >
+          <div className="h-[280px]">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={filtered} margin={{ top: 5, right: 5, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="revenueGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.4} />
-                    <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0} />
+                    <stop offset="0%" stopColor="hsl(142 76% 36%)" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="hsl(142 76% 36%)" stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="profitGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#10b981" stopOpacity={0.3} />
-                    <stop offset="100%" stopColor="#10b981" stopOpacity={0} />
+                    <stop offset="0%" stopColor="hsl(160 60% 45%)" stopOpacity={0.2} />
+                    <stop offset="100%" stopColor="hsl(160 60% 45%)" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid
                   strokeDasharray="3 3"
-                  stroke="rgba(255,255,255,0.05)"
+                  stroke="hsl(var(--border) / 0.5)"
                   vertical={false}
                 />
                 <XAxis
                   dataKey="date"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 11 }}
+                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11, opacity: 0.5 }}
                   tickFormatter={(val) => {
                     const d = new Date(val);
                     return `${d.getMonth() + 1}/${d.getDate()}`;
@@ -129,7 +124,7 @@ export function RevenueChart({ data, loading }: RevenueChartProps) {
                 <YAxis
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 11 }}
+                  tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11, opacity: 0.5 }}
                   tickFormatter={(val) => `$${val}`}
                   width={60}
                 />
@@ -137,24 +132,24 @@ export function RevenueChart({ data, loading }: RevenueChartProps) {
                 <Area
                   type="monotone"
                   dataKey="revenue"
-                  stroke="#8b5cf6"
+                  stroke="hsl(var(--primary))"
                   strokeWidth={2}
                   fill="url(#revenueGradient)"
                   dot={false}
-                  activeDot={{ r: 4, fill: "#8b5cf6", stroke: "#1a1a2e", strokeWidth: 2 }}
+                  activeDot={{ r: 4, fill: "hsl(var(--primary))", stroke: "hsl(var(--background))", strokeWidth: 2 }}
                 />
                 <Area
                   type="monotone"
                   dataKey="profit"
-                  stroke="#10b981"
+                  stroke="hsl(160 60% 45%)"
                   strokeWidth={2}
                   fill="url(#profitGradient)"
                   dot={false}
-                  activeDot={{ r: 4, fill: "#10b981", stroke: "#1a1a2e", strokeWidth: 2 }}
+                  activeDot={{ r: 4, fill: "hsl(160 60% 45%)", stroke: "hsl(var(--background))", strokeWidth: 2 }}
                 />
               </AreaChart>
             </ResponsiveContainer>
-          </motion.div>
+          </div>
         )}
       </CardContent>
     </Card>

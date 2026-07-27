@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { useParams, useRouter } from "next/navigation"
-import { motion } from "framer-motion"
 import {
   ArrowLeft,
   Printer,
@@ -231,7 +230,7 @@ export default function SaleDetailPage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="text-amber-400 border-amber-500/30 hover:bg-amber-500/10"
+                className="text-muted-foreground hover:text-amber-600 dark:hover:text-amber-400 hover:border-amber-500/30 hover:bg-amber-500/10"
                 onClick={handleCancel}
                 loading={actionLoading === "cancel"}
               >
@@ -241,7 +240,7 @@ export default function SaleDetailPage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="text-red-400 border-red-500/30 hover:bg-red-500/10"
+                className="text-muted-foreground hover:text-destructive hover:border-destructive/30 hover:bg-destructive/10"
                 onClick={handleRefund}
                 loading={actionLoading === "refund"}
               >
@@ -276,12 +275,9 @@ export default function SaleDetailPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {sale.items.map((item, index) => (
-                      <motion.tr
+                    {sale.items.map((item) => (
+                      <tr
                         key={item.productId}
-                        initial={{ opacity: 0, y: 4 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.03 }}
                         className="border-b border-border/30"
                       >
                         <td className="py-3">
@@ -292,8 +288,8 @@ export default function SaleDetailPage() {
                             )}
                           </div>
                         </td>
-                        <td className="py-3 text-center text-sm text-foreground/80">{item.quantity}</td>
-                        <td className="py-3 text-right text-sm text-foreground/80">${item.price.toFixed(2)}</td>
+                        <td className="py-3 text-center text-sm text-muted-foreground">{item.quantity}</td>
+                        <td className="py-3 text-right text-sm text-muted-foreground">${item.price.toFixed(2)}</td>
                         <td className="py-3 text-right text-sm text-muted-foreground">
                           {item.discount > 0 ? `-$${item.discount.toFixed(2)}` : "—"}
                         </td>
@@ -303,7 +299,7 @@ export default function SaleDetailPage() {
                         <td className="py-3 text-right text-sm font-semibold text-foreground">
                           ${item.total.toFixed(2)}
                         </td>
-                      </motion.tr>
+                      </tr>
                     ))}
                   </tbody>
                 </table>
@@ -314,18 +310,18 @@ export default function SaleDetailPage() {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Subtotal</span>
-                  <span className="text-foreground/80">${sale.subtotal.toFixed(2)}</span>
+                  <span className="text-muted-foreground">${sale.subtotal.toFixed(2)}</span>
                 </div>
                 {sale.discountTotal > 0 && (
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Discount</span>
-                    <span className="text-red-400">-${sale.discountTotal.toFixed(2)}</span>
+                    <span className="text-destructive">-${sale.discountTotal.toFixed(2)}</span>
                   </div>
                 )}
                 {sale.taxTotal > 0 && (
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Tax</span>
-                    <span className="text-foreground/80">${sale.taxTotal.toFixed(2)}</span>
+                    <span className="text-muted-foreground">${sale.taxTotal.toFixed(2)}</span>
                   </div>
                 )}
                 <Separator className="my-1" />
@@ -346,7 +342,7 @@ export default function SaleDetailPage() {
             </CardHeader>
             <CardContent>
               {sale.timeline.length === 0 ? (
-                <p className="text-sm text-muted-foreground/50">No activity recorded</p>
+                <p className="text-sm text-muted-foreground">No activity recorded</p>
               ) : (
                 <div className="space-y-4">
                   {sale.timeline.map((log, i) => (
@@ -364,9 +360,9 @@ export default function SaleDetailPage() {
                           </span>
                         </p>
                         <div className="flex items-center gap-2 mt-1">
-                          <span className="text-xs text-muted-foreground/50">{log.user}</span>
-                          <span className="text-muted-foreground/20">•</span>
-                          <span className="text-xs text-muted-foreground/50">
+                          <span className="text-xs text-muted-foreground">{log.user}</span>
+                          <span className="text-muted-foreground/30">•</span>
+                          <span className="text-xs text-muted-foreground">
                             {new Date(log.createdAt).toLocaleString()}
                           </span>
                         </div>
@@ -374,9 +370,9 @@ export default function SaleDetailPage() {
                     </div>
                   ))}
                   <div className="flex gap-3">
-                    <div className="h-2 w-2 rounded-full bg-emerald-500 mt-2" />
+                    <div className="h-2 w-2 rounded-full bg-emerald-600 dark:bg-emerald-400 mt-2" />
                     <div>
-                      <p className="text-sm text-foreground/80">
+                      <p className="text-sm text-muted-foreground">
                         <span className="font-medium">Sale created</span>
                       </p>
                       <p className="text-xs text-muted-foreground mt-1">
@@ -393,12 +389,12 @@ export default function SaleDetailPage() {
             <Card glass>
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-white/50" />
+                  <FileText className="h-5 w-5 text-muted-foreground" />
                   Notes
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-foreground/70 whitespace-pre-wrap">{sale.notes}</p>
+                <p className="text-sm text-muted-foreground whitespace-pre-wrap">{sale.notes}</p>
               </CardContent>
             </Card>
           )}
@@ -466,26 +462,26 @@ export default function SaleDetailPage() {
                 </div>
                 {(sale.paymentDetails?.cash ?? 0) > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-white/50">Cash</span>
-                    <span className="text-white/80">${(sale.paymentDetails?.cash ?? 0).toFixed(2)}</span>
+                    <span className="text-muted-foreground">Cash</span>
+                    <span className="text-muted-foreground">${(sale.paymentDetails?.cash ?? 0).toFixed(2)}</span>
                   </div>
                 )}
                 {(sale.paymentDetails?.card ?? 0) > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-white/50">Card</span>
-                    <span className="text-white/80">${(sale.paymentDetails?.card ?? 0).toFixed(2)}</span>
+                    <span className="text-muted-foreground">Card</span>
+                    <span className="text-muted-foreground">${(sale.paymentDetails?.card ?? 0).toFixed(2)}</span>
                   </div>
                 )}
                 {(sale.paymentDetails?.mobileMoney ?? 0) > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-white/50">Mobile Money</span>
-                    <span className="text-white/80">${(sale.paymentDetails?.mobileMoney ?? 0).toFixed(2)}</span>
+                    <span className="text-muted-foreground">Mobile Money</span>
+                    <span className="text-muted-foreground">${(sale.paymentDetails?.mobileMoney ?? 0).toFixed(2)}</span>
                   </div>
                 )}
                 {(sale.paymentDetails?.change ?? 0) > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-white/50">Change</span>
-                    <span className="text-red-400">-${(sale.paymentDetails?.change ?? 0).toFixed(2)}</span>
+                    <span className="text-muted-foreground">Change</span>
+                    <span className="text-destructive">-${(sale.paymentDetails?.change ?? 0).toFixed(2)}</span>
                   </div>
                 )}
               </div>
@@ -523,7 +519,7 @@ export default function SaleDetailPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm font-mono text-foreground/80">{sale.receipt.receiptNumber}</p>
+                <p className="text-sm font-mono text-muted-foreground">{sale.receipt.receiptNumber}</p>
                 {sale.receipt.printedAt && (
                   <p className="text-xs text-muted-foreground mt-1">
                     Printed: {new Date(sale.receipt.printedAt).toLocaleString()}

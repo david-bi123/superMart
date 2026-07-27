@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { motion } from "framer-motion"
 import {
   Plus,
   Search,
@@ -19,23 +18,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Input as FormInput } from "@/components/ui/input"
 import { getCustomers, createCustomer } from "@/actions/customers.actions"
 import { toast } from "@/components/ui/toast"
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.05 },
-  },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4, ease: "easeOut" as const },
-  },
-}
 
 export default function CustomersPage() {
   const router = useRouter()
@@ -91,18 +73,13 @@ export default function CustomersPage() {
   const creditCustomers = customers.filter((c) => c.balance > 0).length
 
   const statCards = [
-    { label: "Total Customers", value: totalCustomers, icon: Users, color: "text-blue-400" },
-    { label: "Active", value: activeCustomers, icon: UserCheck, color: "text-emerald-400" },
-    { label: "With Balance", value: creditCustomers, icon: CreditCard, color: "text-amber-400" },
+    { label: "Total Customers", value: totalCustomers, icon: Users, color: "text-primary" },
+    { label: "Active", value: activeCustomers, icon: UserCheck, color: "text-emerald-600 dark:text-emerald-400" },
+    { label: "With Balance", value: creditCustomers, icon: CreditCard, color: "text-amber-600 dark:text-amber-400" },
   ]
 
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="space-y-6 pb-8"
-    >
+    <div className="space-y-6 pb-8">
       <PageHeader
         title="Customers"
         description="Manage your customer relationships"
@@ -114,10 +91,7 @@ export default function CustomersPage() {
         }
       />
 
-      <motion.div
-        variants={itemVariants}
-        className="grid grid-cols-3 gap-4"
-      >
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {statCards.map((stat) => {
           const Icon = stat.icon
           return (
@@ -132,32 +106,30 @@ export default function CustomersPage() {
             </Card>
           )
         })}
-      </motion.div>
+      </div>
 
-      <motion.div variants={itemVariants}>
-        <Card glass className="p-5">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                value={search}
-                onChange={handleSearch}
-                placeholder="Search customers..."
-                className="pl-10"
-              />
-            </div>
+      <Card glass className="p-5">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              value={search}
+              onChange={handleSearch}
+              placeholder="Search customers..."
+              className="pl-10"
+            />
           </div>
+        </div>
 
-          <CustomersTable
-            data={customers}
-            loading={loading}
-            totalPages={totalPages}
-            page={page}
-            onPageChange={setPage}
-            onView={(id) => router.push(`/customers/${id}`)}
-          />
-        </Card>
-      </motion.div>
+        <CustomersTable
+          data={customers}
+          loading={loading}
+          totalPages={totalPages}
+          page={page}
+          onPageChange={setPage}
+          onView={(id) => router.push(`/customers/${id}`)}
+        />
+      </Card>
 
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
         <DialogContent>
@@ -210,6 +182,6 @@ export default function CustomersPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </motion.div>
+    </div>
   )
 }

@@ -7,7 +7,6 @@ import {
   Edit3,
   Trash2,
   FolderTree,
-  ImageOff,
   ChevronRight,
   ChevronDown,
 } from "lucide-react"
@@ -91,7 +90,7 @@ function CategoryRow({
       >
         <button
           onClick={() => setExpanded(!expanded)}
-          className={cn("text-muted-foreground/50 hover:text-muted-foreground transition-colors", !hasChildren && "invisible")}
+          className={cn("text-muted-foreground/50 hover:text-muted-foreground transition-colors rounded-lg p-1 hover:bg-muted/50", !hasChildren && "invisible")}
         >
           {expanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
         </button>
@@ -100,7 +99,7 @@ function CategoryRow({
             <img src={category.image} alt="" className="h-full w-full object-cover" />
           ) : (
             <div className="h-full w-full flex items-center justify-center">
-              <FolderTree className="h-4 w-4 text-muted-foreground/30" />
+              <FolderTree className="h-4 w-4 text-muted-foreground/40" />
             </div>
           )}
         </div>
@@ -111,13 +110,13 @@ function CategoryRow({
           </p>
         </div>
         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => onEdit(category)}>
+          <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg" onClick={() => onEdit(category)}>
             <Edit3 className="h-3.5 w-3.5" />
           </Button>
           <Button
             variant="ghost"
             size="icon"
-            className="h-8 w-8 text-red-400 hover:text-red-300"
+            className="h-8 w-8 rounded-lg text-destructive hover:text-destructive/80"
             onClick={() => onDelete(category._id)}
           >
             <Trash2 className="h-3.5 w-3.5" />
@@ -276,7 +275,7 @@ export default function CategoriesPage() {
           <div className="space-y-4 py-2">
             <div>
               <label className="block text-sm font-medium text-foreground/80 mb-1.5">
-                Name <span className="text-red-400">*</span>
+                Name <span className="text-destructive">*</span>
               </label>
               <Input
                 value={formData.name}
@@ -300,7 +299,7 @@ export default function CategoriesPage() {
                 value={formData.parentId}
                 onValueChange={(v) => setFormData((p) => ({ ...p, parentId: v }))}
               >
-                <SelectTrigger>
+                <SelectTrigger className="rounded-xl">
                   <SelectValue placeholder="None (top level)" />
                 </SelectTrigger>
                 <SelectContent>

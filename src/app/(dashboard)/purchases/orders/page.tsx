@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { motion } from "framer-motion"
 import {
   Plus,
   Search,
@@ -12,7 +11,7 @@ import {
   XCircle,
   Truck,
   Ban,
-  RefreshCw,
+  MoreHorizontal,
   Package,
 } from "lucide-react"
 import { PageHeader } from "@/components/ui/page-header"
@@ -213,7 +212,7 @@ export default function PurchaseOrdersPage() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                  <tr className="border-b border-border/50">
+                <tr className="border-b border-border/50">
                   <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">PO#</th>
                   <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Supplier</th>
                   <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Date</th>
@@ -224,14 +223,11 @@ export default function PurchaseOrdersPage() {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order, index) => {
+                {orders.map((order) => {
                   const statusCfg = STATUS_CONFIG[order.status] || STATUS_CONFIG.pending
                   return (
-                    <motion.tr
+                    <tr
                       key={order._id}
-                      initial={{ opacity: 0, y: 4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.03 }}
                       className="border-b border-border/30 transition-colors hover:bg-muted/50"
                     >
                       <td className="p-3">
@@ -251,7 +247,7 @@ export default function PurchaseOrdersPage() {
                         </span>
                       </td>
                       <td className="p-3 text-right">
-                        <span className="text-sm text-foreground/80">{order.itemsCount}</span>
+                        <span className="text-sm text-muted-foreground">{order.itemsCount}</span>
                       </td>
                       <td className="p-3 text-right">
                         <span className="text-sm font-semibold text-foreground">
@@ -265,7 +261,7 @@ export default function PurchaseOrdersPage() {
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="icon" className="h-8 w-8">
-                              <RefreshCw className="h-4 w-4" />
+                              <MoreHorizontal className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="w-44">
@@ -277,10 +273,10 @@ export default function PurchaseOrdersPage() {
                               <>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem onClick={() => handleApprove(order._id)}>
-                                  <CheckCircle2 className="h-4 w-4 mr-2 text-emerald-400" />
+                                  <CheckCircle2 className="h-4 w-4 mr-2 text-emerald-600 dark:text-emerald-400" />
                                   Approve
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => handleCancel(order._id)} className="text-red-400">
+                                <DropdownMenuItem onClick={() => handleCancel(order._id)} className="text-destructive">
                                   <Ban className="h-4 w-4 mr-2" />
                                   Cancel
                                 </DropdownMenuItem>
@@ -295,7 +291,7 @@ export default function PurchaseOrdersPage() {
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </td>
-                    </motion.tr>
+                    </tr>
                   )
                 })}
               </tbody>

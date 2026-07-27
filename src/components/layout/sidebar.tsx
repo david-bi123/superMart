@@ -91,8 +91,8 @@ function SidebarNavItem({ item, collapsed, onItemClick }: { item: NavItem; colla
       className={cn(
         "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 cursor-pointer",
         (isActive || hasActiveChild)
-          ? "bg-sidebar-accent/20 text-sidebar-accent-foreground shadow-sm"
-          : "text-sidebar-foreground/70 hover:bg-sidebar-accent/10 hover:text-sidebar-foreground"
+          ? "bg-primary/10 text-primary shadow-sm shadow-primary/5"
+          : "text-sidebar-foreground/70 hover:bg-sidebar-accent/8 hover:text-sidebar-foreground"
       )}
       onClick={() => {
         if (item.children) { setExpanded((e) => !e); }
@@ -107,7 +107,7 @@ function SidebarNavItem({ item, collapsed, onItemClick }: { item: NavItem; colla
               animate={{ rotate: expanded ? 180 : 0 }}
               transition={{ duration: 0.2 }}
             >
-              <ChevronDown size={16} className="opacity-50" />
+              <ChevronDown size={16} className="opacity-40" />
             </motion.span>
           )}
         </>
@@ -118,9 +118,9 @@ function SidebarNavItem({ item, collapsed, onItemClick }: { item: NavItem; colla
   const wrapper = collapsed ? (
     <Tooltip delayDuration={300}>
       <TooltipTrigger asChild>{linkContent}</TooltipTrigger>
-      <TooltipContent side="right" className="flex items-center gap-2">
+      <TooltipContent side="right" className="flex items-center gap-2 font-medium">
         {item.label}
-        {hasActiveChild && <Badge variant="secondary" className="h-1.5 w-1.5 rounded-full p-0" />}
+        {hasActiveChild && <Badge variant="primary" className="h-1.5 w-1.5 rounded-full p-0" />}
       </TooltipContent>
     </Tooltip>
   ) : (
@@ -143,7 +143,7 @@ function SidebarNavItem({ item, collapsed, onItemClick }: { item: NavItem; colla
             transition={{ duration: 0.2, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="ml-2 mt-1 space-y-0.5 border-l border-sidebar-border/50 pl-3">
+            <div className="ml-2 mt-1 space-y-0.5 border-l border-sidebar-border/40 pl-3">
               {item.children.map((child) => {
                 if (child.permission && !hasPermission(role, child.permission)) return null;
                 const isChildActive = pathname === child.href;
@@ -153,11 +153,14 @@ function SidebarNavItem({ item, collapsed, onItemClick }: { item: NavItem; colla
                       className={cn(
                         "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all duration-200",
                         isChildActive
-                          ? "bg-sidebar-accent/15 text-sidebar-accent-foreground font-medium"
-                          : "text-sidebar-foreground/60 hover:bg-sidebar-accent/10 hover:text-sidebar-foreground"
+                          ? "bg-primary/8 text-primary font-medium"
+                          : "text-sidebar-foreground/60 hover:bg-sidebar-accent/8 hover:text-sidebar-foreground"
                       )}
                     >
-                      <span className="h-1 w-1 rounded-full bg-current opacity-40" />
+                      <span className={cn(
+                        "h-1.5 w-1.5 rounded-full transition-colors",
+                        isChildActive ? "bg-primary" : "bg-current opacity-30"
+                      )} />
                       <span className="truncate">{child.label}</span>
                     </div>
                   </Link>
@@ -191,7 +194,7 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm"
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
             onClick={close}
           />
         )}
@@ -206,6 +209,7 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
         )}
         role={isMobile ? "dialog" : undefined}
         aria-modal={isMobile ? "true" : undefined}
+        aria-label="Sidebar navigation"
         style={
           isMobile
             ? { transform: isOpen ? "translateX(0)" : "translateX(-100%)" }
@@ -214,22 +218,23 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
       >
         <div className="flex h-16 shrink-0 items-center border-b border-sidebar-border/30 px-4">
           <div className="flex items-center gap-3 overflow-hidden">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/70 shadow-lg shadow-primary/20">
-              <Store size={18} className="text-primary-foreground" />
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl gradient-primary shadow-lg shadow-emerald-500/20">
+              <Store size={18} className="text-white" />
             </div>
             <motion.div
               animate={{ opacity: isOpen ? 1 : 0, width: isOpen ? "auto" : 0 }}
               transition={{ duration: 0.2 }}
               className="overflow-hidden whitespace-nowrap"
             >
-              <p className="text-sm font-semibold text-gradient">RetailFlow</p>
-              <p className="text-[10px] font-medium text-sidebar-foreground/40 uppercase tracking-wider">POS System</p>
+              <p className="text-sm font-bold text-gradient">RetailFlow</p>
+              <p className="text-[10px] font-medium text-sidebar-foreground/40 uppercase tracking-widest">POS System</p>
             </motion.div>
           </div>
           {isMobile ? (
             <button
               onClick={close}
               className="ml-auto flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-sidebar-foreground/40 hover:bg-sidebar-accent/10 hover:text-sidebar-foreground transition-colors"
+              aria-label="Close sidebar"
             >
               <X size={16} />
             </button>
@@ -237,6 +242,7 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
             <button
               onClick={toggle}
               className="ml-auto flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-sidebar-foreground/40 hover:bg-sidebar-accent/10 hover:text-sidebar-foreground transition-colors"
+              aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
             >
               {isOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
             </button>
@@ -253,8 +259,8 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
 
         <div className="shrink-0 border-t border-sidebar-border/30 p-3">
           {isOpen || isMobile ? (
-            <div className="flex items-center gap-3 rounded-xl px-3 py-2.5">
-              <Avatar className="h-8 w-8 shrink-0">
+            <div className="flex items-center gap-3 rounded-xl px-3 py-2.5 hover:bg-sidebar-accent/5 transition-colors">
+              <Avatar className="h-9 w-9 shrink-0">
                 {user?.image && <AvatarImage src={user.image} alt={user?.name ?? ""} />}
                 <AvatarFallback>{getInitials(user?.name ?? "U")}</AvatarFallback>
               </Avatar>
@@ -264,7 +270,8 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
               </div>
               <button
                 onClick={handleLogout}
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-sidebar-foreground/40 hover:bg-destructive/10 hover:text-destructive transition-colors"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sidebar-foreground/40 hover:bg-destructive/10 hover:text-destructive transition-colors"
+                aria-label="Sign out"
               >
                 <LogOut size={16} />
               </button>
@@ -279,7 +286,7 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
                   </Avatar>
                 </TooltipTrigger>
                 <TooltipContent side="right">
-                  <p>{user?.name ?? "User"}</p>
+                  <p className="font-medium">{user?.name ?? "User"}</p>
                   <p className="text-xs text-muted-foreground">{role.replace(/_/g, " ")}</p>
                 </TooltipContent>
               </Tooltip>
@@ -288,6 +295,7 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
                   <button
                     onClick={handleLogout}
                     className="flex h-8 w-8 items-center justify-center rounded-lg text-sidebar-foreground/40 hover:bg-destructive/10 hover:text-destructive transition-colors"
+                    aria-label="Sign out"
                   >
                     <LogOut size={16} />
                   </button>

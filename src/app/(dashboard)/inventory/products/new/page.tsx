@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { useForm, useFieldArray } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { motion, AnimatePresence } from "framer-motion"
-import { Plus, Trash2, GripVertical, ChevronRight } from "lucide-react"
+import { Plus, Trash2, GripVertical, Save } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
 import { PageHeader } from "@/components/ui/page-header"
 import { Card } from "@/components/ui/card"
@@ -98,25 +98,41 @@ export default function NewProductPage() {
         actions={
           <div className="flex items-center gap-2">
             <Button variant="outline" onClick={() => router.back()}>Cancel</Button>
-            <Button loading={submitting} onClick={form.handleSubmit(onSubmit)}>
-              <Plus className="h-4 w-4" />
-              Create Product
-            </Button>
           </div>
         }
       />
 
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <Tabs defaultValue="general" className="w-full">
           <TabsList className="mb-6">
-            <TabsTrigger value="general">General</TabsTrigger>
-            <TabsTrigger value="pricing">Pricing</TabsTrigger>
-            <TabsTrigger value="inventory">Inventory</TabsTrigger>
-            <TabsTrigger value="variants">Variants</TabsTrigger>
+            <TabsTrigger
+              value="general"
+              className="data-[state=active]:glass-card data-[state=active]:text-foreground"
+            >
+              General
+            </TabsTrigger>
+            <TabsTrigger
+              value="pricing"
+              className="data-[state=active]:glass-card data-[state=active]:text-foreground"
+            >
+              Pricing
+            </TabsTrigger>
+            <TabsTrigger
+              value="inventory"
+              className="data-[state=active]:glass-card data-[state=active]:text-foreground"
+            >
+              Inventory
+            </TabsTrigger>
+            <TabsTrigger
+              value="variants"
+              className="data-[state=active]:glass-card data-[state=active]:text-foreground"
+            >
+              Variants
+            </TabsTrigger>
           </TabsList>
 
           <AnimatedTabsContent value="general">
-            <Card glass className="p-6">
+            <Card glass className="p-6 rounded-xl">
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="md:col-span-2">
                   <FormField label="Product Name" error={errors.name} required>
@@ -206,7 +222,7 @@ export default function NewProductPage() {
           </AnimatedTabsContent>
 
           <AnimatedTabsContent value="pricing">
-            <Card glass className="p-6">
+            <Card glass className="p-6 rounded-xl">
               <div className="grid gap-6 md:grid-cols-2">
                 <FormField label="Purchase Price" error={errors.purchasePrice} required>
                   <Input
@@ -263,7 +279,7 @@ export default function NewProductPage() {
           </AnimatedTabsContent>
 
           <AnimatedTabsContent value="inventory">
-            <Card glass className="p-6">
+            <Card glass className="p-6 rounded-xl">
               <div className="grid gap-6 md:grid-cols-2">
                 <FormField label="Current Stock" error={errors.currentStock}>
                   <Input
@@ -318,7 +334,7 @@ export default function NewProductPage() {
           </AnimatedTabsContent>
 
           <AnimatedTabsContent value="variants">
-            <Card glass className="p-6">
+            <Card glass className="p-6 rounded-xl">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="text-lg font-semibold text-foreground">Product Variants</h3>
@@ -388,7 +404,7 @@ export default function NewProductPage() {
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="h-10 w-10 text-red-400 hover:text-red-300"
+                        className="h-10 w-10 text-destructive hover:text-destructive/80"
                         onClick={() => remove(index)}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -400,6 +416,23 @@ export default function NewProductPage() {
             </Card>
           </AnimatedTabsContent>
         </Tabs>
+
+        <div className="flex items-center justify-end gap-3 pt-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => router.back()}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            loading={submitting}
+          >
+            <Save className="h-4 w-4" />
+            Create Product
+          </Button>
+        </div>
       </form>
     </div>
   )

@@ -63,7 +63,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove, onUpdateDiscount }: {
         </div>
         <button
           onClick={() => onRemove(item.productId)}
-          className="h-7 w-7 rounded-lg bg-muted/50 hover:bg-red-500/20 text-muted-foreground/50 hover:text-red-400 flex items-center justify-center transition-all shrink-0 opacity-0 group-hover:opacity-100"
+          className="h-7 w-7 rounded-lg bg-muted/50 hover:bg-destructive/10 text-muted-foreground/50 hover:text-destructive flex items-center justify-center transition-all shrink-0 opacity-0 group-hover:opacity-100"
         >
           <Trash2 className="h-3.5 w-3.5" />
         </button>
@@ -95,7 +95,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove, onUpdateDiscount }: {
             ${(item.price * item.quantity).toFixed(2)}
           </p>
           {item.discount > 0 && (
-            <p className="text-[10px] text-red-400">-${item.discount.toFixed(2)}</p>
+            <p className="text-[10px] text-destructive">-${item.discount.toFixed(2)}</p>
           )}
         </div>
       </div>
@@ -226,7 +226,7 @@ export function CartPanel() {
           </Button>
           {items.length > 0 && (
             <Button variant="ghost" size="sm" onClick={clearCart}>
-              <Trash2 className="h-3.5 w-3.5 text-red-400" />
+              <Trash2 className="h-3.5 w-3.5 text-destructive" />
             </Button>
           )}
         </div>
@@ -295,7 +295,7 @@ export function CartPanel() {
           {totals.discountTotal > 0 && (
             <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Discount</span>
-              <span className="text-red-400">-${totals.discountTotal.toFixed(2)}</span>
+              <span className="text-destructive">-${totals.discountTotal.toFixed(2)}</span>
             </div>
           )}
           {totals.taxTotal > 0 && (
@@ -356,7 +356,7 @@ export function CartPanel() {
           >
             <ShoppingCart className="h-6 w-6" />
             {items.length > 0 && (
-              <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-red-500 text-[10px] font-bold flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-destructive text-destructive-foreground text-[10px] font-bold flex items-center justify-center">
                 {items.length}
               </span>
             )}
@@ -369,7 +369,7 @@ export function CartPanel() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+                  className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm"
                   onClick={() => setMobileCartOpen(false)}
                 />
                 <motion.div

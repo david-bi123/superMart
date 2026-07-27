@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { motion } from "framer-motion";
 import {
   Plus,
   Wallet,
@@ -9,7 +8,6 @@ import {
   TrendingDown,
   DollarSign,
   Search,
-  Filter,
   MoreHorizontal,
   Edit,
   Trash2,
@@ -60,23 +58,6 @@ import {
 } from "@/actions/expenses.actions";
 import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils/cn";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.05 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4, ease: "easeOut" as const },
-  },
-};
 
 interface Expense {
   _id: string;
@@ -225,12 +206,7 @@ export default function ExpensesPage() {
   ];
 
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="space-y-6 pb-8"
-    >
+    <div className="space-y-6 pb-8">
       <PageHeader
         title="Expenses"
         description="Track and manage business expenses"
@@ -242,10 +218,7 @@ export default function ExpensesPage() {
         }
       />
 
-      <motion.div
-        variants={itemVariants}
-        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
-      >
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {statsCards.map((card) => (
           <Card key={card.title} glass className="overflow-hidden">
             <CardContent className="p-6">
@@ -253,13 +226,13 @@ export default function ExpensesPage() {
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-muted-foreground">{card.title}</p>
                   <p className="text-2xl font-bold tracking-tight text-foreground">{card.value}</p>
-                  <p className="text-xs text-muted-foreground/50">{card.description}</p>
+                  <p className="text-xs text-muted-foreground">{card.description}</p>
                 </div>
                 <div className={cn(
                   "flex h-10 w-10 items-center justify-center rounded-xl",
-                  card.variant === "danger" ? "bg-red-500/15 text-red-400" :
-                  card.variant === "warning" ? "bg-amber-500/15 text-amber-400" :
-                  card.variant === "primary" ? "bg-blue-500/15 text-blue-400" :
+                  card.variant === "danger" ? "bg-destructive/15 text-destructive" :
+                  card.variant === "warning" ? "bg-amber-500/15 text-amber-600 dark:text-amber-400" :
+                  card.variant === "primary" ? "bg-primary/15 text-primary" :
                   "bg-muted text-foreground"
                 )}>
                   <card.icon className="h-5 w-5" />
@@ -268,155 +241,153 @@ export default function ExpensesPage() {
             </CardContent>
           </Card>
         ))}
-      </motion.div>
+      </div>
 
-      <motion.div variants={itemVariants}>
-        <Card glass>
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold text-foreground">Expense Records</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="mb-4 flex flex-wrap items-center gap-3">
-              <div className="relative flex-1 max-w-xs">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
-                <input
-                  value={search}
-                  onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                  placeholder="Search expenses..."
-                  className="flex h-9 w-full rounded-lg border border-border/50 bg-muted/50 pl-9 pr-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-                />
-              </div>
-              <Select value={categoryFilter} onValueChange={(v) => { setCategoryFilter(v); setPage(1); }}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="All Categories" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
-                  {categories.map((c) => (
-                    <SelectItem key={c._id} value={c._id}>{c.name}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+      <Card glass>
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-foreground">Expense Records</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="mb-4 flex flex-wrap items-center gap-3">
+            <div className="relative flex-1 max-w-xs">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                type="date"
-                value={dateFrom}
-                onChange={(e) => { setDateFrom(e.target.value); setPage(1); }}
-                className="w-[160px]"
-              />
-              <Input
-                type="date"
-                value={dateTo}
-                onChange={(e) => { setDateTo(e.target.value); setPage(1); }}
-                className="w-[160px]"
+                value={search}
+                onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                placeholder="Search expenses..."
+                className="pl-10"
               />
             </div>
+            <Select value={categoryFilter} onValueChange={(v) => { setCategoryFilter(v); setPage(1); }}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="All Categories" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+                {categories.map((c) => (
+                  <SelectItem key={c._id} value={c._id}>{c.name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Input
+              type="date"
+              value={dateFrom}
+              onChange={(e) => { setDateFrom(e.target.value); setPage(1); }}
+              className="w-[160px]"
+            />
+            <Input
+              type="date"
+              value={dateTo}
+              onChange={(e) => { setDateTo(e.target.value); setPage(1); }}
+              className="w-[160px]"
+            />
+          </div>
 
-            {loading ? (
-              <Loading text="Loading expenses..." />
-            ) : expenses.length === 0 ? (
-              <EmptyState
-                title="No expenses found"
-                description="Add your first expense to start tracking."
-                action={
-                  <Button onClick={() => setShowAddDialog(true)}>
-                    <Plus className="h-4 w-4" />
-                    Add Expense
-                  </Button>
-                }
-              />
-            ) : (
-              <>
-                <div className="rounded-xl border border-border/50 overflow-hidden">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Date</TableHead>
-                        <TableHead>Description</TableHead>
-                        <TableHead>Category</TableHead>
-                        <TableHead>Amount</TableHead>
-                        <TableHead>Payment</TableHead>
-                        <TableHead className="w-[80px]">Actions</TableHead>
+          {loading ? (
+            <Loading text="Loading expenses..." />
+          ) : expenses.length === 0 ? (
+            <EmptyState
+              title="No expenses found"
+              description="Add your first expense to start tracking."
+              action={
+                <Button onClick={() => setShowAddDialog(true)}>
+                  <Plus className="h-4 w-4" />
+                  Add Expense
+                </Button>
+              }
+            />
+          ) : (
+            <>
+              <div className="rounded-xl border border-border/50 overflow-hidden">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Description</TableHead>
+                      <TableHead>Category</TableHead>
+                      <TableHead>Amount</TableHead>
+                      <TableHead>Payment</TableHead>
+                      <TableHead className="w-[80px]">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {expenses.map((expense) => (
+                      <TableRow key={expense._id}>
+                        <TableCell className="text-muted-foreground">
+                          {new Date(expense.date).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-2">
+                            <span className="text-foreground font-medium">{expense.description}</span>
+                            {expense.isRecurring && (
+                              <Badge variant="warning">Recurring</Badge>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{expense.category}</Badge>
+                        </TableCell>
+                        <TableCell className="font-semibold text-foreground">
+                          ${expense.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">
+                          {expense.paymentMethod || "—"}
+                        </TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon">
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => toast.info("Edit coming soon")}>
+                                <Edit className="h-4 w-4 mr-2" />
+                                Edit
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="text-destructive"
+                                onClick={() => handleDelete(expense._id)}
+                              >
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
                       </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {expenses.map((expense) => (
-                        <TableRow key={expense._id}>
-                          <TableCell className="text-muted-foreground">
-                            {new Date(expense.date).toLocaleDateString()}
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <span className="text-foreground font-medium">{expense.description}</span>
-                              {expense.isRecurring && (
-                                <Badge variant="warning">Recurring</Badge>
-                              )}
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant="outline">{expense.category}</Badge>
-                          </TableCell>
-                          <TableCell className="font-semibold text-foreground">
-                            ${expense.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
-                          </TableCell>
-                          <TableCell className="text-muted-foreground">
-                            {expense.paymentMethod || "—"}
-                          </TableCell>
-                          <TableCell>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                  <MoreHorizontal className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => toast.info("Edit coming soon")}>
-                                  <Edit className="h-4 w-4 mr-2" />
-                                  Edit
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                  className="text-red-400"
-                                  onClick={() => handleDelete(expense._id)}
-                                >
-                                  <Trash2 className="h-4 w-4 mr-2" />
-                                  Delete
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
 
-                <div className="mt-4 flex items-center justify-between">
-                  <p className="text-sm text-muted-foreground/50">
-                    Page {page} of {totalPages}
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      disabled={page <= 1}
-                      onClick={() => setPage((p) => Math.max(1, p - 1))}
-                    >
-                      Previous
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      disabled={page >= totalPages}
-                      onClick={() => setPage((p) => p + 1)}
-                    >
-                      Next
-                    </Button>
-                  </div>
+              <div className="mt-4 flex items-center justify-between">
+                <p className="text-sm text-muted-foreground">
+                  Page {page} of {totalPages}
+                </p>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    disabled={page <= 1}
+                    onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  >
+                    Previous
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    disabled={page >= totalPages}
+                    onClick={() => setPage((p) => p + 1)}
+                  >
+                    Next
+                  </Button>
                 </div>
-              </>
-            )}
-          </CardContent>
-        </Card>
-      </motion.div>
+              </div>
+            </>
+          )}
+        </CardContent>
+      </Card>
 
       <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
         <DialogContent className="sm:max-w-[500px]">
@@ -510,6 +481,6 @@ export default function ExpensesPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </motion.div>
+    </div>
   );
 }

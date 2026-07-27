@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Plus, Edit3, Trash2, Building2, ImageOff } from "lucide-react"
+import { Plus, Edit3, Trash2, Building2 } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
 import { PageHeader } from "@/components/ui/page-header"
 import { Card } from "@/components/ui/card"
@@ -105,7 +105,7 @@ export default function BrandsPage() {
       />
 
       {loading ? (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {Array.from({ length: 6 }).map((_, i) => (
             <Card key={i} glass className="p-6">
               <div className="flex flex-col items-center text-center gap-3">
@@ -129,7 +129,7 @@ export default function BrandsPage() {
           }
         />
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           <AnimatePresence mode="popLayout">
             {brands.map((brand, index) => (
               <motion.div
@@ -140,12 +140,12 @@ export default function BrandsPage() {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ delay: index * 0.03 }}
               >
-                <Card glass className="p-6 group relative">
+                <Card glass hover className="p-6 group relative">
                   <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8"
+                      className="h-8 w-8 rounded-lg"
                       onClick={() => openEdit(brand)}
                     >
                       <Edit3 className="h-3.5 w-3.5" />
@@ -153,7 +153,7 @@ export default function BrandsPage() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8 text-red-400 hover:text-red-300"
+                      className="h-8 w-8 rounded-lg text-destructive hover:text-destructive/80"
                       onClick={() => handleDelete(brand._id)}
                     >
                       <Trash2 className="h-3.5 w-3.5" />
@@ -164,7 +164,7 @@ export default function BrandsPage() {
                       {brand.logo ? (
                         <img src={brand.logo} alt={brand.name} className="h-full w-full object-contain p-2" />
                       ) : (
-                        <Building2 className="h-7 w-7 text-muted-foreground/30" />
+                        <Building2 className="h-7 w-7 text-muted-foreground/40" />
                       )}
                     </div>
                     <div>
@@ -192,7 +192,7 @@ export default function BrandsPage() {
           <div className="space-y-4 py-2">
             <div>
               <label className="block text-sm font-medium text-foreground/80 mb-1.5">
-                Name <span className="text-red-400">*</span>
+                Name <span className="text-destructive">*</span>
               </label>
               <Input
                 value={formData.name}

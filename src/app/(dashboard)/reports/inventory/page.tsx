@@ -67,12 +67,6 @@ export default function InventoryReportsPage() {
 
   const formatCurrency = (v: number) => `$${v.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
 
-  const statusColors: Record<string, string> = {
-    inStock: "bg-emerald-500/15 text-emerald-400",
-    lowStock: "bg-amber-500/15 text-amber-400",
-    outOfStock: "bg-red-500/15 text-red-400",
-  };
-
   if (loading) {
     return (
       <div className="flex h-[60vh] items-center justify-center">
@@ -144,20 +138,20 @@ export default function InventoryReportsPage() {
                   <p className="text-xs font-medium text-muted-foreground">{card.title}</p>
                   <p className={cn(
                     "text-lg font-bold tracking-tight",
-                    card.variant === "success" ? "text-emerald-400" :
-                    card.variant === "danger" ? "text-red-400" :
-                    card.variant === "warning" ? "text-amber-400" :
-                    "text-blue-400"
+                    card.variant === "success" ? "text-emerald-600 dark:text-emerald-400" :
+                    card.variant === "danger" ? "text-red-600 dark:text-red-400" :
+                    card.variant === "warning" ? "text-amber-600 dark:text-amber-400" :
+                    "text-primary"
                   )}>
                     {card.value}
                   </p>
                 </div>
                 <div className={cn(
                   "flex h-8 w-8 items-center justify-center rounded-lg",
-                  card.variant === "success" ? "bg-emerald-500/15 text-emerald-400" :
-                  card.variant === "danger" ? "bg-red-500/15 text-red-400" :
-                  card.variant === "warning" ? "bg-amber-500/15 text-amber-400" :
-                  "bg-blue-500/15 text-blue-400"
+                  card.variant === "success" ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400" :
+                  card.variant === "danger" ? "bg-red-500/15 text-red-600 dark:text-red-400" :
+                  card.variant === "warning" ? "bg-amber-500/15 text-amber-600 dark:text-amber-400" :
+                  "bg-primary/15 text-primary"
                 )}>
                   <card.icon className="h-4 w-4" />
                 </div>
@@ -205,7 +199,7 @@ export default function InventoryReportsPage() {
         <Card glass>
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4 text-amber-400" />
+              <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
               Low Stock Alerts
             </CardTitle>
           </CardHeader>
@@ -251,7 +245,7 @@ export default function InventoryReportsPage() {
         <Card glass>
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
-              <Clock className="h-4 w-4 text-amber-400" />
+              <Clock className="h-4 w-4 text-amber-600 dark:text-amber-400" />
               Expiring Products
             </CardTitle>
           </CardHeader>
@@ -294,7 +288,7 @@ export default function InventoryReportsPage() {
         <Card glass>
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
-              <TrendingDown className="h-4 w-4 text-red-400" />
+              <TrendingDown className="h-4 w-4 text-red-600 dark:text-red-400" />
               Dead Stock (No Sales in 90 Days)
             </CardTitle>
           </CardHeader>
@@ -343,7 +337,7 @@ export default function InventoryReportsPage() {
         <Card glass>
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
-              <Box className="h-4 w-4 text-emerald-400" />
+              <Box className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               Top Products by Value
             </CardTitle>
           </CardHeader>
@@ -387,5 +381,3 @@ export default function InventoryReportsPage() {
     </motion.div>
   );
 }
-
-

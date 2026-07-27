@@ -267,8 +267,8 @@ export function ProductGrid({ onCartToggle }: ProductGridProps) {
                           </div>
                         )}
                         {outOfStock && (
-                          <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center">
-                            <span className="text-xs font-semibold text-red-400 bg-red-500/20 px-2 py-1 rounded-full">
+                          <div className="absolute inset-0 bg-background/60 backdrop-blur-[2px] flex items-center justify-center">
+                            <span className="text-xs font-semibold text-destructive bg-destructive/10 px-2 py-1 rounded-full">
                               Out of Stock
                             </span>
                           </div>

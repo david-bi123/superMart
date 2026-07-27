@@ -5,7 +5,7 @@ const publicRoutes = ["/login", "/register", "/forgot-password", "/reset-passwor
 
 const publicPrefixes = ["/api/", "/receipt/", "/_next/", "/favicon"];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isPublic =

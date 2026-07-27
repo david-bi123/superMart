@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSession, signOut } from "next-auth/react";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/providers/theme-provider";
 import { cn } from "@/lib/utils/cn";
 import { useSidebar } from "@/store/use-sidebar";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -44,6 +44,7 @@ const breadcrumbMap: Record<string, string> = {
   "brands": "Brands",
   "suppliers": "Suppliers",
   "purchases": "Purchases",
+  "orders": "Orders",
   "sales": "Sales",
   "customers": "Customers",
   "expenses": "Expenses",
@@ -51,6 +52,11 @@ const breadcrumbMap: Record<string, string> = {
   "financial": "Financial",
   "employees": "Employees",
   "settings": "Settings",
+  "profile": "Profile",
+  "users": "Users",
+  "billing": "Billing",
+  "notifications": "Notifications",
+  "new": "New",
 };
 
 export function Navbar() {
@@ -74,21 +80,26 @@ export function Navbar() {
     return () => document.removeEventListener("keydown", down);
   }, []);
 
+  useEffect(() => {
+    setSearchOpen(false);
+  }, [pathname]);
+
   const segments = pathname.split("/").filter(Boolean);
   const breadcrumbs = segments.map((seg, i) => ({
-    label: breadcrumbMap[seg] || seg.charAt(0).toUpperCase() + seg.slice(1),
+    label: breadcrumbMap[seg] || seg.charAt(0).toUpperCase() + seg.slice(1).replace(/-/g, " "),
     href: "/" + segments.slice(0, i + 1).join("/"),
   }));
 
   return (
     <>
-      <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-4 border-b border-border/50 bg-background/80 backdrop-blur-xl px-4 sm:px-6">
+      <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-4 border-b border-border/40 bg-background/70 dark:bg-background/60 backdrop-blur-xl px-4 sm:px-6">
         {isMobile && (
           <Button
             variant="ghost"
             size="icon"
             onClick={() => open()}
             className="shrink-0"
+            aria-label="Open sidebar"
           >
             <Menu size={20} />
           </Button>
@@ -100,7 +111,7 @@ export function Navbar() {
           </Link>
           {breadcrumbs.map((crumb, i) => (
             <span key={crumb.href} className="flex items-center gap-1.5 min-w-0">
-              <ChevronRight size={14} className="shrink-0 opacity-40" />
+              <ChevronRight size={14} className="shrink-0 opacity-30" />
               <Link
                 href={crumb.href}
                 className={cn(
@@ -115,12 +126,13 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-1.5">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => setSearchOpen(true)}
             className="hidden sm:flex text-muted-foreground"
+            aria-label="Search"
           >
             <Search size={18} />
           </Button>
@@ -129,20 +141,20 @@ export function Navbar() {
             variant="outline"
             size="sm"
             onClick={() => setSearchOpen(true)}
-            className="hidden md:flex items-center gap-2 text-muted-foreground h-9 w-48 justify-between bg-muted hover:bg-accent"
+            className="hidden md:flex items-center gap-2 text-muted-foreground h-9 w-52 justify-between bg-muted/50 hover:bg-muted border-border/50 rounded-xl"
           >
             <span className="flex items-center gap-2">
               <Search size={14} />
-              <span>Search...</span>
+              <span className="text-muted-foreground/70">Search...</span>
             </span>
-            <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+            <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded-md border border-border/50 bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground/50">
               <Command size={10} />K
             </kbd>
           </Button>
 
-          <Button variant="ghost" size="icon" className="relative text-muted-foreground">
+          <Button variant="ghost" size="icon" className="relative text-muted-foreground" aria-label="Notifications">
             <Bell size={18} />
-            <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+            <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground ring-2 ring-background">
               3
             </span>
           </Button>
@@ -151,7 +163,8 @@ export function Navbar() {
             variant="ghost"
             size="icon"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="text-muted-foreground relative"
+            className="text-muted-foreground"
+            aria-label="Toggle theme"
           >
             <Sun size={18} className="rotate-0 scale-100 transition-all duration-300 dark:-rotate-90 dark:scale-0" />
             <Moon size={18} className="absolute rotate-90 scale-0 transition-all duration-300 dark:rotate-0 dark:scale-100" />
@@ -159,7 +172,7 @@ export function Navbar() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full">
+              <Button variant="ghost" size="icon" className="rounded-full ml-1" aria-label="Account menu">
                 <Avatar className="h-8 w-8">
                   {user?.image && <AvatarImage src={user.image} alt={user?.name ?? ""} />}
                   <AvatarFallback>{getInitials(user?.name ?? "U")}</AvatarFallback>
@@ -175,12 +188,12 @@ export function Navbar() {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <User size={16} className="mr-2" />
+                <User size={16} className="mr-2 text-muted-foreground" />
                 Profile
                 <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Settings size={16} className="mr-2" />
+                <Settings size={16} className="mr-2 text-muted-foreground" />
                 Settings
                 <DropdownMenuShortcut>⌘,</DropdownMenuShortcut>
               </DropdownMenuItem>
@@ -201,45 +214,45 @@ export function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] bg-background/80 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] bg-black/30 backdrop-blur-sm"
             onClick={() => setSearchOpen(false)}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: -20 }}
+              initial={{ opacity: 0, scale: 0.96, y: -16 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -20 }}
-              transition={{ duration: 0.15 }}
+              exit={{ opacity: 0, scale: 0.96, y: -16 }}
+              transition={{ duration: 0.15, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-lg rounded-2xl border border-border bg-card shadow-2xl overflow-hidden premium-shadow"
+              className="w-full max-w-lg rounded-2xl border border-border/60 bg-background/95 shadow-2xl backdrop-blur-2xl overflow-hidden"
             >
-              <div className="flex items-center gap-3 border-b border-border px-4">
-                <Search size={18} className="text-muted-foreground shrink-0" />
+              <div className="flex items-center gap-3 border-b border-border/40 px-4">
+                <Search size={18} className="text-muted-foreground/70 shrink-0" />
                 <Input
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search pages, products, customers..."
-                  className="h-14 border-0 bg-transparent px-0 text-base placeholder:text-muted-foreground focus-visible:ring-0"
+                  className="h-14 border-0 bg-transparent px-0 text-base placeholder:text-muted-foreground/50 focus-visible:ring-0"
                   autoFocus
                 />
-                <kbd className="hidden sm:inline-flex h-6 items-center gap-1 rounded border border-border bg-muted px-2 text-xs font-mono text-muted-foreground">
+                <kbd className="hidden sm:inline-flex h-6 items-center gap-1 rounded-md border border-border/50 bg-muted px-2 text-xs font-mono text-muted-foreground/60">
                   ESC
                 </kbd>
               </div>
               <div className="p-2">
-                <div className="px-3 py-2 text-xs font-medium text-muted-foreground">Quick actions</div>
+                <div className="px-3 py-2 text-xs font-medium text-muted-foreground/60 uppercase tracking-wider">Quick actions</div>
                 {[
                   { label: "Create Product", href: "/dashboard/inventory/products/new" },
                   { label: "New Sale", href: "/dashboard/pos" },
-                  { label: "Add Customer", href: "/dashboard/customers/new" },
-                  { label: "Purchase Order", href: "/dashboard/purchases/new" },
+                  { label: "Add Customer", href: "/dashboard/customers" },
+                  { label: "Purchase Order", href: "/dashboard/purchases/orders/new" },
                 ].map((action) => (
                   <Link
                     key={action.href}
                     href={action.href}
                     onClick={() => setSearchOpen(false)}
-                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-foreground hover:bg-accent hover:text-accent-foreground transition-colors"
+                    className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-foreground hover:bg-accent/50 transition-colors"
                   >
-                    <ChevronRight size={16} className="opacity-40" />
+                    <ChevronRight size={14} className="text-muted-foreground/40" />
                     {action.label}
                   </Link>
                 ))}

@@ -18,6 +18,7 @@ import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/toast"
+import { cn } from "@/lib/utils/cn"
 
 interface NotificationPref {
   id: string
@@ -26,6 +27,28 @@ interface NotificationPref {
   icon: React.ElementType
   email: boolean
   inApp: boolean
+}
+
+const PREF_ICONS: Record<string, React.ElementType> = {
+  new_sale: ShoppingCart,
+  low_stock: AlertTriangle,
+  out_of_stock: Package,
+  daily_report: TrendingUp,
+  purchase_order: FileText,
+  expiry_alert: AlertTriangle,
+  system_update: Settings2,
+  invoice_reminder: Mail,
+}
+
+const PREF_COLORS: Record<string, string> = {
+  new_sale: "text-emerald-600 dark:text-emerald-400",
+  low_stock: "text-amber-600 dark:text-amber-400",
+  out_of_stock: "text-red-600 dark:text-red-400",
+  daily_report: "text-primary",
+  purchase_order: "text-primary",
+  expiry_alert: "text-orange-600 dark:text-orange-400",
+  system_update: "text-muted-foreground",
+  invoice_reminder: "text-primary",
 }
 
 export default function NotificationSettingsPage() {
@@ -78,14 +101,30 @@ export default function NotificationSettingsPage() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.03 }}
-                className="flex items-start gap-4 rounded-xl p-4 transition-colors hover:bg-muted/50"
+                className="flex items-center gap-4 rounded-xl border border-border/30 bg-card/50 backdrop-blur-sm p-4 transition-colors hover:bg-muted/30"
               >
-                <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center shrink-0">
-                  <pref.icon className="h-4 w-4 text-primary" />
+                <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                  <pref.icon className={cn("h-4 w-4", PREF_COLORS[pref.id] || "text-primary")} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-foreground">{pref.title}</p>
                   <p className="text-xs text-muted-foreground mt-0.5">{pref.description}</p>
+                </div>
+                <div className="flex items-center gap-6">
+                  <div className="flex items-center gap-2">
+                    <Label className="text-xs text-muted-foreground whitespace-nowrap">Email</Label>
+                    <Switch
+                      checked={pref.email}
+                      onCheckedChange={() => toggle(pref.id, "email")}
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Label className="text-xs text-muted-foreground whitespace-nowrap">In-App</Label>
+                    <Switch
+                      checked={pref.inApp}
+                      onCheckedChange={() => toggle(pref.id, "inApp")}
+                    />
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -102,7 +141,7 @@ export default function NotificationSettingsPage() {
               <CardDescription>Receive email alerts for important events</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {prefs.filter((p) => p.email !== undefined).map((pref, index) => (
+              {prefs.map((pref, index) => (
                 <motion.div
                   key={pref.id}
                   initial={{ opacity: 0, x: -8 }}
@@ -111,7 +150,7 @@ export default function NotificationSettingsPage() {
                   className="flex items-center justify-between"
                 >
                   <div>
-                    <Label className="text-sm text-foreground/80">{pref.title}</Label>
+                    <Label className="text-sm text-foreground">{pref.title}</Label>
                     <p className="text-xs text-muted-foreground">{pref.description}</p>
                   </div>
                   <Switch
@@ -132,7 +171,7 @@ export default function NotificationSettingsPage() {
               <CardDescription>Show notifications within the dashboard</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {prefs.filter((p) => p.inApp !== undefined).map((pref, index) => (
+              {prefs.map((pref, index) => (
                 <motion.div
                   key={pref.id}
                   initial={{ opacity: 0, x: -8 }}
@@ -141,7 +180,7 @@ export default function NotificationSettingsPage() {
                   className="flex items-center justify-between"
                 >
                   <div>
-                    <Label className="text-sm text-foreground/80">{pref.title}</Label>
+                    <Label className="text-sm text-foreground">{pref.title}</Label>
                     <p className="text-xs text-muted-foreground">{pref.description}</p>
                   </div>
                   <Switch

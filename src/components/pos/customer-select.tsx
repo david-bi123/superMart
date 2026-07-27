@@ -125,7 +125,7 @@ export function CustomerSelect({ open, onOpenChange, onSelect }: CustomerSelectP
                 animate={{ opacity: 1 }}
                 className="flex items-center justify-center py-8"
               >
-                <div className="h-5 w-5 animate-spin rounded-full border-2 border-violet-500 border-t-transparent" />
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
               </motion.div>
             ) : customers.length === 0 ? (
               <motion.div

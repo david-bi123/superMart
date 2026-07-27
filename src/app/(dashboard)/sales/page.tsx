@@ -2,48 +2,21 @@
 
 import * as React from "react"
 import { useRouter } from "next/navigation"
-import { motion } from "framer-motion"
 import {
   Plus,
   Download,
   Search,
   Calendar,
-  Filter,
   RefreshCw,
-  FileText,
 } from "lucide-react"
 import { PageHeader } from "@/components/ui/page-header"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Tabs, TabsList, TabsTrigger, AnimatedTabsContent } from "@/components/ui/tabs"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { SalesTable, type SaleRow } from "@/components/tables/sales-table"
 import { getSales, cancelSale, refundSale, getSalesStats } from "@/actions/sales.actions"
 import { toast } from "@/components/ui/toast"
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.05 },
-  },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4, ease: "easeOut" as const },
-  },
-}
 
 export default function SalesPage() {
   const router = useRouter()
@@ -178,12 +151,7 @@ export default function SalesPage() {
   ]
 
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="space-y-6 pb-8"
-    >
+    <div className="space-y-6 pb-8">
       <PageHeader
         title="Sales"
         description="Manage and track your sales transactions"
@@ -201,10 +169,7 @@ export default function SalesPage() {
         }
       />
 
-      <motion.div
-        variants={itemVariants}
-        className="grid grid-cols-2 gap-4 sm:grid-cols-4"
-      >
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         {statCards.map((stat) => (
           <Card key={stat.label} glass className="p-4">
             <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{stat.label}</p>
@@ -215,74 +180,72 @@ export default function SalesPage() {
             </p>
           </Card>
         ))}
-      </motion.div>
+      </div>
 
-      <motion.div variants={itemVariants}>
-        <Card glass className="p-5">
-          <Tabs value={statusTab} onValueChange={handleStatusTabChange}>
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
-              <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <Card glass className="p-5">
+        <Tabs value={statusTab} onValueChange={handleStatusTabChange}>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                value={search}
+                onChange={handleSearch}
+                placeholder="Search by invoice or customer..."
+                className="pl-10"
+              />
+            </div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <div className="relative">
+                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                 <Input
-                  value={search}
-                  onChange={handleSearch}
-                  placeholder="Search by invoice or customer..."
-                  className="pl-10"
+                  type="date"
+                  value={dateFrom}
+                  onChange={(e) => { setDateFrom(e.target.value); setPage(1) }}
+                  className="w-[150px] pl-10"
                 />
               </div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-                  <Input
-                    type="date"
-                    value={dateFrom}
-                    onChange={(e) => { setDateFrom(e.target.value); setPage(1) }}
-                    className="w-[150px] pl-10"
-                  />
-                </div>
-                <span className="text-muted-foreground/50">—</span>
-                <div className="relative">
-                  <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-                  <Input
-                    type="date"
-                    value={dateTo}
-                    onChange={(e) => { setDateTo(e.target.value); setPage(1) }}
-                    className="w-[150px] pl-10"
-                  />
-                </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => { setDateFrom(""); setDateTo(""); setPage(1) }}
-                >
-                  <RefreshCw className="h-4 w-4" />
-                </Button>
+              <span className="text-muted-foreground/50">—</span>
+              <div className="relative">
+                <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                <Input
+                  type="date"
+                  value={dateTo}
+                  onChange={(e) => { setDateTo(e.target.value); setPage(1) }}
+                  className="w-[150px] pl-10"
+                />
               </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => { setDateFrom(""); setDateTo(""); setPage(1) }}
+              >
+                <RefreshCw className="h-4 w-4" />
+              </Button>
             </div>
+          </div>
 
-            <TabsList className="mb-4">
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="completed">Completed</TabsTrigger>
-              <TabsTrigger value="draft">Draft</TabsTrigger>
-              <TabsTrigger value="cancelled">Cancelled</TabsTrigger>
-              <TabsTrigger value="refunded">Refunded</TabsTrigger>
-            </TabsList>
+          <TabsList className="mb-4">
+            <TabsTrigger value="all">All</TabsTrigger>
+            <TabsTrigger value="completed">Completed</TabsTrigger>
+            <TabsTrigger value="draft">Draft</TabsTrigger>
+            <TabsTrigger value="cancelled">Cancelled</TabsTrigger>
+            <TabsTrigger value="refunded">Refunded</TabsTrigger>
+          </TabsList>
 
-            <AnimatedTabsContent value={statusTab}>
-              <SalesTable
-                data={sales}
-                loading={loading}
-                totalPages={totalPages}
-                page={page}
-                onPageChange={setPage}
-                onCancel={handleCancel}
-                onRefund={handleRefund}
-                onView={(id) => router.push(`/sales/${id}`)}
-              />
-            </AnimatedTabsContent>
-          </Tabs>
-        </Card>
-      </motion.div>
-    </motion.div>
+          <AnimatedTabsContent value={statusTab}>
+            <SalesTable
+              data={sales}
+              loading={loading}
+              totalPages={totalPages}
+              page={page}
+              onPageChange={setPage}
+              onCancel={handleCancel}
+              onRefund={handleRefund}
+              onView={(id) => router.push(`/sales/${id}`)}
+            />
+          </AnimatedTabsContent>
+        </Tabs>
+      </Card>
+    </div>
   )
 }

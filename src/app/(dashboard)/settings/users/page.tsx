@@ -44,6 +44,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { toast } from "@/components/ui/toast"
 import { getUsers, createUser, updateUser, deleteUser } from "@/actions/settings.actions"
+import { cn } from "@/lib/utils/cn"
 
 const ROLE_CONFIG: Record<string, { label: string; color: "default" | "primary" | "secondary" | "destructive" | "warning" }> = {
   super_admin: { label: "Super Admin", color: "destructive" },
@@ -52,6 +53,23 @@ const ROLE_CONFIG: Record<string, { label: string; color: "default" | "primary" 
   cashier: { label: "Cashier", color: "secondary" },
   inventory_officer: { label: "Inventory Officer", color: "warning" },
   accountant: { label: "Accountant", color: "default" },
+}
+
+const AVATAR_GRADIENTS = [
+  "from-primary to-primary/80",
+  "from-emerald-500 to-teal-600",
+  "from-violet-500 to-indigo-600",
+  "from-amber-500 to-orange-600",
+  "from-rose-500 to-pink-600",
+  "from-cyan-500 to-blue-600",
+]
+
+function getAvatarGradient(name: string) {
+  let hash = 0
+  for (let i = 0; i < name.length; i++) {
+    hash = name.charCodeAt(i) + ((hash << 5) - hash)
+  }
+  return AVATAR_GRADIENTS[Math.abs(hash) % AVATAR_GRADIENTS.length]
 }
 
 interface UserRow {
@@ -194,9 +212,12 @@ export default function UsersPage() {
                 key={user._id}
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex items-center gap-4 rounded-xl border border-border/30 bg-muted/20 p-4 transition-colors hover:bg-muted/40"
+                className="flex items-center gap-4 rounded-xl border border-border/30 bg-card/50 backdrop-blur-sm p-4 transition-colors hover:bg-muted/40"
               >
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center text-primary-foreground text-sm font-semibold shrink-0">
+                <div className={cn(
+                  "h-10 w-10 rounded-full bg-gradient-to-br flex items-center justify-center text-primary-foreground text-sm font-semibold shrink-0",
+                  getAvatarGradient(user.name)
+                )}>
                   {user.name.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -223,7 +244,7 @@ export default function UsersPage() {
                   </div>
                 </div>
                 <div className="hidden sm:block">{roleBadge(user.role)}</div>
-                <div className="text-xs text-muted-foreground/60 hidden md:block">
+                <div className="text-xs text-muted-foreground hidden md:block">
                   {user.lastLogin
                     ? new Date(user.lastLogin).toLocaleDateString()
                     : "Never"}
@@ -243,7 +264,7 @@ export default function UsersPage() {
                       <>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
-                          className="text-red-400"
+                          className="text-destructive"
                           onClick={() => handleDeactivate(user._id)}
                         >
                           <UserX className="h-4 w-4 mr-2" />
@@ -285,7 +306,7 @@ export default function UsersPage() {
             )}
             <Input label="Phone" value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} />
             <div>
-              <label className="block text-sm font-medium text-foreground/80 mb-1.5">Role</label>
+              <label className="block text-sm font-medium text-muted-foreground mb-1.5">Role</label>
               <Select value={form.role} onValueChange={(v) => setForm((f) => ({ ...f, role: v }))}>
                 <SelectTrigger>
                   <SelectValue />

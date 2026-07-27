@@ -92,40 +92,52 @@ const iconMap = {
 
 const colorMap = {
   success:
-    "bg-emerald-50 border-emerald-200 dark:bg-emerald-950/50 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400",
+    "border-emerald-200/60 dark:border-emerald-500/20",
   error:
-    "bg-destructive/10 border-destructive/20 text-destructive",
+    "border-destructive/20",
   warning:
-    "bg-amber-50 border-amber-200 dark:bg-amber-950/50 dark:border-amber-800 text-amber-700 dark:text-amber-400",
+    "border-amber-200/60 dark:border-amber-500/20",
   info:
-    "bg-muted border-border text-foreground",
+    "border-border",
+}
+
+const iconColorMap = {
+  success: "text-emerald-500 dark:text-emerald-400",
+  error: "text-destructive",
+  warning: "text-amber-500 dark:text-amber-400",
+  info: "text-muted-foreground",
 }
 
 function Toaster() {
   const { toasts, dismiss } = useToast()
 
   return (
-    <div className="fixed bottom-4 right-4 z-[100] flex flex-col gap-2 max-w-sm w-full pointer-events-none">
+    <div
+      aria-live="polite"
+      aria-label="Notifications"
+      role="status"
+      className="fixed bottom-4 right-4 z-[100] flex flex-col gap-2 max-w-sm w-full pointer-events-none"
+    >
       <AnimatePresence>
         {toasts.map((t) => {
           const Icon = iconMap[t.type]
           return (
             <motion.div
               key={t.id}
-              initial={{ opacity: 0, x: 100, scale: 0.9 }}
+              initial={{ opacity: 0, x: 80, scale: 0.95 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 100, scale: 0.9 }}
-              transition={{ type: "spring", damping: 20, stiffness: 300 }}
+              exit={{ opacity: 0, x: 80, scale: 0.95 }}
+              transition={{ type: "spring", damping: 22, stiffness: 300 }}
               className={cn(
-                "pointer-events-auto flex items-start gap-3 rounded-xl border p-4 shadow-lg backdrop-blur-xl bg-background/80",
+                "pointer-events-auto flex items-start gap-3 rounded-xl border bg-background/90 dark:bg-background/95 p-4 shadow-lg backdrop-blur-xl",
                 colorMap[t.type]
               )}
             >
-              <Icon className="h-5 w-5 shrink-0 mt-0.5" />
-              <p className="text-sm font-medium flex-1">{t.message}</p>
+              <Icon className={cn("h-5 w-5 shrink-0 mt-0.5", iconColorMap[t.type])} />
+              <p className="text-sm font-medium flex-1 text-foreground">{t.message}</p>
               <button
                 onClick={() => dismiss(t.id)}
-                className="shrink-0 rounded-lg p-1 opacity-60 hover:opacity-100 transition-opacity hover:bg-accent"
+                className="shrink-0 rounded-lg p-1 opacity-40 hover:opacity-100 transition-opacity hover:bg-muted"
               >
                 <X className="h-4 w-4" />
               </button>

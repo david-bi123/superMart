@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils/cn";
@@ -19,24 +18,14 @@ interface TopProductsProps {
   loading?: boolean;
 }
 
-const rankColors = [
-  "text-amber-400",
-  "text-gray-300",
-  "text-amber-600",
-] as const;
-
-const rankBgColors = [
-  "bg-amber-400/10 border-amber-400/20",
-  "bg-gray-300/10 border-gray-300/20",
-  "bg-amber-600/10 border-amber-600/20",
-] as const;
-
 export function TopProducts({ data, loading }: TopProductsProps) {
   return (
-    <Card glass className="overflow-hidden">
+    <Card className="overflow-hidden">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-lg font-semibold text-foreground">
-          <Trophy className="h-5 w-5 text-amber-400" />
+        <CardTitle className="flex items-center gap-2 text-base font-semibold text-foreground">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400">
+            <Trophy className="h-4 w-4" />
+          </div>
           Top Products
         </CardTitle>
       </CardHeader>
@@ -44,62 +33,61 @@ export function TopProducts({ data, loading }: TopProductsProps) {
         {loading ? (
           <div className="space-y-3">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-4">
-                <Skeleton variant="circular" className="h-8 w-8" />
+              <div key={i} className="flex items-center gap-3">
+                <Skeleton className="h-8 w-8 rounded-lg shrink-0" />
                 <div className="flex-1 space-y-1.5">
-                  <Skeleton variant="text" className="h-4 w-32" />
-                  <Skeleton variant="text" className="h-3 w-24" />
+                  <Skeleton className="h-3.5 w-32 rounded-lg" />
+                  <Skeleton className="h-2.5 w-24 rounded-lg" />
                 </div>
-                <Skeleton variant="text" className="h-4 w-16" />
+                <Skeleton className="h-3.5 w-16 rounded-lg" />
               </div>
             ))}
           </div>
         ) : !data?.length ? (
-          <div className="flex flex-col items-center justify-center py-8">
-            <Package className="mb-2 h-8 w-8 text-muted-foreground/50" />
+          <div className="flex flex-col items-center justify-center py-10">
+            <Package className="mb-2 h-8 w-8 text-muted-foreground/30" />
             <p className="text-sm text-muted-foreground/50">No product sales yet</p>
           </div>
         ) : (
-          <div className="space-y-1">
+          <div className="space-y-0.5">
             {data.map((product, index) => (
-              <motion.div
+              <div
                 key={product.productId}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.05, duration: 0.3 }}
                 className={cn(
-                  "group flex items-center gap-3 rounded-xl border border-transparent px-3 py-2.5 transition-all duration-200 hover:border-border/50 hover:bg-muted/30",
+                  "group flex items-center gap-3 rounded-xl px-3 py-2.5 transition-all duration-200 hover:bg-muted/50",
                 )}
               >
                 <div
                   className={cn(
                     "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border text-xs font-bold",
-                    index < 3 ? rankBgColors[index] : "border-border/50 bg-muted/50 text-muted-foreground/50",
+                    index === 0
+                      ? "bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400"
+                      : index === 1
+                      ? "bg-gray-100 dark:bg-gray-500/10 border-gray-200 dark:border-gray-500/20 text-gray-600 dark:text-gray-400"
+                      : index === 2
+                      ? "bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/20 text-orange-600 dark:text-orange-400"
+                      : "bg-muted/50 border-border/50 text-muted-foreground/50",
                   )}
                 >
-                  {index < 3 ? (
-                    <span className={rankColors[index]}>#{index + 1}</span>
-                  ) : (
-                    <span className="text-muted-foreground/50">#{index + 1}</span>
-                  )}
+                  #{index + 1}
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-foreground">
                     {product.name}
                   </p>
-                  <p className="text-xs text-muted-foreground/50">
+                  <p className="text-xs text-muted-foreground/60">
                     {product.quantity} units sold
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-semibold text-emerald-400">
+                  <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
                     ${product.revenue.toLocaleString()}
                   </p>
                   <p className="text-xs text-muted-foreground/50">
                     ${product.profit.toLocaleString()} profit
                   </p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         )}

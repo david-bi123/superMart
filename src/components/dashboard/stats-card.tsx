@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils/cn";
@@ -19,32 +18,42 @@ interface StatsCardProps {
 
 const variantStyles: Record<
   string,
-  { circle: string; gradient: string; text: string }
+  { circle: string; gradient: string; text: string; trendPositive: string; trendNegative: string }
 > = {
   default: {
-    circle: "bg-muted text-foreground",
-    gradient: "from-white/5 to-transparent",
+    circle: "bg-muted text-muted-foreground",
+    gradient: "from-muted/50 to-transparent",
     text: "text-foreground",
+    trendPositive: "text-emerald-600 dark:text-emerald-400",
+    trendNegative: "text-destructive",
   },
   primary: {
-    circle: "bg-blue-500/15 text-blue-400",
-    gradient: "from-blue-500/10 to-transparent",
-    text: "text-blue-400",
+    circle: "bg-primary/10 text-primary",
+    gradient: "from-primary/5 to-transparent",
+    text: "text-primary",
+    trendPositive: "text-emerald-600 dark:text-emerald-400",
+    trendNegative: "text-destructive",
   },
   success: {
-    circle: "bg-emerald-500/15 text-emerald-400",
-    gradient: "from-emerald-500/10 to-transparent",
-    text: "text-emerald-400",
+    circle: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+    gradient: "from-emerald-500/5 to-transparent",
+    text: "text-emerald-600 dark:text-emerald-400",
+    trendPositive: "text-emerald-600 dark:text-emerald-400",
+    trendNegative: "text-destructive",
   },
   warning: {
-    circle: "bg-amber-500/15 text-amber-400",
-    gradient: "from-amber-500/10 to-transparent",
-    text: "text-amber-400",
+    circle: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+    gradient: "from-amber-500/5 to-transparent",
+    text: "text-amber-600 dark:text-amber-400",
+    trendPositive: "text-emerald-600 dark:text-emerald-400",
+    trendNegative: "text-destructive",
   },
   danger: {
-    circle: "bg-red-500/15 text-red-400",
-    gradient: "from-red-500/10 to-transparent",
-    text: "text-red-400",
+    circle: "bg-destructive/10 text-destructive",
+    gradient: "from-destructive/5 to-transparent",
+    text: "text-destructive",
+    trendPositive: "text-emerald-600 dark:text-emerald-400",
+    trendNegative: "text-destructive",
   },
 };
 
@@ -94,15 +103,15 @@ export function StatsCard({
 
   if (loading) {
     return (
-      <Card glass className="overflow-hidden">
-        <CardContent className="p-6">
+      <Card className="overflow-hidden">
+        <CardContent className="p-5">
           <div className="flex items-start justify-between">
             <div className="space-y-3">
-              <Skeleton variant="text" className="h-4 w-24" />
-              <Skeleton variant="text" className="h-8 w-32" />
-              {description && <Skeleton variant="text" className="h-3 w-20" />}
+              <Skeleton className="h-3.5 w-24 rounded-lg" />
+              <Skeleton className="h-7 w-32 rounded-lg" />
+              {description && <Skeleton className="h-3 w-20 rounded-lg" />}
             </div>
-            <Skeleton variant="circular" className="h-12 w-12" />
+            <Skeleton className="h-11 w-11 rounded-xl" />
           </div>
         </CardContent>
       </Card>
@@ -112,77 +121,55 @@ export function StatsCard({
   const numericValue = typeof value === "string" ? parseFloat(value) || 0 : value;
 
   return (
-    <motion.div
-      whileHover={{ scale: 1.02, y: -2 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-    >
-      <Card
-        glass
-          className={cn(
-            "group relative overflow-hidden transition-shadow duration-300 hover:shadow-xl hover:shadow-primary/5",
-          )}
-      >
-        <div
-          className={cn(
-            "pointer-events-none absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-300 group-hover:opacity-100",
-            styles.gradient,
-          )}
-        />
-        <CardContent className="relative p-6">
-          <div className="flex items-start justify-between">
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-muted-foreground">{title}</p>
-              <div className="flex items-baseline gap-2">
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, ease: "easeOut" as const }}
-                  className="text-3xl font-bold tracking-tight text-foreground"
-                >
-                  {typeof value === "number" && !isNaN(value) ? (
-                    <>
-                      <AnimatedCounter value={value} />
-                    </>
-                  ) : (
-                    value
-                  )}
-                </motion.p>
-                {trend && (
-                  <motion.div
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3, duration: 0.3 }}
-                    className={cn(
-                      "flex items-center gap-0.5 text-xs font-medium",
-                      trend.positive ? "text-emerald-400" : "text-red-400",
-                    )}
-                  >
-                    {trend.positive ? (
-                      <TrendingUp className="h-3 w-3" />
-                    ) : (
-                      <TrendingDown className="h-3 w-3" />
-                    )}
-                    {Math.abs(trend.value)}%
-                  </motion.div>
+    <Card hover className="group relative overflow-hidden transition-all duration-300">
+      <div
+        className={cn(
+          "pointer-events-none absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-300 group-hover:opacity-100",
+          styles.gradient,
+        )}
+      />
+      <CardContent className="relative p-5">
+        <div className="flex items-start justify-between">
+          <div className="space-y-1.5">
+            <p className="text-sm font-medium text-muted-foreground">{title}</p>
+            <div className="flex items-baseline gap-2">
+              <p className="text-2xl font-bold tracking-tight text-foreground lg:text-3xl">
+                {typeof value === "number" && !isNaN(value) ? (
+                  <AnimatedCounter value={value} />
+                ) : (
+                  value
                 )}
-              </div>
-              {description && (
-                <p className="text-xs text-muted-foreground/50">{description}</p>
+              </p>
+              {trend && (
+                <div
+                  className={cn(
+                    "flex items-center gap-0.5 text-xs font-medium",
+                    trend.positive ? styles.trendPositive : styles.trendNegative,
+                  )}
+                >
+                  {trend.positive ? (
+                    <TrendingUp className="h-3 w-3" />
+                  ) : (
+                    <TrendingDown className="h-3 w-3" />
+                  )}
+                  {Math.abs(trend.value)}%
+                </div>
               )}
             </div>
-            <motion.div
-              whileHover={{ rotate: -5, scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 15 }}
-              className={cn(
-                "flex h-12 w-12 items-center justify-center rounded-xl transition-colors",
-                styles.circle,
-              )}
-            >
-              <Icon className="h-5 w-5" />
-            </motion.div>
+            {description && (
+              <p className="text-xs text-muted-foreground/60">{description}</p>
+            )}
           </div>
-        </CardContent>
-      </Card>
-    </motion.div>
+          <div
+            className={cn(
+              "flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-200 group-hover:scale-110",
+              styles.circle,
+            )}
+          >
+            <Icon className="h-5 w-5" />
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

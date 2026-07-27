@@ -20,7 +20,7 @@ const Avatar = React.forwardRef<
   <AvatarPrimitive.Root
     ref={ref}
     className={cn(
-      "relative flex shrink-0 overflow-hidden rounded-full border border-border",
+      "relative flex shrink-0 overflow-hidden rounded-full border border-border/50",
       sizeClasses[size],
       className
     )}
@@ -41,27 +41,34 @@ const AvatarImage = React.forwardRef<
 ))
 AvatarImage.displayName = AvatarPrimitive.Image.displayName
 
+const AVATAR_COLORS = [
+  "bg-primary/10 text-primary",
+  "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400",
+  "bg-blue-100 text-blue-700 dark:bg-blue-500/15 dark:text-blue-400",
+  "bg-purple-100 text-purple-700 dark:bg-purple-500/15 dark:text-purple-400",
+  "bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400",
+  "bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-400",
+  "bg-cyan-100 text-cyan-700 dark:bg-cyan-500/15 dark:text-cyan-400",
+  "bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-400",
+]
+
+function hashName(name: string): number {
+  let hash = 0
+  for (let i = 0; i < name.length; i++) {
+    hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0
+  }
+  return Math.abs(hash)
+}
+
 const AvatarFallback = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Fallback>,
   React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
 >(({ className, ...props }, ref) => {
-  const [bgColor] = React.useState(() => {
-    const colors = [
-      "bg-primary/10 text-primary",
-      "bg-destructive/10 text-destructive",
-      "bg-amber-100 text-amber-700 dark:bg-amber-950/30 dark:text-amber-400",
-      "bg-blue-100 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400",
-      "bg-purple-100 text-purple-700 dark:bg-purple-950/30 dark:text-purple-400",
-    ]
-    return colors[Math.floor(Math.random() * colors.length)]
-  })
-
   return (
     <AvatarPrimitive.Fallback
       ref={ref}
       className={cn(
-        "flex h-full w-full items-center justify-center rounded-full text-sm font-semibold",
-        bgColor,
+        "flex h-full w-full items-center justify-center rounded-full text-sm font-semibold bg-gradient-to-br from-primary/10 to-primary/5 text-primary dark:from-primary/15 dark:to-primary/5 dark:text-primary",
         className
       )}
       {...props}

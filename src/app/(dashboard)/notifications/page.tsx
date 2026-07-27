@@ -31,6 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { toast } from "@/components/ui/toast"
+import { cn } from "@/lib/utils/cn"
 import {
   getNotifications,
   markNotificationRead,
@@ -60,14 +61,14 @@ const TYPE_ICONS: Record<string, React.ElementType> = {
 }
 
 const TYPE_COLORS: Record<string, string> = {
-  new_sale: "from-emerald-500/10 to-teal-500/10 text-emerald-400",
-  low_stock: "from-amber-500/10 to-yellow-500/10 text-amber-400",
-  out_of_stock: "from-red-500/10 to-rose-500/10 text-red-400",
-  daily_report: "from-blue-500/10 to-cyan-500/10 text-blue-400",
+  new_sale: "from-emerald-500/10 to-teal-500/10 text-emerald-600 dark:text-emerald-400",
+  low_stock: "from-amber-500/10 to-yellow-500/10 text-amber-600 dark:text-amber-400",
+  out_of_stock: "from-red-500/10 to-rose-500/10 text-red-600 dark:text-red-400",
+  daily_report: "from-blue-500/10 to-cyan-500/10 text-primary",
   purchase_order: "from-primary/10 to-primary/5 text-primary",
-  expiry_alert: "from-orange-500/10 to-red-500/10 text-orange-400",
-  system_update: "from-gray-500/10 to-slate-500/10 text-muted-foreground",
-  invoice_reminder: "from-purple-500/10 to-pink-500/10 text-purple-400",
+  expiry_alert: "from-orange-500/10 to-red-500/10 text-orange-600 dark:text-orange-400",
+  system_update: "from-muted/50 to-muted/30 text-muted-foreground",
+  invoice_reminder: "from-purple-500/10 to-pink-500/10 text-primary",
 }
 
 export default function NotificationsPage() {
@@ -136,7 +137,7 @@ export default function NotificationsPage() {
 
       <Card glass className="p-5">
         <div className="flex items-center gap-4 mb-4">
-          <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v); setPage(1) }}>
+          <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v === "all" ? "" : v); setPage(1) }}>
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="All Types" />
             </SelectTrigger>
@@ -183,32 +184,36 @@ export default function NotificationsPage() {
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, x: -20 }}
-                    className={`relative flex items-start gap-4 rounded-xl p-4 transition-colors cursor-pointer ${
+                    className={cn(
+                      "relative flex items-start gap-4 rounded-xl p-4 transition-colors cursor-pointer",
                       n.read
                         ? "hover:bg-muted/30"
                         : "bg-gradient-to-r from-primary/5 to-primary/5 border border-primary/10 hover:from-primary/10 hover:to-primary/10"
-                    }`}
+                    )}
                     onClick={() => !n.read && handleMarkRead(n._id)}
                   >
                     {!n.read && (
                       <span className="absolute top-4 left-2 w-2 h-2 rounded-full bg-primary" />
                     )}
-                    <div className={`h-10 w-10 rounded-xl bg-gradient-to-br flex items-center justify-center shrink-0 ${TYPE_COLORS[n.type] || "from-muted/50 to-muted text-muted-foreground/50"}`}>
+                    <div className={cn(
+                      "h-10 w-10 rounded-xl bg-gradient-to-br flex items-center justify-center shrink-0",
+                      TYPE_COLORS[n.type] || "from-muted/50 to-muted text-muted-foreground"
+                    )}>
                       <Icon className="h-5 w-5" />
                     </div>
                     <div className="flex-1 min-w-0 pl-2">
                       <div className="flex items-center gap-2">
-                        <p className={`text-sm ${n.read ? "text-muted-foreground" : "text-foreground font-medium"}`}>
+                        <p className={cn("text-sm", n.read ? "text-muted-foreground" : "text-foreground font-medium")}>
                           {n.title}
                         </p>
-                        {n.read && <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />}
+                        {n.read && <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />}
                       </div>
-                      <p className={`text-xs mt-0.5 ${n.read ? "text-muted-foreground/30" : "text-muted-foreground"}`}>
+                      <p className={cn("text-xs mt-0.5", n.read ? "text-muted-foreground/50" : "text-muted-foreground")}>
                         {n.message}
                       </p>
                       <div className="flex items-center gap-2 mt-1.5">
-                        <Clock className="h-3 w-3 text-muted-foreground/20" />
-                        <span className="text-[10px] text-muted-foreground/20">
+                        <Clock className="h-3 w-3 text-muted-foreground/40" />
+                        <span className="text-[10px] text-muted-foreground/40">
                           {new Date(n.sentAt).toLocaleDateString()} at {new Date(n.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </span>
                         <Badge variant="outline" className="text-[10px]">{n.type.replace(/_/g, " ")}</Badge>
@@ -223,7 +228,7 @@ export default function NotificationsPage() {
 
         {totalPages > 1 && (
           <div className="flex items-center justify-between pt-4 mt-4 border-t border-border/20">
-            <p className="text-sm text-muted-foreground/50">Page {page} of {totalPages}</p>
+            <p className="text-sm text-muted-foreground">Page {page} of {totalPages}</p>
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>Previous</Button>
               <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>Next</Button>

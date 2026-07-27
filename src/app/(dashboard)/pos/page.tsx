@@ -48,7 +48,7 @@ export default function POSPage() {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="fixed inset-x-0 top-16 bottom-0 flex bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950"
+      className="flex-1 flex bg-background"
     >
       <div className="flex-1 flex flex-col min-w-0">
         <ProductGrid />

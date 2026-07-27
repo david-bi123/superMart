@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import {
   DollarSign,
   ShoppingCart,
@@ -62,23 +61,6 @@ interface DashboardData {
     expenses: number;
   }[];
 }
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.05 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.4, ease: "easeOut" as const },
-  },
-};
 
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardData>({
@@ -186,22 +168,14 @@ export default function DashboardPage() {
   ];
 
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="space-y-6 pb-8"
-    >
+    <div className="space-y-6 pb-8">
       <PageHeader
         title="Dashboard"
         description="Overview of your retail business performance"
       />
 
       {/* Stats Cards Grid */}
-      <motion.div
-        variants={itemVariants}
-        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
-      >
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {statsCards.map((card) => (
           <StatsCard
             key={card.title}
@@ -213,30 +187,22 @@ export default function DashboardPage() {
             loading={loading}
           />
         ))}
-      </motion.div>
+      </div>
 
       {/* Charts Row */}
-      <motion.div
-        variants={itemVariants}
-        className="grid grid-cols-1 gap-4 lg:grid-cols-2"
-      >
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <RevenueChart data={data.salesChart} loading={loading} />
         <ProfitChart data={data.salesChart} loading={loading} />
-      </motion.div>
+      </div>
 
       {/* Monthly Comparison */}
-      <motion.div variants={itemVariants}>
-        <MonthlyComparison data={data.monthlyComparison} loading={loading} />
-      </motion.div>
+      <MonthlyComparison data={data.monthlyComparison} loading={loading} />
 
       {/* Bottom Row */}
-      <motion.div
-        variants={itemVariants}
-        className="grid grid-cols-1 gap-4 lg:grid-cols-2"
-      >
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <TopProducts data={data.topProducts} loading={loading} />
         <RecentSales data={data.recentSales} loading={loading} />
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }

@@ -209,6 +209,51 @@ export async function getPurchaseOrder(id: string) {
   }
 }
 
+export async function getPOSuppliers() {
+  try {
+    await connectDB();
+    const session = await auth();
+    const businessId = getBusinessId(session);
+    const docs = await Supplier.find({
+      businessId: new mongoose.Types.ObjectId(businessId),
+      isActive: true,
+    })
+      .select("name company")
+      .lean();
+    return {
+      success: true as const,
+      data: docs.map((s) => ({ _id: s._id.toString(), name: s.name, company: (s as any).company || "" })),
+    };
+  } catch {
+    return { success: false as const, error: "Failed to fetch suppliers" };
+  }
+}
+
+export async function getPOProducts() {
+  try {
+    await connectDB();
+    const session = await auth();
+    const businessId = getBusinessId(session);
+    const docs = await Product.find({
+      businessId: new mongoose.Types.ObjectId(businessId),
+      isActive: true,
+    })
+      .select("name sku purchasePrice sellingPrice")
+      .lean();
+    return {
+      success: true as const,
+      data: docs.map((p) => ({
+        _id: p._id.toString(),
+        name: p.name,
+        sku: (p as any).sku || "",
+        purchasePrice: (p as any).purchasePrice || 0,
+      })),
+    };
+  } catch {
+    return { success: false as const, error: "Failed to fetch products" };
+  }
+}
+
 export async function createPurchaseOrder(data: unknown) {
   try {
     await connectDB();

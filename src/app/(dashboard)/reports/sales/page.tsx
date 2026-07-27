@@ -137,7 +137,7 @@ export default function SalesReportsPage() {
           onChange={(e) => setDateFrom(e.target.value)}
           className="w-[160px]"
         />
-                  <span className="text-muted-foreground/50">to</span>
+        <span className="text-muted-foreground/50">to</span>
         <Input
           type="date"
           value={dateTo}
@@ -158,8 +158,8 @@ export default function SalesReportsPage() {
                   <p className="text-xs font-medium text-muted-foreground">{card.title}</p>
                   <p className={cn(
                     "text-2xl font-bold tracking-tight",
-                    card.variant === "success" ? "text-emerald-400" :
-                    card.variant === "primary" ? "text-blue-400" :
+                    card.variant === "success" ? "text-emerald-600 dark:text-emerald-400" :
+                    card.variant === "primary" ? "text-primary" :
                     "text-foreground"
                   )}>
                     {card.value}
@@ -167,9 +167,9 @@ export default function SalesReportsPage() {
                 </div>
                 <div className={cn(
                   "flex h-9 w-9 items-center justify-center rounded-lg",
-                  card.variant === "success" ? "bg-emerald-500/15 text-emerald-400" :
-                  card.variant === "primary" ? "bg-blue-500/15 text-blue-400" :
-                  "bg-muted text-foreground"
+                  card.variant === "success" ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400" :
+                  card.variant === "primary" ? "bg-primary/15 text-primary" :
+                  "bg-muted text-muted-foreground"
                 )}>
                   <card.icon className="h-4 w-4" />
                 </div>
@@ -219,7 +219,7 @@ export default function SalesReportsPage() {
         <Card glass>
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
-              <Clock className="h-4 w-4 text-blue-400" />
+              <Clock className="h-4 w-4 text-primary" />
               Hourly Sales Distribution
             </CardTitle>
           </CardHeader>
@@ -240,7 +240,7 @@ export default function SalesReportsPage() {
         <Card glass>
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
-              <CalendarDays className="h-4 w-4 text-emerald-400" />
+              <CalendarDays className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
               Sales by Day of Week
             </CardTitle>
           </CardHeader>
@@ -261,7 +261,7 @@ export default function SalesReportsPage() {
         <Card glass>
           <CardHeader>
             <CardTitle className="text-lg font-semibold text-foreground flex items-center gap-2">
-              <Crown className="h-4 w-4 text-amber-400" />
+              <Crown className="h-4 w-4 text-amber-600 dark:text-amber-400" />
               Top Products
             </CardTitle>
           </CardHeader>
@@ -282,7 +282,7 @@ export default function SalesReportsPage() {
                   <TableBody>
                     {salesData.topProducts.map((item: any, i: number) => (
                       <TableRow key={item.productId}>
-                        <TableCell className="text-muted-foreground/50">{i + 1}</TableCell>
+                        <TableCell className="text-muted-foreground">{i + 1}</TableCell>
                         <TableCell className="text-foreground font-medium">{item.name}</TableCell>
                         <TableCell>
                           <Badge variant="primary">{item.quantity}</Badge>
@@ -323,7 +323,7 @@ export default function SalesReportsPage() {
                   <TableBody>
                     {salesData.topCustomers.map((item: any, i: number) => (
                       <TableRow key={item.id}>
-                        <TableCell className="text-muted-foreground/50">{i + 1}</TableCell>
+                        <TableCell className="text-muted-foreground">{i + 1}</TableCell>
                         <TableCell className="text-foreground font-medium">{item.name}</TableCell>
                         <TableCell>
                           <Badge variant="outline">{item.transactionCount}</Badge>

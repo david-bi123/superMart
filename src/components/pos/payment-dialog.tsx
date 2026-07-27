@@ -110,7 +110,7 @@ export function PaymentDialog({ open, onOpenChange, onConfirm }: PaymentDialogPr
             {totals.discountTotal > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Discount</span>
-                <span className="text-red-400">-${totals.discountTotal.toFixed(2)}</span>
+                <span className="text-destructive">-${totals.discountTotal.toFixed(2)}</span>
               </div>
             )}
             {totals.taxTotal > 0 && (
@@ -186,7 +186,7 @@ export function PaymentDialog({ open, onOpenChange, onConfirm }: PaymentDialogPr
               {parseFloat(amountPaid) >= totals.grandTotal && (
                 <div className="flex justify-between text-sm px-1">
                   <span className="text-muted-foreground">Change</span>
-                  <span className="text-emerald-400 font-semibold">${change.toFixed(2)}</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">${change.toFixed(2)}</span>
                 </div>
               )}
             </motion.div>

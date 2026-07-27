@@ -26,13 +26,16 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  AnimatedTabsContent,
-} from "@/components/ui/tabs"
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import { toast } from "@/components/ui/toast"
 import { getAuditLogs } from "@/actions/settings.actions"
+import { cn } from "@/lib/utils/cn"
 
 interface AuditLogRow {
   _id: string
@@ -127,7 +130,7 @@ export default function AuditLogsPage() {
             />
           </div>
           <div className="flex items-center gap-2 flex-wrap">
-            <Select value={actionFilter} onValueChange={(v) => { setActionFilter(v); setPage(1) }}>
+            <Select value={actionFilter} onValueChange={(v) => { setActionFilter(v === "all" ? "" : v); setPage(1) }}>
               <SelectTrigger className="w-[150px]">
                 <SelectValue placeholder="Action" />
               </SelectTrigger>
@@ -141,7 +144,7 @@ export default function AuditLogsPage() {
                 <SelectItem value="received">Received</SelectItem>
               </SelectContent>
             </Select>
-            <Select value={resourceFilter} onValueChange={(v) => { setResourceFilter(v); setPage(1) }}>
+            <Select value={resourceFilter} onValueChange={(v) => { setResourceFilter(v === "all" ? "" : v); setPage(1) }}>
               <SelectTrigger className="w-[150px]">
                 <SelectValue placeholder="Resource" />
               </SelectTrigger>
@@ -197,19 +200,19 @@ export default function AuditLogsPage() {
             description={search || actionFilter || resourceFilter ? "Try adjusting your filters" : "No activity recorded yet"}
           />
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-border/50">
-                  <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Timestamp</th>
-                  <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">User</th>
-                  <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Action</th>
-                  <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">Resource</th>
-                  <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider hidden lg:table-cell">IP</th>
-                  <th className="p-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider hidden xl:table-cell">User Agent</th>
-                </tr>
-              </thead>
-              <tbody>
+          <div className="rounded-xl border border-border/50 overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Timestamp</TableHead>
+                  <TableHead>User</TableHead>
+                  <TableHead>Action</TableHead>
+                  <TableHead>Resource</TableHead>
+                  <TableHead className="hidden lg:table-cell">IP</TableHead>
+                  <TableHead className="hidden xl:table-cell">User Agent</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {logs.map((log, index) => (
                   <motion.tr
                     key={log._id}
@@ -218,49 +221,49 @@ export default function AuditLogsPage() {
                     transition={{ delay: index * 0.015 }}
                     className="border-b border-border/20 transition-colors hover:bg-muted/30"
                   >
-                    <td className="p-3">
+                    <TableCell>
                       <span className="text-sm text-muted-foreground whitespace-nowrap font-mono">
                         {new Date(log.createdAt).toLocaleDateString()} {new Date(log.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
-                    </td>
-                    <td className="p-3">
+                    </TableCell>
+                    <TableCell>
                       <div className="flex items-center gap-2">
                         <div className="h-7 w-7 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center text-primary-foreground text-[10px] font-semibold shrink-0">
                           {log.userName.charAt(0).toUpperCase()}
                         </div>
                         <div>
                           <p className="text-sm text-foreground truncate max-w-[120px]">{log.userName}</p>
-                          <p className="text-[10px] text-muted-foreground/30 truncate max-w-[120px]">{log.userEmail}</p>
+                          <p className="text-[10px] text-muted-foreground truncate max-w-[120px]">{log.userEmail}</p>
                         </div>
                       </div>
-                    </td>
-                    <td className="p-3">{getActionBadge(log.action)}</td>
-                    <td className="p-3">
+                    </TableCell>
+                    <TableCell>{getActionBadge(log.action)}</TableCell>
+                    <TableCell>
                       <div>
                         <span className="text-sm text-foreground">{log.resource}</span>
                         {log.resourceId && (
-                          <p className="text-[10px] text-muted-foreground/30 font-mono truncate max-w-[100px]">ID: {log.resourceId}</p>
+                          <p className="text-[10px] text-muted-foreground font-mono truncate max-w-[100px]">ID: {log.resourceId}</p>
                         )}
                       </div>
-                    </td>
-                    <td className="p-3 hidden lg:table-cell">
-                      <span className="text-xs text-muted-foreground/50 font-mono">{log.ip || "—"}</span>
-                    </td>
-                    <td className="p-3 hidden xl:table-cell">
-                      <span className="text-xs text-muted-foreground/30 font-mono" title={log.userAgent}>
+                    </TableCell>
+                    <TableCell className="hidden lg:table-cell">
+                      <span className="text-xs text-muted-foreground font-mono">{log.ip || "—"}</span>
+                    </TableCell>
+                    <TableCell className="hidden xl:table-cell">
+                      <span className="text-xs text-muted-foreground font-mono" title={log.userAgent}>
                         {formatUA(log.userAgent)}
                       </span>
-                    </td>
+                    </TableCell>
                   </motion.tr>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         )}
 
         {totalPages > 1 && (
           <div className="flex items-center justify-between pt-4 mt-4 border-t border-border/20">
-            <p className="text-sm text-muted-foreground/50">Page {page} of {totalPages} ({logs.length} results)</p>
+            <p className="text-sm text-muted-foreground">Page {page} of {totalPages} ({logs.length} results)</p>
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>Previous</Button>
               <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>Next</Button>

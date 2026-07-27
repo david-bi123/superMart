@@ -16,8 +16,16 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { toast } from "@/components/ui/toast"
 import { getBusinessSettings, updateBusinessProfile } from "@/actions/settings.actions"
+import { cn } from "@/lib/utils/cn"
 
 const TIMEZONES = [
   "UTC", "America/New_York", "America/Chicago", "America/Denver",
@@ -191,27 +199,29 @@ export default function ProfileSettingsPage() {
             <CardContent className="space-y-4">
               <div>
                 <Label>Currency</Label>
-                <select
-                  value={form.currency}
-                  onChange={(e) => update("currency", e.target.value)}
-                  className="mt-1.5 flex h-10 w-full rounded-xl border border-border/50 bg-muted px-4 py-2 text-sm text-foreground backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-                >
-                  {CURRENCIES.map((c) => (
-                    <option key={c.code} value={c.code}>{c.symbol} - {c.name} ({c.code})</option>
-                  ))}
-                </select>
+                <Select value={form.currency} onValueChange={(v) => update("currency", v)}>
+                  <SelectTrigger className="mt-1.5">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CURRENCIES.map((c) => (
+                      <SelectItem key={c.code} value={c.code}>{c.symbol} - {c.name} ({c.code})</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div>
                 <Label>Timezone</Label>
-                <select
-                  value={form.timezone}
-                  onChange={(e) => update("timezone", e.target.value)}
-                  className="mt-1.5 flex h-10 w-full rounded-xl border border-border/50 bg-muted px-4 py-2 text-sm text-foreground backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-                >
-                  {TIMEZONES.map((tz) => (
-                    <option key={tz} value={tz}>{tz.replace("_", " ")}</option>
-                  ))}
-                </select>
+                <Select value={form.timezone} onValueChange={(v) => update("timezone", v)}>
+                  <SelectTrigger className="mt-1.5">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TIMEZONES.map((tz) => (
+                      <SelectItem key={tz} value={tz}>{tz.replace("_", " ")}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </CardContent>
           </Card>

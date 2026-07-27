@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { toast } from "@/components/ui/toast"
-import { createPurchaseOrder } from "@/actions/purchases.actions"
+import { createPurchaseOrder, getPOSuppliers, getPOProducts } from "@/actions/purchases.actions"
 
 interface LineItem {
   productId: string
@@ -51,24 +51,12 @@ export default function NewPurchaseOrderPage() {
 
   React.useEffect(() => {
     async function load() {
-      const { default: mongoose } = await import("mongoose")
-      const { connectDB } = await import("@/lib/db/mongoose")
-      await connectDB()
-      const { Supplier } = await import("@/models/Supplier")
-      const { Product } = await import("@/models/Product")
-      const { auth } = await import("@/lib/auth/config")
-      const session = await auth()
-      const businessId = session?.user?.businessId
-      if (!businessId) return
-
-      const [supplierDocs, productDocs] = await Promise.all([
-        Supplier.find({ businessId: new mongoose.Types.ObjectId(businessId), isActive: true }).lean(),
-        Product.find({ businessId: new mongoose.Types.ObjectId(businessId), isActive: true })
-          .select("name sku purchasePrice sellingPrice")
-          .lean(),
+      const [suppliersRes, productsRes] = await Promise.all([
+        getPOSuppliers(),
+        getPOProducts(),
       ])
-      setSuppliers(supplierDocs.map((s: any) => ({ _id: s._id.toString(), name: s.name, company: s.company || "" })))
-      setProducts(productDocs.map((p: any) => ({ _id: p._id.toString(), name: p.name, sku: p.sku || "", purchasePrice: p.purchasePrice || 0 })))
+      if (suppliersRes.success) setSuppliers(suppliersRes.data)
+      if (productsRes.success) setProducts(productsRes.data)
     }
     load()
   }, [])

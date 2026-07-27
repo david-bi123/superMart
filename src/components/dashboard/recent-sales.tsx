@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -45,10 +44,12 @@ const statusVariant: Record<string, "success" | "warning" | "secondary" | "destr
 
 export function RecentSales({ data, loading }: RecentSalesProps) {
   return (
-    <Card glass className="overflow-hidden">
+    <Card className="overflow-hidden">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-lg font-semibold text-foreground">
-          <Receipt className="h-5 w-5 text-primary" />
+        <CardTitle className="flex items-center gap-2 text-base font-semibold text-foreground">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <Receipt className="h-4 w-4" />
+          </div>
           Recent Sales
         </CardTitle>
       </CardHeader>
@@ -56,28 +57,27 @@ export function RecentSales({ data, loading }: RecentSalesProps) {
         {loading ? (
           <div className="space-y-3">
             {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="flex items-center gap-4">
-                <Skeleton variant="text" className="h-4 w-20" />
-                <Skeleton variant="text" className="h-4 flex-1" />
-                <Skeleton variant="text" className="h-4 w-16" />
-                <Skeleton variant="text" className="h-5 w-16 rounded-full" />
+              <div key={i} className="flex items-center gap-3">
+                <Skeleton className="h-8 w-8 rounded-lg shrink-0" />
+                <div className="flex-1 space-y-1.5">
+                  <Skeleton className="h-3.5 w-24 rounded-lg" />
+                  <Skeleton className="h-2.5 w-32 rounded-lg" />
+                </div>
+                <Skeleton className="h-3.5 w-16 rounded-lg" />
               </div>
             ))}
           </div>
         ) : !data?.length ? (
-          <div className="flex flex-col items-center justify-center py-8">
-            <Receipt className="mb-2 h-8 w-8 text-muted-foreground/50" />
+          <div className="flex flex-col items-center justify-center py-10">
+            <Receipt className="mb-2 h-8 w-8 text-muted-foreground/30" />
             <p className="text-sm text-muted-foreground/50">No sales yet</p>
           </div>
         ) : (
-          <div className="space-y-1">
-            {data.map((sale, index) => (
-              <motion.div
+          <div className="space-y-0.5">
+            {data.map((sale) => (
+              <div
                 key={sale._id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.04, duration: 0.3 }}
-                className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-muted/30"
+                className="flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-muted/50"
               >
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                   <Receipt className="h-4 w-4" />
@@ -91,9 +91,9 @@ export function RecentSales({ data, loading }: RecentSalesProps) {
                       {sale.status}
                     </Badge>
                   </div>
-                  <p className="truncate text-xs text-muted-foreground/50">
+                  <p className="truncate text-xs text-muted-foreground/60">
                     {sale.customerName}
-                    <span className="mx-1">·</span>
+                    <span className="mx-1 text-muted-foreground/30">&middot;</span>
                     {sale.itemsCount} item{sale.itemsCount !== 1 ? "s" : ""}
                   </p>
                 </div>
@@ -106,7 +106,7 @@ export function RecentSales({ data, loading }: RecentSalesProps) {
                     <TimeAgo date={sale.createdAt} />
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         )}

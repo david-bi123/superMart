@@ -1,29 +1,25 @@
 import * as React from "react"
 import { cn } from "@/lib/utils/cn"
-import { motion } from "framer-motion"
 
-interface CardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag'> {
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   glass?: boolean
   hover?: boolean
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, glass, hover, children, ...props }, ref) => (
-    <motion.div
+    <div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
       className={cn(
         "rounded-xl border bg-card text-card-foreground premium-shadow",
-        glass && "bg-background/70 dark:bg-background/50 backdrop-blur-xl border-border/50",
-        hover && "transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5",
+        glass && "glass-card",
+        hover && "glass-card-hover",
         className
       )}
       {...props}
     >
       {children}
-    </motion.div>
+    </div>
   )
 )
 Card.displayName = "Card"

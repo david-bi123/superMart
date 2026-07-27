@@ -6,10 +6,11 @@ interface PageHeaderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'on
   title: string
   description?: string
   actions?: React.ReactNode
+  icon?: React.ReactNode
 }
 
 const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
-  ({ className, title, description, actions, ...props }, ref) => {
+  ({ className, title, description, actions, icon, ...props }, ref) => {
     return (
       <motion.div
         ref={ref}
@@ -22,13 +23,20 @@ const PageHeader = React.forwardRef<HTMLDivElement, PageHeaderProps>(
         )}
         {...props}
       >
-        <div className="space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            {title}
-          </h1>
-          {description && (
-            <p className="text-sm text-muted-foreground">{description}</p>
+        <div className="flex items-center gap-3">
+          {icon && (
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              {icon}
+            </div>
           )}
+          <div className="space-y-0.5">
+            <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+              {title}
+            </h1>
+            {description && (
+              <p className="text-sm text-muted-foreground">{description}</p>
+            )}
+          </div>
         </div>
         {actions && <div className="flex items-center gap-2">{actions}</div>}
       </motion.div>
