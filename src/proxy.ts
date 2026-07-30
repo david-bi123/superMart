@@ -1,3 +1,4 @@
+import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -5,7 +6,7 @@ const publicRoutes = ["/login", "/register", "/forgot-password", "/reset-passwor
 
 const publicPrefixes = ["/api/", "/receipt/", "/_next/", "/favicon"];
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isPublic =
@@ -17,10 +18,12 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const sessionToken = request.cookies.get("next-auth.session-token")?.value ||
-    request.cookies.get("__Secure-next-auth.session-token")?.value;
+  const token = await getToken({
+    req: request,
+    secret: process.env.AUTH_SECRET,
+  });
 
-  if (!sessionToken) {
+  if (!token) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);

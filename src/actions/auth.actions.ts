@@ -72,13 +72,13 @@ export async function registerBusiness(data: RegisterInput) {
 
 export async function loginUser(data: LoginInput) {
   try {
+    await connectDB();
+
     await signIn("credentials", {
       email: data.email,
       password: data.password,
       redirect: false,
     });
-
-    await connectDB();
     const user = await User.findOne({ email: data.email });
     if (user) {
       user.lastLogin = new Date();
@@ -186,14 +186,23 @@ export async function verifyTwoFactor(code: string) {
 }
 
 export async function createSession(userId: string, businessId?: string) {
-  await connectDB();
-  const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-  const token = uuidv4();
-  await Session.create({ userId, businessId, token, expiresAt });
-  return token;
+  try {
+    await connectDB();
+    const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    const token = uuidv4();
+    await Session.create({ userId, businessId, token, expiresAt });
+    return token;
+  } catch (error: any) {
+    console.error("Failed to create session:", error);
+    return null;
+  }
 }
 
 export async function destroySession(token: string) {
-  await connectDB();
-  await Session.findOneAndUpdate({ token }, { isValid: false });
+  try {
+    await connectDB();
+    await Session.findOneAndUpdate({ token }, { isValid: false });
+  } catch (error: any) {
+    console.error("Failed to destroy session:", error);
+  }
 }
