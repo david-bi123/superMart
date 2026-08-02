@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { SearchInput } from "@/components/ui/search-input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "@/components/ui/toast";
+import { formatMoney } from "@/lib/format";
 
 interface Product {
   id: string;
@@ -289,7 +290,7 @@ export function ProductGrid({ onCartToggle }: ProductGridProps) {
                           viewMode === "grid" ? "mt-2" : "mt-1"
                         )}>
                           <span className="text-sm font-bold text-foreground">
-                            ${product.price.toFixed(2)}
+                            {formatMoney(product.price)}
                           </span>
                           <Badge
                             variant={product.stock > 10 ? "success" : product.stock > 0 ? "warning" : "destructive"}

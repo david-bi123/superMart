@@ -122,7 +122,7 @@ export function BarChart({
                 axisLine={false}
                 tickLine={false}
                 tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 11 }}
-                tickFormatter={(val) => valueFormatter ? valueFormatter(val) : `$${val}`}
+                tickFormatter={(val) => valueFormatter ? valueFormatter(val) : `₵${val}`}
                 width={60}
               />
             </>
@@ -141,7 +141,7 @@ export function BarChart({
                 axisLine={false}
                 tickLine={false}
                 tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 11 }}
-                tickFormatter={(val) => valueFormatter ? valueFormatter(val) : `$${val}`}
+                tickFormatter={(val) => valueFormatter ? valueFormatter(val) : `₵${val}`}
               />
             </>
           )}

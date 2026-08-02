@@ -46,6 +46,7 @@ import {
   deleteProduct,
   restoreProduct,
 } from "@/actions/inventory.actions"
+import { formatMoney } from "@/lib/format"
 
 interface ProductDetail {
   _id: string
@@ -341,7 +342,7 @@ export default function ProductDetailPage() {
                             <span className="text-sm text-muted-foreground">{variant.value}</span>
                           </td>
                           <td className="py-3 text-right">
-                            <span className="text-sm text-foreground">${variant.price.toFixed(2)}</span>
+                            <span className="text-sm text-foreground">{formatMoney(variant.price)}</span>
                           </td>
                           <td className="py-3 text-right">
                             <span className="text-sm text-muted-foreground">{variant.stock}</span>
@@ -447,22 +448,22 @@ export default function ProductDetailPage() {
               <div className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Selling Price</span>
-                  <span className="text-foreground font-semibold">${product.sellingPrice.toFixed(2)}</span>
+                  <span className="text-foreground font-semibold">{formatMoney(product.sellingPrice)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Purchase Price</span>
-                  <span className="text-muted-foreground">${product.purchasePrice.toFixed(2)}</span>
+                  <span className="text-muted-foreground">{formatMoney(product.purchasePrice)}</span>
                 </div>
                 {product.wholesalePrice != null && (
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Wholesale Price</span>
-                    <span className="text-muted-foreground">${product.wholesalePrice.toFixed(2)}</span>
+                    <span className="text-muted-foreground">{formatMoney(product.wholesalePrice)}</span>
                   </div>
                 )}
                 {product.discountPrice != null && (
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Discount Price</span>
-                    <span className="text-muted-foreground">${product.discountPrice.toFixed(2)}</span>
+                    <span className="text-muted-foreground">{formatMoney(product.discountPrice)}</span>
                   </div>
                 )}
                 {product.tax != null && (
@@ -475,7 +476,7 @@ export default function ProductDetailPage() {
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Profit Margin</span>
                   <span className={`font-semibold ${margin >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-destructive"}`}>
-                    ${margin.toFixed(2)}
+                    {formatMoney(margin)}
                   </span>
                 </div>
               </div>

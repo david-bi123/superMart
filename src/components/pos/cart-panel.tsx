@@ -9,7 +9,7 @@ import {
   Plus,
   User,
   Percent,
-  DollarSign,
+  Coins,
   Banknote,
   CreditCard,
   Smartphone,
@@ -28,6 +28,7 @@ import { toast } from "@/components/ui/toast";
 import { createSale } from "@/actions/sales.actions";
 import { getReceipt } from "@/actions/receipt.actions";
 import { CustomerSelect } from "./customer-select";
+import { formatMoney } from "@/lib/format";
 import { PaymentDialog } from "./payment-dialog";
 import { ReceiptPreview } from "./receipt-preview";
 import type { ReceiptData } from "@/types";
@@ -94,10 +95,10 @@ function CartItemRow({ item, onUpdateQuantity, onRemove, onUpdateDiscount }: {
 
         <div className="ml-auto text-right">
           <p className="text-sm font-semibold text-foreground">
-            ${(item.price * item.quantity).toFixed(2)}
+            {formatMoney(item.price * item.quantity)}
           </p>
           {item.discount > 0 && (
-            <p className="text-[10px] text-destructive">-${item.discount.toFixed(2)}</p>
+            <p className="text-[10px] text-destructive">-{formatMoney(item.discount)}</p>
           )}
         </div>
       </div>
@@ -116,7 +117,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove, onUpdateDiscount }: {
           />
         </div>
         <span className="text-xs text-muted-foreground/50 w-16 text-right">
-          @${item.price.toFixed(2)}
+          @{formatMoney(item.price)}
         </span>
       </div>
     </motion.div>
@@ -310,23 +311,23 @@ export function CartPanel() {
         <div className="space-y-1">
           <div className="flex justify-between text-xs">
             <span className="text-muted-foreground">Subtotal</span>
-            <span className="text-muted-foreground">${totals.subtotal.toFixed(2)}</span>
+            <span className="text-muted-foreground">{formatMoney(totals.subtotal)}</span>
           </div>
           {totals.discountTotal > 0 && (
             <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Discount</span>
-              <span className="text-destructive">-${totals.discountTotal.toFixed(2)}</span>
+              <span className="text-destructive">-{formatMoney(totals.discountTotal)}</span>
             </div>
           )}
           {totals.taxTotal > 0 && (
             <div className="flex justify-between text-xs">
               <span className="text-muted-foreground">Tax</span>
-              <span className="text-muted-foreground">${totals.taxTotal.toFixed(2)}</span>
+              <span className="text-muted-foreground">{formatMoney(totals.taxTotal)}</span>
             </div>
           )}
           <div className="flex justify-between pt-1 border-t border-border/50">
             <span className="text-sm font-bold text-foreground">Total</span>
-            <span className="text-lg font-bold text-foreground">${totals.grandTotal.toFixed(2)}</span>
+            <span className="text-lg font-bold text-foreground">{formatMoney(totals.grandTotal)}</span>
           </div>
         </div>
 
@@ -359,8 +360,8 @@ export function CartPanel() {
           disabled={items.length === 0}
           onClick={() => setShowPayment(true)}
         >
-          <DollarSign className="h-5 w-5" />
-          Pay ${totals.grandTotal.toFixed(2)}
+          <Coins className="h-5 w-5" />
+          Pay {formatMoney(totals.grandTotal)}
         </Button>
       </div>
     </div>

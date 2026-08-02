@@ -60,6 +60,7 @@ import {
 } from "@/actions/expenses.actions";
 import { toast } from "@/components/ui/toast";
 import { cn } from "@/lib/utils/cn";
+import { formatMoney } from "@/lib/format";
 
 interface Expense {
   _id: string;
@@ -335,21 +336,21 @@ export default function ExpensesPage() {
   const statsCards = [
     {
       title: "Total Expenses",
-      value: `$${totalExpenses.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      value: formatMoney(totalExpenses),
       icon: Wallet,
       variant: "danger" as const,
       description: "In selected period",
     },
     {
       title: "This Month",
-      value: `$${thisMonth.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      value: formatMoney(thisMonth),
       icon: CalendarDays,
       variant: "warning" as const,
       description: "Current month total",
     },
     {
       title: "Average / Day",
-      value: `$${avgPerDay.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      value: formatMoney(avgPerDay),
       icon: TrendingDown,
       variant: "primary" as const,
       description: "Daily average",
@@ -486,7 +487,7 @@ export default function ExpensesPage() {
                           <Badge variant="outline">{expense.category}</Badge>
                         </TableCell>
                         <TableCell className="font-semibold text-foreground">
-                          ${expense.amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+                          {formatMoney(expense.amount)}
                         </TableCell>
                         <TableCell className="text-muted-foreground">
                           {expense.paymentMethod || "—"}

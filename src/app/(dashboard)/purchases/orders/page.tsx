@@ -43,6 +43,7 @@ import {
   approvePurchaseOrder,
   cancelPurchaseOrder,
 } from "@/actions/purchases.actions"
+import { formatMoney } from "@/lib/format"
 
 interface PurchaseOrderRow {
   _id: string
@@ -253,7 +254,7 @@ export default function PurchaseOrdersPage() {
                       </td>
                       <td className="p-3 text-right">
                         <span className="text-sm font-semibold text-foreground">
-                          ${order.grandTotal.toFixed(2)}
+                          {formatMoney(order.grandTotal)}
                         </span>
                       </td>
                       <td className="p-3">

@@ -418,13 +418,13 @@ async function seed() {
   // -- 2. Businesses --
   const businessData = [
     { name: "FreshMart", slug: "freshmart", email: "info@freshmart.com", phone: "+1-555-111-0000",
-      address: { street: "100 Market St", city: "New York", state: "NY", zip: "10001", country: "US" },
-      currency: "USD", timezone: "America/New_York", dateFormat: "MM/DD/YYYY",
+address: { street: "100", city: "Accra", state: "Greater Accra", zip: "GA-100", country: "GH" },
+      currency: "GHS", timezone: "Africa/Accra", dateFormat: "DD/MM/YYYY",
       subscriptionTier: "professional" as const, subscriptionStatus: "active" as const, storageLimit: 5000,
       settings: { enableMultiCurrency: false, enableLoyalty: true, enableBranches: true, enableSerialTracking: false, enableBatchTracking: true, enableExpiryTracking: true, receiptFooter: "Thank you for shopping at FreshMart!", defaultTax: 8.875 } },
-    { name: "CityGrocer", slug: "citygrocer", email: "info@citygrocer.com", phone: "+1-555-222-0000",
-      address: { street: "500 Commerce Blvd", city: "Chicago", state: "IL", zip: "60601", country: "US" },
-      currency: "USD", timezone: "America/Chicago", dateFormat: "MM/DD/YYYY",
+    { name: "CityGrocer", slug: "citygrocer", email: "info@citygrocer.com", phone: "+233-555-222-0000",
+      address: { street: "500", city: "Kumasi", state: "Ashanti", zip: "KM", country: "GH" },
+      currency: "GHS", timezone: "Africa/Accra", dateFormat: "DD/MM/YYYY",
       subscriptionTier: "enterprise" as const, subscriptionStatus: "active" as const, storageLimit: 20000,
       settings: { enableMultiCurrency: true, enableLoyalty: true, enableBranches: true, enableSerialTracking: true, enableBatchTracking: true, enableExpiryTracking: true, receiptFooter: "Thank you for choosing CityGrocer!", defaultTax: 10.25 } },
   ];
@@ -969,7 +969,7 @@ async function seed() {
         const payDate = daysAgo(i * 30);
         await Payment.create({
           businessId: biz._id, subscriptionId: sub._id,
-          amount: sub.amount || 0, currency: "USD",
+          amount: sub.amount || 0, currency: "GHS",
           method: pick(["card", "bank_transfer", "paypal"]),
           status: pick(["completed", "completed", "completed", "completed", "pending", "failed"] as const),
           transactionId: `txn_${new mongoose.Types.ObjectId().toString().slice(0, 20)}`,

@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils/cn";
 import { Trophy, Package } from "lucide-react";
+import { formatMoney } from "@/lib/format";
 
 interface TopProduct {
   productId: string;
@@ -81,10 +82,10 @@ export function TopProducts({ data, loading }: TopProductsProps) {
                 </div>
                 <div className="text-right">
                   <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
-                    ${product.revenue.toLocaleString()}
+                    {formatMoney(product.revenue, 0)}
                   </p>
                   <p className="text-xs text-muted-foreground/50">
-                    ${product.profit.toLocaleString()} profit
+                    {formatMoney(product.profit, 0)} profit
                   </p>
                 </div>
               </div>

@@ -36,6 +36,7 @@ import {
   getExpenseReport,
 } from "@/actions/reports.actions";
 import { cn } from "@/lib/utils/cn";
+import { formatMoney } from "@/lib/format";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -83,7 +84,7 @@ export default function FinancialReportsPage() {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
-  const formatCurrency = (v: number) => `$${v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  const formatCurrency = (v: number) => formatMoney(v);
 
   const summaryCards = [
     {

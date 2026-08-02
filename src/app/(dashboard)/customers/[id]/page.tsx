@@ -11,7 +11,7 @@ import {
   Phone,
   MapPin,
   Award,
-  DollarSign,
+  Coins,
   FileText,
   Star,
 } from "lucide-react"
@@ -25,6 +25,7 @@ import { EmptyState } from "@/components/ui/empty-state"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { getCustomer, addLoyaltyPoints } from "@/actions/customers.actions"
+import { formatMoney } from "@/lib/format"
 import { toast } from "@/components/ui/toast"
 
 interface CustomerDetail {
@@ -232,7 +233,7 @@ export default function CustomerDetailPage() {
                           </td>
                           <td className="py-3 text-right text-sm text-muted-foreground">{sale.itemsCount}</td>
                           <td className="py-3 text-right text-sm font-semibold text-foreground">
-                            ${sale.grandTotal.toFixed(2)}
+                            {formatMoney(sale.grandTotal)}
                           </td>
                           <td className="py-3">
                             <Badge
@@ -297,7 +298,7 @@ export default function CustomerDetailPage() {
           <Card glass>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-              <DollarSign className="h-5 w-5 text-muted-foreground" />
+              <Coins className="h-5 w-5 text-muted-foreground" />
               Financial Summary
               </CardTitle>
             </CardHeader>
@@ -305,7 +306,7 @@ export default function CustomerDetailPage() {
               <div className="space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Total Spent</span>
-                  <span className="text-foreground font-semibold">${customer.totalSpent.toFixed(2)}</span>
+                  <span className="text-foreground font-semibold">{formatMoney(customer.totalSpent)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Total Purchases</span>
@@ -315,12 +316,12 @@ export default function CustomerDetailPage() {
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Balance</span>
                   <span className={`font-semibold ${customer.balance > 0 ? "text-red-400" : "text-muted-foreground"}`}>
-                    ${customer.balance.toFixed(2)}
+                    {formatMoney(customer.balance)}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Credit Limit</span>
-                  <span className="text-foreground">${customer.creditLimit.toFixed(2)}</span>
+                  <span className="text-foreground">{formatMoney(customer.creditLimit)}</span>
                 </div>
                 {customer.creditLimit > 0 && (
                   <div className="mt-2">

@@ -41,6 +41,7 @@ import {
   reactivateSupplier,
 } from "@/actions/suppliers.actions"
 import { cn } from "@/lib/utils/cn"
+import { formatMoney } from "@/lib/format"
 
 interface SupplierRow {
   _id: string
@@ -237,7 +238,7 @@ export default function SuppliersPage() {
                         "text-sm font-medium",
                         s.outstandingBalance > 0 ? "text-amber-600 dark:text-amber-400" : "text-muted-foreground"
                       )}>
-                        ${s.outstandingBalance.toFixed(2)}
+                        {formatMoney(s.outstandingBalance)}
                       </span>
                     </TableCell>
                     <TableCell>

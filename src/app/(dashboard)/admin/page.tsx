@@ -5,10 +5,13 @@ import { AdminPanel } from "./admin-panel";
 export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
+  let isAdmin = false;
   try {
     await requireSuperAdmin();
+    isAdmin = true;
   } catch {
-    redirect("/dashboard");
+    isAdmin = false;
   }
+  if (!isAdmin) redirect("/dashboard");
   return <AdminPanel />;
 }

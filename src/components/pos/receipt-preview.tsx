@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/toast";
+import { formatMoney } from "@/lib/format";
 
 interface ReceiptPreviewProps {
   open: boolean;
@@ -124,8 +125,8 @@ export function ReceiptPreview({ open, onOpenChange, receipt }: ReceiptPreviewPr
                 <tr key={i}>
                   <td className="py-1 truncate max-w-[120px]">{item.name}</td>
                   <td className="text-center py-1">{item.quantity}</td>
-                  <td className="text-right py-1">${item.price.toFixed(2)}</td>
-                  <td className="text-right py-1">${item.total.toFixed(2)}</td>
+                  <td className="text-right py-1">{formatMoney(item.price)}</td>
+                  <td className="text-right py-1">{formatMoney(item.total)}</td>
                 </tr>
               ))}
             </tbody>
@@ -134,30 +135,30 @@ export function ReceiptPreview({ open, onOpenChange, receipt }: ReceiptPreviewPr
           <div className="border-t border-dashed border-gray-300 pt-2 space-y-1">
             <div className="flex justify-between text-[10px]">
               <span>Subtotal</span>
-              <span>${receipt.subtotal.toFixed(2)}</span>
+              <span>{formatMoney(receipt.subtotal)}</span>
             </div>
             {receipt.discount > 0 && (
               <div className="flex justify-between text-[10px]">
                 <span>Discount</span>
-                <span>-${receipt.discount.toFixed(2)}</span>
+                <span>-{formatMoney(receipt.discount)}</span>
               </div>
             )}
             {receipt.tax > 0 && (
               <div className="flex justify-between text-[10px]">
                 <span>Tax</span>
-                <span>${receipt.tax.toFixed(2)}</span>
+                <span>{formatMoney(receipt.tax)}</span>
               </div>
             )}
             <div className="flex justify-between font-bold text-sm pt-1 border-t border-dashed border-gray-300">
               <span>Total</span>
-              <span>${receipt.grandTotal.toFixed(2)}</span>
+              <span>{formatMoney(receipt.grandTotal)}</span>
             </div>
           </div>
 
           <div className="text-[10px] text-gray-600 mt-2 space-y-0.5">
             <p>Payment: {receipt.paymentMethod.replace("_", " ").toUpperCase()}</p>
-            <p>Paid: ${receipt.amountPaid.toFixed(2)}</p>
-            {receipt.change > 0 && <p>Change: ${receipt.change.toFixed(2)}</p>}
+            <p>Paid: {formatMoney(receipt.amountPaid)}</p>
+            {receipt.change > 0 && <p>Change: {formatMoney(receipt.change)}</p>}
           </div>
 
           <div className="flex justify-center mt-3">

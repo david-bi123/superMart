@@ -17,6 +17,7 @@ import { Tabs, TabsList, TabsTrigger, AnimatedTabsContent } from "@/components/u
 import { SalesTable, type SaleRow } from "@/components/tables/sales-table"
 import { getSales, cancelSale, refundSale, getSalesStats } from "@/actions/sales.actions"
 import { toast } from "@/components/ui/toast"
+import { formatMoney } from "@/lib/format"
 
 export default function SalesPage() {
   const router = useRouter()
@@ -175,7 +176,7 @@ export default function SalesPage() {
             <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{stat.label}</p>
             <p className="mt-1 text-2xl font-bold text-foreground">
               {stat.format === "currency"
-                ? `$${(stat.value as number).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                ? formatMoney(stat.value as number)
                 : (stat.value as number).toLocaleString()}
             </p>
           </Card>

@@ -172,7 +172,7 @@ const FEATURES = [
 const PRICING_TIERS = [
   {
     name: "Starter",
-    price: "$0",
+    price: "₵0",
     period: "forever",
     description: "Perfect for small businesses getting started.",
     popular: false,
@@ -187,7 +187,7 @@ const PRICING_TIERS = [
   },
   {
     name: "Professional",
-    price: "$29",
+    price: "₵29",
     period: "/month",
     description: "Best for growing retail businesses.",
     popular: true,
@@ -203,7 +203,7 @@ const PRICING_TIERS = [
   },
   {
     name: "Enterprise",
-    price: "$99",
+    price: "₵99",
     period: "/month",
     description: "For large retail chains and enterprises.",
     popular: false,
@@ -528,7 +528,7 @@ export default function LandingPage() {
               {/* Bottom row */}
               <div className="col-span-2 rounded-xl bg-muted/40 p-4">
                 <div className="mb-2 h-2 w-12 rounded-full bg-foreground/10" />
-                <div className="text-xl font-bold">$12.4k</div>
+                <div className="text-xl font-bold">₵12.4k</div>
                 <div className="mt-2 h-1.5 w-3/4 rounded-full bg-foreground/8" />
               </div>
               <div className="col-span-2 rounded-xl bg-muted/40 p-4">

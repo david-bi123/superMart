@@ -22,6 +22,7 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "@/components/ui/toast"
 import { getSubscription, getPlans, upgradePlan, cancelSubscription, getInvoices } from "@/actions/subscriptions.actions"
+import { formatMoney } from "@/lib/format"
 import { cn } from "@/lib/utils/cn"
 import { PermissionGuard } from "@/components/auth/permission-guard"
 
@@ -315,7 +316,7 @@ export default function BillingPage() {
                           </td>
                           <td className="p-3 text-right">
                             <span className="text-sm font-semibold text-foreground">
-                              ${inv.amount.toFixed(2)}
+                              {formatMoney(inv.amount)}
                             </span>
                           </td>
                           <td className="p-3">

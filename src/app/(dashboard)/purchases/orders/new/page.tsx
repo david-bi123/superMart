@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/select"
 import { toast } from "@/components/ui/toast"
 import { createPurchaseOrder, getPOSuppliers, getPOProducts } from "@/actions/purchases.actions"
+import { formatMoney } from "@/lib/format"
 
 interface LineItem {
   productId: string
@@ -187,7 +188,7 @@ export default function NewPurchaseOrderPage() {
                             className="w-full flex items-center justify-between px-4 py-3 text-sm text-foreground/80 hover:bg-muted transition-colors"
                           >
                             <span>{p.name}</span>
-                            <span className="text-muted-foreground text-xs">${p.purchasePrice.toFixed(2)}</span>
+                            <span className="text-muted-foreground text-xs">{formatMoney(p.purchasePrice)}</span>
                           </button>
                         ))
                       )}
@@ -230,7 +231,7 @@ export default function NewPurchaseOrderPage() {
                   </div>
                   <div className="w-24 text-right">
                     <Label className="text-[10px] text-muted-foreground">Total</Label>
-                    <p className="mt-1 text-sm font-semibold text-foreground">${item.total.toFixed(2)}</p>
+                    <p className="mt-1 text-sm font-semibold text-foreground">{formatMoney(item.total)}</p>
                   </div>
                   <Button
                     variant="ghost"
@@ -289,15 +290,15 @@ export default function NewPurchaseOrderPage() {
             <CardContent className="space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span className="text-foreground">${subtotal.toFixed(2)}</span>
+                <span className="text-foreground">{formatMoney(subtotal)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Tax</span>
-                <span className="text-foreground">$0.00</span>
+                <span className="text-foreground">{formatMoney(0)}</span>
               </div>
               <div className="flex justify-between text-lg font-bold pt-2 border-t border-border/50">
                 <span className="text-foreground">Total</span>
-                <span className="text-foreground">${grandTotal.toFixed(2)}</span>
+                <span className="text-foreground">{formatMoney(grandTotal)}</span>
               </div>
               <div className="text-xs text-muted-foreground">
                 {items.length} item{items.length !== 1 ? "s" : ""}

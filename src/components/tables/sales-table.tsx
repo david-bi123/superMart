@@ -13,6 +13,7 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
 import { Button } from "@/components/ui/button"
+import { formatMoney } from "@/lib/format"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -231,7 +232,7 @@ export function SalesTable({
                   </td>
                   <td className="p-3">
                     <span className="text-sm font-semibold text-foreground">
-                      ${sale.grandTotal.toFixed(2)}
+                      {formatMoney(sale.grandTotal)}
                     </span>
                   </td>
                   <td className="p-3">

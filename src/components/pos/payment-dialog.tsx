@@ -9,10 +9,11 @@ import {
   ArrowLeftRight,
   Building2,
   Check,
-  DollarSign,
+  Coins,
 } from "lucide-react";
 import { usePosStore } from "@/store/use-pos";
 import { cn } from "@/lib/utils/cn";
+import { formatMoney } from "@/lib/format";
 import {
   Dialog,
   DialogContent,
@@ -105,23 +106,23 @@ export function PaymentDialog({ open, onOpenChange, onConfirm }: PaymentDialogPr
           <div className="rounded-xl border border-border/50 bg-muted/50 p-4 space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Items ({items.length})</span>
-              <span className="text-muted-foreground">${totals.subtotal.toFixed(2)}</span>
+              <span className="text-muted-foreground">{formatMoney(totals.subtotal)}</span>
             </div>
             {totals.discountTotal > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Discount</span>
-                <span className="text-destructive">-${totals.discountTotal.toFixed(2)}</span>
+                <span className="text-destructive">-{formatMoney(totals.discountTotal)}</span>
               </div>
             )}
             {totals.taxTotal > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Tax</span>
-                <span className="text-muted-foreground">${totals.taxTotal.toFixed(2)}</span>
+                <span className="text-muted-foreground">{formatMoney(totals.taxTotal)}</span>
               </div>
             )}
             <div className="border-t border-border/50 pt-2 flex justify-between">
               <span className="text-sm font-semibold text-foreground">Grand Total</span>
-              <span className="text-lg font-bold text-foreground">${totals.grandTotal.toFixed(2)}</span>
+              <span className="text-lg font-bold text-foreground">{formatMoney(totals.grandTotal)}</span>
             </div>
           </div>
 
@@ -180,13 +181,13 @@ export function PaymentDialog({ open, onOpenChange, onConfirm }: PaymentDialogPr
                 value={amountPaid}
                 onChange={(e) => setAmountPaid(e.target.value)}
                 placeholder="0.00"
-                icon={<DollarSign className="h-4 w-4" />}
+                icon={<Coins className="h-4 w-4" />}
                 error={isCashShort ? "Insufficient amount" : undefined}
               />
               {parseFloat(amountPaid) >= totals.grandTotal && (
                 <div className="flex justify-between text-sm px-1">
                   <span className="text-muted-foreground">Change</span>
-                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">${change.toFixed(2)}</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold">{formatMoney(change)}</span>
                 </div>
               )}
             </motion.div>
@@ -207,7 +208,7 @@ export function PaymentDialog({ open, onOpenChange, onConfirm }: PaymentDialogPr
             className="flex-1"
           >
             <Check className="h-4 w-4" />
-            Confirm ${totals.grandTotal.toFixed(2)}
+            Confirm {formatMoney(totals.grandTotal)}
           </Button>
         </div>
       </DialogContent>

@@ -9,7 +9,7 @@ import {
   Clock,
   Search,
   ShieldAlert,
-  DollarSign,
+  Coins,
   RefreshCw,
 } from "lucide-react"
 import { PageHeader } from "@/components/ui/page-header"
@@ -38,6 +38,7 @@ import {
 } from "@/components/ui/table"
 import { toast } from "@/components/ui/toast"
 import { getTenants, getAdminStats, setTenantActive } from "@/actions/superadmin.actions"
+import { formatMoney } from "@/lib/format"
 
 interface TenantRow {
   _id: string
@@ -154,8 +155,8 @@ export function AdminPanel() {
     },
     {
       title: "MRR (Subscription)",
-      value: `$${(stats?.revenue ?? 0).toLocaleString()}`,
-      icon: DollarSign,
+      value: formatMoney(stats?.revenue ?? 0, 0),
+      icon: Coins,
       variant: "success" as const,
     },
     {

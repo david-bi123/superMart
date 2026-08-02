@@ -12,6 +12,7 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
 import { Button } from "@/components/ui/button"
+import { formatMoney } from "@/lib/format"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EmptyState } from "@/components/ui/empty-state"
@@ -191,7 +192,7 @@ export function CustomersTable({
                 </td>
                 <td className="p-3 text-right">
                     <span className="text-sm text-foreground">
-                      ${customer.totalPurchases.toFixed(2)}
+                      {formatMoney(customer.totalPurchases)}
                     </span>
                 </td>
                 <td className="p-3 text-right">
@@ -199,7 +200,7 @@ export function CustomersTable({
                     "text-sm font-semibold",
                     customer.balance > 0 ? "text-red-400" : "text-muted-foreground"
                   )}>
-                    ${customer.balance.toFixed(2)}
+                    {formatMoney(customer.balance)}
                   </span>
                 </td>
                 <td className="p-3">

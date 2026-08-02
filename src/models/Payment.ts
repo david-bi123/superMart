@@ -18,7 +18,7 @@ const PaymentSchema = new Schema<IPayment>(
     businessId: { type: Schema.Types.ObjectId, ref: "Business", required: true },
     subscriptionId: { type: Schema.Types.ObjectId, ref: "Subscription", required: true },
     amount: { type: Number, required: true },
-    currency: { type: String, default: "USD" },
+    currency: { type: String, default: "GHS" },
     method: { type: String, required: true },
     status: {
       type: String,

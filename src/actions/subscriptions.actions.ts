@@ -29,7 +29,7 @@ const PLANS = [
     tier: "free",
     name: "Free",
     price: 0,
-    currency: "USD",
+    currency: "GHS",
     interval: "month",
     features: {
       maxUsers: 1,
@@ -52,7 +52,7 @@ const PLANS = [
     tier: "starter",
     name: "Starter",
     price: 29,
-    currency: "USD",
+    currency: "GHS",
     interval: "month",
     features: {
       maxUsers: 3,
@@ -75,7 +75,7 @@ const PLANS = [
     tier: "professional",
     name: "Professional",
     price: 79,
-    currency: "USD",
+    currency: "GHS",
     interval: "month",
     features: {
       maxUsers: 10,
@@ -98,7 +98,7 @@ const PLANS = [
     tier: "enterprise",
     name: "Enterprise",
     price: 199,
-    currency: "USD",
+    currency: "GHS",
     interval: "month",
     features: {
       maxUsers: -1,
@@ -282,7 +282,7 @@ export async function getInvoices() {
         invoiceNumber: "INV-001",
         plan: business?.subscriptionTier || "free",
         amount: business?.subscriptionTier === "free" ? 0 : business?.subscriptionTier === "starter" ? 29 : business?.subscriptionTier === "professional" ? 79 : 199,
-        currency: "USD",
+        currency: "GHS",
         status: "paid",
         periodStart: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
         periodEnd: new Date().toISOString(),

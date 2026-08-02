@@ -25,6 +25,7 @@ import {
   getRecentSales,
   getMonthlyComparison,
 } from "@/actions/dashboard.actions";
+import { formatMoney } from "@/lib/format";
 
 interface DashboardData {
   stats: {
@@ -123,21 +124,21 @@ export default function DashboardPage() {
     },
     {
       title: "Revenue",
-      value: data.stats ? `$${(data.stats.revenue).toLocaleString()}` : "$0",
+      value: data.stats ? formatMoney(data.stats.revenue, 0) : formatMoney(0, 0),
       icon: TrendingUp,
       variant: "success" as const,
       description: "Total revenue today",
     },
     {
       title: "Profit",
-      value: data.stats ? `$${(data.stats.profit).toLocaleString()}` : "$0",
+      value: data.stats ? formatMoney(data.stats.profit, 0) : formatMoney(0, 0),
       icon: PiggyBank,
       variant: "success" as const,
       description: "Net profit today",
     },
     {
       title: "Expenses",
-      value: data.stats ? `$${(data.stats.expenses).toLocaleString()}` : "$0",
+      value: data.stats ? formatMoney(data.stats.expenses, 0) : formatMoney(0, 0),
       icon: Wallet,
       variant: "danger" as const,
       description: "Today's expenses",
@@ -159,8 +160,8 @@ export default function DashboardPage() {
     {
       title: "Inventory Value",
       value: data.stats
-        ? `$${(data.stats.inventoryValue).toLocaleString()}`
-        : "$0",
+        ? formatMoney(data.stats.inventoryValue, 0)
+        : formatMoney(0, 0),
       icon: Package,
       variant: "primary" as const,
       description: "Total stock value",

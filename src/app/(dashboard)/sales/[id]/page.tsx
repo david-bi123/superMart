@@ -26,6 +26,7 @@ import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Avatar, AvatarFallback, getInitials } from "@/components/ui/avatar"
 import { getSale, cancelSale, refundSale } from "@/actions/sales.actions"
+import { formatMoney } from "@/lib/format"
 import { toast } from "@/components/ui/toast"
 
 interface SaleDetail {
@@ -289,15 +290,15 @@ export default function SaleDetailPage() {
                           </div>
                         </td>
                         <td className="py-3 text-center text-sm text-muted-foreground">{item.quantity}</td>
-                        <td className="py-3 text-right text-sm text-muted-foreground">${item.price.toFixed(2)}</td>
+                        <td className="py-3 text-right text-sm text-muted-foreground">{formatMoney(item.price)}</td>
                         <td className="py-3 text-right text-sm text-muted-foreground">
-                          {item.discount > 0 ? `-$${item.discount.toFixed(2)}` : "—"}
+                          {item.discount > 0 ? `-${formatMoney(item.discount)}` : "—"}
                         </td>
                         <td className="py-3 text-right text-sm text-muted-foreground">
-                          {item.tax > 0 ? `$${item.tax.toFixed(2)}` : "—"}
+                          {item.tax > 0 ? formatMoney(item.tax) : "—"}
                         </td>
                         <td className="py-3 text-right text-sm font-semibold text-foreground">
-                          ${item.total.toFixed(2)}
+                          {formatMoney(item.total)}
                         </td>
                       </tr>
                     ))}
@@ -310,24 +311,24 @@ export default function SaleDetailPage() {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Subtotal</span>
-                  <span className="text-muted-foreground">${sale.subtotal.toFixed(2)}</span>
+                  <span className="text-muted-foreground">{formatMoney(sale.subtotal)}</span>
                 </div>
                 {sale.discountTotal > 0 && (
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Discount</span>
-                    <span className="text-destructive">-${sale.discountTotal.toFixed(2)}</span>
+                    <span className="text-destructive">-{formatMoney(sale.discountTotal)}</span>
                   </div>
                 )}
                 {sale.taxTotal > 0 && (
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Tax</span>
-                    <span className="text-muted-foreground">${sale.taxTotal.toFixed(2)}</span>
+                    <span className="text-muted-foreground">{formatMoney(sale.taxTotal)}</span>
                   </div>
                 )}
                 <Separator className="my-1" />
                 <div className="flex justify-between">
                   <span className="text-base font-semibold text-foreground">Grand Total</span>
-                  <span className="text-base font-bold text-foreground">${sale.grandTotal.toFixed(2)}</span>
+                  <span className="text-base font-bold text-foreground">{formatMoney(sale.grandTotal)}</span>
                 </div>
               </div>
             </CardContent>
@@ -463,25 +464,25 @@ export default function SaleDetailPage() {
                 {(sale.paymentDetails?.cash ?? 0) > 0 && (
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Cash</span>
-                    <span className="text-muted-foreground">${(sale.paymentDetails?.cash ?? 0).toFixed(2)}</span>
+                    <span className="text-muted-foreground">{formatMoney(sale.paymentDetails?.cash ?? 0)}</span>
                   </div>
                 )}
                 {(sale.paymentDetails?.card ?? 0) > 0 && (
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Card</span>
-                    <span className="text-muted-foreground">${(sale.paymentDetails?.card ?? 0).toFixed(2)}</span>
+                    <span className="text-muted-foreground">{formatMoney(sale.paymentDetails?.card ?? 0)}</span>
                   </div>
                 )}
                 {(sale.paymentDetails?.mobileMoney ?? 0) > 0 && (
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Mobile Money</span>
-                    <span className="text-muted-foreground">${(sale.paymentDetails?.mobileMoney ?? 0).toFixed(2)}</span>
+                    <span className="text-muted-foreground">{formatMoney(sale.paymentDetails?.mobileMoney ?? 0)}</span>
                   </div>
                 )}
                 {(sale.paymentDetails?.change ?? 0) > 0 && (
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Change</span>
-                    <span className="text-destructive">-${(sale.paymentDetails?.change ?? 0).toFixed(2)}</span>
+                    <span className="text-destructive">-{formatMoney(sale.paymentDetails?.change ?? 0)}</span>
                   </div>
                 )}
               </div>

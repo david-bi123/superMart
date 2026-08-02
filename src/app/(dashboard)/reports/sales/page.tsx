@@ -32,6 +32,7 @@ import { Loading } from "@/components/ui/loading";
 import { EmptyState } from "@/components/ui/empty-state";
 import { getSalesReport, getRevenueReport } from "@/actions/reports.actions";
 import { cn } from "@/lib/utils/cn";
+import { formatMoney } from "@/lib/format";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -72,7 +73,7 @@ export default function SalesReportsPage() {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
-  const formatCurrency = (v: number) => `$${v.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+  const formatCurrency = (v: number) => formatMoney(v);
 
   const paymentColors: Record<string, string> = {
     cash: "#10b981",

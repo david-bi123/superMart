@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "@/components/ui/toast"
 import { getPublicReceipt, verifyReceipt } from "@/actions/receipt.actions"
+import { formatMoney } from "@/lib/format"
 
 interface ReceiptData {
   _id: string
@@ -205,8 +206,8 @@ export default function ReceiptPage({ params }: { params: Promise<{ id: string }
                 <div key={i} className="flex justify-between text-sm">
                   <span className="flex-1 text-gray-800 truncate">{item.name}</span>
                   <span className="w-12 text-center text-gray-600">{item.quantity}</span>
-                  <span className="w-16 text-right text-gray-600">${item.price.toFixed(2)}</span>
-                  <span className="w-16 text-right text-gray-800 font-medium">${item.total.toFixed(2)}</span>
+                  <span className="w-16 text-right text-gray-600">{formatMoney(item.price)}</span>
+                  <span className="w-16 text-right text-gray-800 font-medium">{formatMoney(item.total)}</span>
                 </div>
               ))}
             </div>
@@ -217,23 +218,23 @@ export default function ReceiptPage({ params }: { params: Promise<{ id: string }
             <div className="space-y-1">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-500">Subtotal</span>
-                <span className="text-gray-800">${receipt.subtotal.toFixed(2)}</span>
+                <span className="text-gray-800">{formatMoney(receipt.subtotal)}</span>
               </div>
               {receipt.discount > 0 && (
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500">Discount</span>
-                  <span className="text-red-600">-${receipt.discount.toFixed(2)}</span>
+                  <span className="text-red-600">-{formatMoney(receipt.discount)}</span>
                 </div>
               )}
               {receipt.tax > 0 && (
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500">Tax</span>
-                  <span className="text-gray-800">${receipt.tax.toFixed(2)}</span>
+                  <span className="text-gray-800">{formatMoney(receipt.tax)}</span>
                 </div>
               )}
               <div className="flex justify-between text-lg font-bold pt-2 border-t border-gray-200">
                 <span className="text-gray-900">Total</span>
-                <span className="text-gray-900">${receipt.grandTotal.toFixed(2)}</span>
+                <span className="text-gray-900">{formatMoney(receipt.grandTotal)}</span>
               </div>
             </div>
           </div>

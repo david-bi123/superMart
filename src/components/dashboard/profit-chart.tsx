@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { formatMoney } from "@/lib/format";
 
 interface ProfitChartProps {
   data?: { date: string; revenue: number; profit: number }[];
@@ -33,7 +34,7 @@ function CustomTooltip({ active, payload, label }: any) {
             {entry.name === "revenue" ? "Revenue" : "Profit"}
           </span>
           <span className="ml-auto font-semibold text-foreground">
-            ${entry.value.toLocaleString()}
+            {formatMoney(entry.value, 0)}
           </span>
         </div>
       ))}
@@ -81,7 +82,7 @@ export function ProfitChart({ data, loading }: ProfitChartProps) {
                   axisLine={false}
                   tickLine={false}
                   tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 11, opacity: 0.5 }}
-                  tickFormatter={(val) => `$${val}`}
+                  tickFormatter={(val) => `₵${val}`}
                   width={60}
                 />
                 <Tooltip content={<CustomTooltip />} />

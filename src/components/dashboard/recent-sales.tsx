@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Receipt, Clock } from "lucide-react";
+import { formatMoney } from "@/lib/format";
 
 interface RecentSale {
   _id: string;
@@ -99,7 +100,7 @@ export function RecentSales({ data, loading }: RecentSalesProps) {
                 </div>
                 <div className="text-right">
                   <p className="text-sm font-semibold text-foreground">
-                    ${sale.grandTotal.toLocaleString()}
+                    {formatMoney(sale.grandTotal, 0)}
                   </p>
                   <div className="flex items-center gap-1 text-xs text-muted-foreground/50">
                     <Clock className="h-3 w-3" />

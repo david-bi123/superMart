@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { Edit3, Copy, Archive, ImageOff } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
 import { Button } from "@/components/ui/button"
+import { formatMoney } from "@/lib/format"
 import { StockBadge } from "@/components/inventory/stock-badge"
 
 interface ProductCardProps {
@@ -87,7 +88,7 @@ export function ProductCard({ product, onEdit, onDuplicate, onArchive, className
         </div>
         <div className="flex items-center justify-between">
           <span className="text-lg font-bold text-foreground">
-            ${product.sellingPrice.toFixed(2)}
+            {formatMoney(product.sellingPrice)}
           </span>
           <StockBadge
             currentStock={product.currentStock}

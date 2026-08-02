@@ -15,6 +15,7 @@ import {
   Trash2,
 } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
+import { formatMoney } from "@/lib/format"
 import { PageHeader } from "@/components/ui/page-header"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -356,7 +357,7 @@ export default function ProductsPage() {
                       </td>
                       <td className="p-3 text-right">
                         <span className="text-sm font-semibold text-foreground">
-                          ${product.sellingPrice.toFixed(2)}
+                          {formatMoney(product.sellingPrice)}
                         </span>
                       </td>
                       <td className="p-3">
