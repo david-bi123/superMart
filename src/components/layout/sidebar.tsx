@@ -82,6 +82,28 @@ const navItems: NavItem[] = [
   },
 ];
 
+const superAdminNavItems: NavItem[] = [
+  {
+    label: "Platform Admin",
+    icon: <LayoutDashboard size={20} />,
+    children: [
+      { label: "Overview", href: "/admin" },
+      { label: "Audit Logs", href: "/audit-logs" },
+      { label: "Support", href: "/support" },
+    ],
+  },
+  {
+    label: "Settings",
+    icon: <Settings size={20} />,
+    children: [
+      { label: "Profile", href: "/settings/profile" },
+      { label: "Users", href: "/settings/users" },
+      { label: "Billing", href: "/settings/billing" },
+      { label: "Notifications", href: "/settings/notifications" },
+    ],
+  },
+];
+
 function SidebarNavItem({ item, collapsed, onItemClick }: { item: NavItem; collapsed: boolean; onItemClick?: () => void }) {
   const pathname = usePathname();
   const { data: session } = useSession();
@@ -261,7 +283,7 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
 
         <ScrollArea className="flex-1 px-3 py-4">
           <nav className="space-y-1">
-            {navItems.map((item) => (
+            {(role === "super_admin" ? superAdminNavItems : navItems).map((item) => (
               <SidebarNavItem key={item.label} item={item} collapsed={!isOpen && !isMobile} onItemClick={onItemClick || (isMobile ? close : undefined)} />
             ))}
           </nav>

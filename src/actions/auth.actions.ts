@@ -10,6 +10,7 @@ import { Business } from "@/models/Business";
 import { Session } from "@/models/Session";
 import { AuditLog } from "@/models/AuditLog";
 import { signIn, signOut } from "@/lib/auth/config";
+import { getAppUrl } from "@/lib/app-url";
 import type { RegisterInput, LoginInput, ResetPasswordInput } from "@/lib/validations/auth";
 
 const envJWTSecret = process.env.AUTH_SECRET;
@@ -17,7 +18,7 @@ if (!envJWTSecret) {
   throw new Error("AUTH_SECRET environment variable is not configured");
 }
 const JWT_SECRET: string = envJWTSecret;
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+const APP_URL = getAppUrl();
 
 export async function registerBusiness(data: RegisterInput) {
   try {

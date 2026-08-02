@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { getAppUrl } from "@/lib/app-url";
 
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || "smtp.mailtrap.io",
@@ -10,7 +11,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const FROM = process.env.SMTP_FROM || "noreply@retailflow.com";
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+const APP_URL = getAppUrl();
 const APP_NAME = "RetailFlow";
 
 async function sendMail(to: string, subject: string, html: string) {

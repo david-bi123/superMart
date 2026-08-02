@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth/config";
 import { Receipt } from "@/models/Receipt";
 import { Sale } from "@/models/Sale";
 import { Business } from "@/models/Business";
+import { getAppUrl } from "@/lib/app-url";
 import mongoose from "mongoose";
 
 function getBusinessId(session: any): string {
@@ -91,7 +92,7 @@ export async function sendReceiptEmail(saleId: string, email: string) {
       receiptNumber: receipt.receiptNumber,
       businessName: business?.name || "Business",
       grandTotal: receipt.grandTotal,
-      receiptUrl: `${process.env.NEXT_PUBLIC_APP_URL}/receipt/${receipt._id}`,
+      receiptUrl: `${getAppUrl()}/receipt/${receipt._id}`,
     });
 
     receipt.emailedAt = new Date();
