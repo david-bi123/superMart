@@ -16,6 +16,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         await connectDB();
         const user = await User.findOne({ email: credentials.email }).populate("businessId");
         if (!user || !user.isActive) return null;
+        const business = user.businessId as any;
+        if (business && business.approvalStatus && business.approvalStatus !== "approved") return null;
         const isValid = await bcrypt.compare(credentials.password as string, user.password);
         if (!isValid) return null;
         return {

@@ -53,7 +53,7 @@ export default function RegisterPage() {
     try {
       const result = await registerBusiness(data);
       if (result.success) {
-        toast.success("Account created! Please check your email to verify.");
+        toast.success("Account created! Your shop is pending approval.");
         setTimeout(() => router.push("/login"), 2000);
       } else {
         toast.error(result.error || "Registration failed");

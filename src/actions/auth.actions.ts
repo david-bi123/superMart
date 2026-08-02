@@ -36,11 +36,11 @@ export async function registerBusiness(data: RegisterInput) {
       slug,
       email: data.email,
       phone: data.phone,
+      isActive: false,
+      approvalStatus: "pending",
     });
 
     const hashedPassword = await bcrypt.hash(data.password, 12);
-
-    const verificationToken = jwt.sign({ email: data.email }, JWT_SECRET, { expiresIn: "24h" });
 
     const user = await User.create({
       name: data.name,
@@ -50,7 +50,7 @@ export async function registerBusiness(data: RegisterInput) {
       businessId: business._id,
       phone: data.phone,
       isVerified: false,
-      verificationToken,
+      isActive: false,
     });
 
     await AuditLog.create({
@@ -62,13 +62,9 @@ export async function registerBusiness(data: RegisterInput) {
       details: { name: data.businessName, email: data.email },
     });
 
-    const verifyUrl = `${APP_URL}/verify-email?token=${verificationToken}`;
-    console.log(`[DEV] Verification email: ${verifyUrl}`);
-
     return {
       success: true,
-      message: "Business registered successfully. Please check your email to verify.",
-      verifyUrl,
+      message: "Your shop has been registered and is pending approval. You will be able to log in once it is approved.",
     };
   } catch (error: any) {
     return { success: false, error: error.message || "Registration failed" };
@@ -102,6 +98,40 @@ export async function logoutUser() {
     return { success: true, message: "Logged out successfully" };
   } catch (error: any) {
     return { success: false, error: error.message || "Logout failed" };
+  }
+}
+
+export async function checkAccountStatus(email: string) {
+  try {
+    await connectDB();
+    const user = await User.findOne({ email }).populate("businessId");
+    if (!user) {
+      return { success: false as const, error: "No account found with this email" };
+    }
+
+    const business = user.businessId as any;
+    if (business && business.approvalStatus === "pending") {
+      return {
+        success: false as const,
+        error: "Your shop registration is pending approval. Please try again later.",
+      };
+    }
+    if (business && business.approvalStatus === "rejected") {
+      return {
+        success: false as const,
+        error: "Your shop registration was rejected. Please contact support.",
+      };
+    }
+    if (!user.isActive) {
+      return {
+        success: false as const,
+        error: "Your account is not active. Please contact your administrator.",
+      };
+    }
+
+    return { success: true as const, message: "Account is active" };
+  } catch (error: any) {
+    return { success: false as const, error: error.message || "Failed to check account" };
   }
 }
 

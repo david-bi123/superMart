@@ -19,6 +19,7 @@ export interface IBusiness extends Document {
   dateFormat: string;
   isActive: boolean;
   isSuspended: boolean;
+  approvalStatus: "pending" | "approved" | "rejected";
   subscriptionTier: "free" | "starter" | "professional" | "enterprise";
   subscriptionStatus: "active" | "expired" | "cancelled" | "trialing";
   subscriptionEndsAt?: Date;
@@ -59,6 +60,11 @@ const BusinessSchema = new Schema<IBusiness>(
     dateFormat: { type: String, default: "MM/DD/YYYY" },
     isActive: { type: Boolean, default: true },
     isSuspended: { type: Boolean, default: false },
+    approvalStatus: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "approved",
+    },
     subscriptionTier: {
       type: String,
       enum: ["free", "starter", "professional", "enterprise"],

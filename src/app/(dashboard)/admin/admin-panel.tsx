@@ -11,6 +11,15 @@ import {
   ShieldAlert,
   Coins,
   RefreshCw,
+  Plus,
+  Check,
+  X,
+  Store,
+  Mail,
+  Phone,
+  User,
+  KeyRound,
+  Copy,
 } from "lucide-react"
 import { PageHeader } from "@/components/ui/page-header"
 import { StatsCard } from "@/components/dashboard/stats-card"
@@ -21,6 +30,14 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EmptyState } from "@/components/ui/empty-state"
 import { Switch } from "@/components/ui/switch"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog"
 import {
   Select,
   SelectContent,
@@ -37,7 +54,14 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { toast } from "@/components/ui/toast"
-import { getTenants, getAdminStats, setTenantActive } from "@/actions/superadmin.actions"
+import {
+  getTenants,
+  getAdminStats,
+  setTenantActive,
+  createTenant,
+  approveTenant,
+  rejectTenant,
+} from "@/actions/superadmin.actions"
 import { formatMoney } from "@/lib/format"
 
 interface TenantRow {
@@ -47,6 +71,7 @@ interface TenantRow {
   email: string
   isActive: boolean
   isSuspended: boolean
+  approvalStatus: string
   subscriptionTier: string
   subscriptionStatus: string
   storageUsed: number
@@ -62,12 +87,18 @@ const TIER_COLORS: Record<string, "default" | "primary" | "secondary" | "warning
   enterprise: "warning",
 }
 
+interface CreateTenantResult {
+  email: string
+  temporaryPassword: string
+}
+
 export function AdminPanel() {
   const [tenants, setTenants] = React.useState<TenantRow[]>([])
   const [stats, setStats] = React.useState<{
     tenants: number
     activeTenants: number
     trialingTenants: number
+    pendingTenants: number
     users: number
     revenue: number
   } | null>(null)
@@ -78,6 +109,17 @@ export function AdminPanel() {
   const [page, setPage] = React.useState(1)
   const [totalPages, setTotalPages] = React.useState(1)
   const [toggling, setToggling] = React.useState<string | null>(null)
+  const [acting, setActing] = React.useState<string | null>(null)
+
+  const [createOpen, setCreateOpen] = React.useState(false)
+  const [createLoading, setCreateLoading] = React.useState(false)
+  const [createResult, setCreateResult] = React.useState<CreateTenantResult | null>(null)
+  const [form, setForm] = React.useState({
+    businessName: "",
+    ownerName: "",
+    email: "",
+    phone: "",
+  })
 
   const fetchStats = React.useCallback(async () => {
     const res = await getAdminStats()
@@ -121,6 +163,65 @@ export function AdminPanel() {
     setToggling(null)
   }
 
+  const handleCreate = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!form.businessName.trim() || !form.ownerName.trim() || !form.email.trim()) {
+      toast.error("Please fill in all required fields")
+      return
+    }
+    setCreateLoading(true)
+    const res = await createTenant(form)
+    if (res.success && res.data) {
+      setCreateResult({ email: res.data.email, temporaryPassword: res.data.temporaryPassword })
+      toast.success("Shop created successfully")
+      setForm({ businessName: "", ownerName: "", email: "", phone: "" })
+      fetchTenants()
+      fetchStats()
+    } else {
+      toast.error(res.error || "Failed to create shop")
+    }
+    setCreateLoading(false)
+  }
+
+  const handleApprove = async (tenant: TenantRow) => {
+    setActing(tenant._id)
+    const res = await approveTenant(tenant._id)
+    if (res.success) {
+      toast.success(`${tenant.name} approved`)
+      fetchTenants()
+      fetchStats()
+    } else {
+      toast.error(res.error)
+    }
+    setActing(null)
+  }
+
+  const handleReject = async (tenant: TenantRow) => {
+    setActing(tenant._id)
+    const res = await rejectTenant(tenant._id)
+    if (res.success) {
+      toast.success(`${tenant.name} rejected`)
+      fetchTenants()
+      fetchStats()
+    } else {
+      toast.error(res.error)
+    }
+    setActing(null)
+  }
+
+  const copyPassword = () => {
+    if (createResult) {
+      navigator.clipboard?.writeText(createResult.temporaryPassword)
+      toast.success("Password copied")
+    }
+  }
+
+  const closeCreate = () => {
+    setCreateOpen(false)
+    setCreateResult(null)
+    setForm({ businessName: "", ownerName: "", email: "", phone: "" })
+  }
+
   const resetFilters = () => {
     setSearch("")
     setStatus("")
@@ -140,6 +241,12 @@ export function AdminPanel() {
       value: stats?.activeTenants ?? 0,
       icon: Globe,
       variant: "success" as const,
+    },
+    {
+      title: "Pending Approval",
+      value: stats?.pendingTenants ?? 0,
+      icon: Clock,
+      variant: "warning" as const,
     },
     {
       title: "Platform Users",
@@ -173,10 +280,16 @@ export function AdminPanel() {
         title="Platform Admin"
         description="Manage shops and tenants on the RetailFlow platform"
         actions={
-          <Button variant="ghost" size="sm" onClick={resetFilters}>
-            <RefreshCw className="h-4 w-4" />
-            Reset Filters
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="ghost" size="sm" onClick={resetFilters}>
+              <RefreshCw className="h-4 w-4" />
+              Reset Filters
+            </Button>
+            <Button variant="gradient" size="sm" onClick={() => { setCreateResult(null); setCreateOpen(true) }}>
+              <Plus className="h-4 w-4" />
+              Create Shop
+            </Button>
+          </div>
         }
       />
 
@@ -211,9 +324,11 @@ export function AdminPanel() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="pending">Pending Approval</SelectItem>
                 <SelectItem value="active">Active</SelectItem>
                 <SelectItem value="suspended">Suspended</SelectItem>
                 <SelectItem value="trialing">Trialing</SelectItem>
+                <SelectItem value="rejected">Rejected</SelectItem>
               </SelectContent>
             </Select>
             <Select value={tier} onValueChange={(v) => { setTier(v === "all" ? "" : v); setPage(1) }}>
@@ -259,7 +374,7 @@ export function AdminPanel() {
                   <TableHead className="hidden sm:table-cell">Users</TableHead>
                   <TableHead className="hidden md:table-cell">Storage</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Suspend</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -302,18 +417,58 @@ export function AdminPanel() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {tenant.isActive ? (
+                      {tenant.approvalStatus === "pending" ? (
+                        <Badge variant="warning">Pending</Badge>
+                      ) : tenant.approvalStatus === "rejected" ? (
+                        <Badge variant="destructive">Rejected</Badge>
+                      ) : tenant.isActive ? (
                         <Badge variant="success">Active</Badge>
                       ) : (
                         <Badge variant="destructive">Suspended</Badge>
                       )}
                     </TableCell>
                     <TableCell className="text-right">
-                      <Switch
-                        checked={tenant.isActive}
-                        disabled={toggling === tenant._id}
-                        onCheckedChange={() => handleToggle(tenant)}
-                      />
+                      <div className="flex items-center justify-end gap-2">
+                        {tenant.approvalStatus === "pending" ? (
+                          <>
+                            <Button
+                              size="sm"
+                              variant="default"
+                              disabled={acting === tenant._id}
+                              onClick={() => handleApprove(tenant)}
+                            >
+                              <Check className="h-3.5 w-3.5" />
+                              Approve
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              disabled={acting === tenant._id}
+                              onClick={() => handleReject(tenant)}
+                              className="text-destructive hover:text-destructive"
+                            >
+                              <X className="h-3.5 w-3.5" />
+                              Reject
+                            </Button>
+                          </>
+                        ) : tenant.approvalStatus === "rejected" ? (
+                          <Button
+                            size="sm"
+                            variant="default"
+                            disabled={acting === tenant._id}
+                            onClick={() => handleApprove(tenant)}
+                          >
+                            <Check className="h-3.5 w-3.5" />
+                            Approve
+                          </Button>
+                        ) : (
+                          <Switch
+                            checked={tenant.isActive}
+                            disabled={toggling === tenant._id}
+                            onCheckedChange={() => handleToggle(tenant)}
+                          />
+                        )}
+                      </div>
                     </TableCell>
                   </motion.tr>
                 ))}
@@ -332,6 +487,95 @@ export function AdminPanel() {
           </div>
         )}
       </Card>
+
+      <Dialog open={createOpen} onOpenChange={(open) => { if (!open) closeCreate() }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create New Shop</DialogTitle>
+            <DialogDescription>
+              Creates a new tenant and a default owner account. The owner can reset their password later.
+            </DialogDescription>
+          </DialogHeader>
+
+          {createResult ? (
+            <div className="space-y-4">
+              <div className="rounded-xl border border-emerald-500/20 bg-emerald-50 dark:bg-emerald-500/10 p-4 space-y-2">
+                <p className="text-sm font-medium text-emerald-700 dark:text-emerald-400">
+                  Shop created successfully
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Share these credentials with the owner. They can reset the password from the login page.
+                </p>
+              </div>
+              <div className="rounded-xl border border-border/60 p-4 space-y-2 bg-muted/20">
+                <div className="flex items-center gap-2 text-sm">
+                  <Mail className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">Email:</span>
+                  <span className="font-medium text-foreground">{createResult.email}</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <KeyRound className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">Password:</span>
+                  <span className="font-mono font-medium text-foreground">{createResult.temporaryPassword}</span>
+                  <Button size="sm" variant="ghost" onClick={copyPassword} className="ml-auto">
+                    <Copy className="h-3.5 w-3.5" />
+                    Copy
+                  </Button>
+                </div>
+              </div>
+              <DialogFooter>
+                <Button onClick={closeCreate} className="w-full sm:w-auto">
+                  Done
+                </Button>
+              </DialogFooter>
+            </div>
+          ) : (
+            <form onSubmit={handleCreate} className="space-y-4">
+              <Input
+                label="Business Name"
+                required
+                placeholder="My Store Inc."
+                value={form.businessName}
+                onChange={(e) => setForm({ ...form, businessName: e.target.value })}
+                icon={<Store className="h-4 w-4" />}
+              />
+              <Input
+                label="Owner Name"
+                required
+                placeholder="John Doe"
+                value={form.ownerName}
+                onChange={(e) => setForm({ ...form, ownerName: e.target.value })}
+                icon={<User className="h-4 w-4" />}
+              />
+              <Input
+                label="Owner Email"
+                required
+                type="email"
+                placeholder="owner@example.com"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                icon={<Mail className="h-4 w-4" />}
+              />
+              <Input
+                label="Phone"
+                type="tel"
+                placeholder="+1 (555) 000-0000"
+                value={form.phone}
+                onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                icon={<Phone className="h-4 w-4" />}
+              />
+              <DialogFooter>
+                <Button type="button" variant="ghost" onClick={closeCreate}>
+                  Cancel
+                </Button>
+                <Button type="submit" loading={createLoading} variant="gradient">
+                  Create Shop
+                </Button>
+              </DialogFooter>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

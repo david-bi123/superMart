@@ -20,6 +20,7 @@ import {
   Clock,
 } from "lucide-react";
 import { loginSchema, type LoginInput } from "@/lib/validations/auth";
+import { checkAccountStatus } from "@/actions/auth.actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/toast";
@@ -61,7 +62,12 @@ function LoginContent() {
       });
 
       if (result?.error) {
-        toast.error("Invalid email or password");
+        const status = await checkAccountStatus(data.email);
+        if (!status.success) {
+          toast.error(status.error || "Invalid email or password");
+        } else {
+          toast.error("Invalid email or password");
+        }
         return;
       }
 
