@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils/cn";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import {
   Store,
   Menu,
@@ -301,6 +302,7 @@ export default function LandingPage() {
           </div>
 
           <div className="hidden items-center gap-3 md:flex">
+            <ThemeToggle />
             <a
               href="/login"
               className="rounded-lg px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
@@ -315,13 +317,16 @@ export default function LandingPage() {
             </a>
           </div>
 
-          <button
+          <div className="flex items-center gap-2 md:hidden">
+            <ThemeToggle />
+            <button
             onClick={() => setMobileOpen(true)}
-            className="flex items-center justify-center rounded-lg p-2 text-muted-foreground transition-colors hover:text-foreground md:hidden"
+            className="flex items-center justify-center rounded-lg p-2 text-muted-foreground transition-colors hover:text-foreground"
             aria-label="Open menu"
           >
             <Menu className="h-5 w-5" />
           </button>
+          </div>
         </div>
       </nav>
 
