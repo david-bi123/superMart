@@ -211,7 +211,7 @@ export function Navbar() {
                 <DropdownMenuShortcut>⌘,</DropdownMenuShortcut>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/login" })} className="text-destructive focus:text-destructive">
+              <DropdownMenuItem onClick={() => signOut({ callbackUrl: `${window.location.origin}/login` })} className="text-destructive focus:text-destructive">
                 <LogOut size={16} className="mr-2" />
                 Sign out
                 <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>

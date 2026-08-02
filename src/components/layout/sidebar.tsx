@@ -214,7 +214,7 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const handleLogout = async () => {
-    await signOut({ callbackUrl: "/login" });
+    await signOut({ callbackUrl: `${window.location.origin}/login` });
   };
 
   return (
