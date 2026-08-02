@@ -51,8 +51,10 @@ import {
 } from "@/components/ui/table";
 import {
   getExpenses,
+  getExpense,
   getExpenseCategories,
   createExpense,
+  updateExpense,
   deleteExpense,
   getExpenseStats,
 } from "@/actions/expenses.actions";
@@ -72,6 +74,101 @@ interface Expense {
   createdAt: string;
 }
 
+interface ExpenseFormValues {
+  description: string;
+  amount: string;
+  categoryId: string;
+  date: string;
+  paymentMethod: string;
+}
+
+function ExpenseFormFields({
+  values,
+  onChange,
+  categories,
+}: {
+  values: ExpenseFormValues;
+  onChange: (next: ExpenseFormValues) => void;
+  categories: { _id: string; name: string }[];
+}) {
+  return (
+    <>
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-1.5">
+          Description *
+        </label>
+        <Input
+          value={values.description}
+          onChange={(e) => onChange({ ...values, description: e.target.value })}
+          placeholder="e.g. Office supplies"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-1.5">
+          Amount *
+        </label>
+        <Input
+          type="number"
+          step="0.01"
+          min="0"
+          value={values.amount}
+          onChange={(e) => onChange({ ...values, amount: e.target.value })}
+          placeholder="0.00"
+          icon={<DollarSign className="h-4 w-4" />}
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-1.5">
+          Category *
+        </label>
+        <Select
+          value={values.categoryId}
+          onValueChange={(v) => onChange({ ...values, categoryId: v })}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select category" />
+          </SelectTrigger>
+          <SelectContent>
+            {categories.map((c) => (
+              <SelectItem key={c._id} value={c._id}>{c.name}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-1.5">
+          Date *
+        </label>
+        <Input
+          type="date"
+          value={values.date}
+          onChange={(e) => onChange({ ...values, date: e.target.value })}
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-foreground mb-1.5">
+          Payment Method
+        </label>
+        <Select
+          value={values.paymentMethod}
+          onValueChange={(v) => onChange({ ...values, paymentMethod: v })}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select method" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="cash">Cash</SelectItem>
+            <SelectItem value="card">Card</SelectItem>
+            <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
+            <SelectItem value="mobile_money">Mobile Money</SelectItem>
+            <SelectItem value="cheque">Cheque</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    </>
+  );
+}
+
 export default function ExpensesPage() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [categories, setCategories] = useState<{ _id: string; name: string }[]>([]);
@@ -85,6 +182,16 @@ export default function ExpensesPage() {
   const [dateTo, setDateTo] = useState("");
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editSaving, setEditSaving] = useState(false);
+  const [editForm, setEditForm] = useState<ExpenseFormValues>({
+    description: "",
+    amount: "",
+    categoryId: "",
+    date: new Date().toISOString().split("T")[0],
+    paymentMethod: "",
+  });
 
   const [formData, setFormData] = useState({
     description: "",
@@ -164,6 +271,57 @@ export default function ExpensesPage() {
       }
     } catch {
       toast.error("Failed to delete expense");
+    }
+  };
+
+  const handleEdit = async (id: string) => {
+    try {
+      const res = await getExpense(id);
+      if (res.success) {
+        setEditingId(id);
+        setEditForm({
+          description: res.data.description,
+          amount: String(res.data.amount),
+          categoryId: res.data.categoryId,
+          date: res.data.date ? res.data.date.split("T")[0] : new Date().toISOString().split("T")[0],
+          paymentMethod: res.data.paymentMethod || "",
+        });
+        setShowEditDialog(true);
+      } else {
+        toast.error(res.error || "Failed to load expense");
+      }
+    } catch {
+      toast.error("Failed to load expense");
+    }
+  };
+
+  const handleUpdate = async () => {
+    if (!editForm.description || !editForm.amount || !editForm.categoryId || !editForm.date) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+    if (!editingId) return;
+    setEditSaving(true);
+    try {
+      const res = await updateExpense(editingId, {
+        description: editForm.description,
+        amount: parseFloat(editForm.amount),
+        categoryId: editForm.categoryId,
+        date: editForm.date,
+        paymentMethod: editForm.paymentMethod || undefined,
+      });
+      if (res.success) {
+        toast.success("Expense updated successfully");
+        setShowEditDialog(false);
+        setEditingId(null);
+        fetchData();
+      } else {
+        toast.error(res.error || "Failed to update expense");
+      }
+    } catch {
+      toast.error("Failed to update expense");
+    } finally {
+      setEditSaving(false);
     }
   };
 
@@ -341,7 +499,7 @@ export default function ExpensesPage() {
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                              <DropdownMenuItem onClick={() => toast.info("Edit coming soon")}>
+                              <DropdownMenuItem onClick={() => handleEdit(expense._id)}>
                                 <Edit className="h-4 w-4 mr-2" />
                                 Edit
                               </DropdownMenuItem>
@@ -398,78 +556,11 @@ export default function ExpensesPage() {
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">
-                Description *
-              </label>
-              <Input
-                value={formData.description}
-                onChange={(e) => setFormData((p) => ({ ...p, description: e.target.value }))}
-                placeholder="e.g. Office supplies"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">
-                Amount *
-              </label>
-              <Input
-                type="number"
-                step="0.01"
-                min="0"
-                value={formData.amount}
-                onChange={(e) => setFormData((p) => ({ ...p, amount: e.target.value }))}
-                placeholder="0.00"
-                icon={<DollarSign className="h-4 w-4" />}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">
-                Category *
-              </label>
-              <Select
-                value={formData.categoryId}
-                onValueChange={(v) => setFormData((p) => ({ ...p, categoryId: v }))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((c) => (
-                    <SelectItem key={c._id} value={c._id}>{c.name}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">
-                Date *
-              </label>
-              <Input
-                type="date"
-                value={formData.date}
-                onChange={(e) => setFormData((p) => ({ ...p, date: e.target.value }))}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-1.5">
-                Payment Method
-              </label>
-              <Select
-                value={formData.paymentMethod}
-                onValueChange={(v) => setFormData((p) => ({ ...p, paymentMethod: v }))}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select method" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="cash">Cash</SelectItem>
-                  <SelectItem value="card">Card</SelectItem>
-                  <SelectItem value="bank_transfer">Bank Transfer</SelectItem>
-                  <SelectItem value="mobile_money">Mobile Money</SelectItem>
-                  <SelectItem value="cheque">Cheque</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <ExpenseFormFields
+              values={formData}
+              onChange={setFormData}
+              categories={categories}
+            />
           </div>
           <DialogFooter>
             <Button variant="ghost" onClick={() => setShowAddDialog(false)}>
@@ -477,6 +568,32 @@ export default function ExpensesPage() {
             </Button>
             <Button onClick={handleCreate} loading={saving}>
               Save Expense
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showEditDialog} onOpenChange={setShowEditDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Edit Expense</DialogTitle>
+            <DialogDescription>
+              Update the expense details
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <ExpenseFormFields
+              values={editForm}
+              onChange={setEditForm}
+              categories={categories}
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setShowEditDialog(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleUpdate} loading={editSaving}>
+              Save Changes
             </Button>
           </DialogFooter>
         </DialogContent>

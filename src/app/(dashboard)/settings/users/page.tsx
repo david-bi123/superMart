@@ -45,6 +45,7 @@ import {
 import { toast } from "@/components/ui/toast"
 import { getUsers, createUser, updateUser, deleteUser } from "@/actions/settings.actions"
 import { cn } from "@/lib/utils/cn"
+import { PermissionGuard } from "@/components/auth/permission-guard"
 
 const ROLE_CONFIG: Record<string, { label: string; color: "default" | "primary" | "secondary" | "destructive" | "warning" }> = {
   super_admin: { label: "Super Admin", color: "destructive" },
@@ -159,6 +160,7 @@ export default function UsersPage() {
   }
 
   return (
+    <PermissionGuard permission="users:manage">
     <div className="space-y-6 pb-8">
       <PageHeader
         title="Users"
@@ -312,9 +314,11 @@ export default function UsersPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.entries(ROLE_CONFIG).map(([key, config]) => (
-                    <SelectItem key={key} value={key}>{config.label}</SelectItem>
-                  ))}
+                  {Object.entries(ROLE_CONFIG)
+                    .filter(([key]) => key !== "super_admin")
+                    .map(([key, config]) => (
+                      <SelectItem key={key} value={key}>{config.label}</SelectItem>
+                    ))}
                 </SelectContent>
               </Select>
             </div>
@@ -328,5 +332,6 @@ export default function UsersPage() {
         </DialogContent>
       </Dialog>
     </div>
+    </PermissionGuard>
   )
 }

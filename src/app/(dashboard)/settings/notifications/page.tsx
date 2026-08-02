@@ -18,6 +18,7 @@ import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/toast"
+import { getNotificationPreferences, updateNotificationPreferences } from "@/actions/settings.actions"
 import { cn } from "@/lib/utils/cn"
 
 interface NotificationPref {
@@ -69,8 +70,31 @@ export default function NotificationSettingsPage() {
     )
   }
 
-  const handleSave = () => {
-    toast.success("Notification preferences saved")
+  React.useEffect(() => {
+    getNotificationPreferences().then((res) => {
+      if (res.success && res.data) {
+        setPrefs((prev) =>
+          prev.map((p) => {
+            const saved = res.data[p.id]
+            if (!saved) return p
+            return { ...p, email: saved.email, inApp: saved.inApp }
+          })
+        )
+      }
+    })
+  }, [])
+
+  const handleSave = async () => {
+    const payload: Record<string, { email: boolean; inApp: boolean }> = {}
+    prefs.forEach((p) => {
+      payload[p.id] = { email: p.email, inApp: p.inApp }
+    })
+    const res = await updateNotificationPreferences(payload)
+    if (res.success) {
+      toast.success("Notification preferences saved")
+    } else {
+      toast.error(res.error || "Failed to save preferences")
+    }
   }
 
   return (

@@ -2,6 +2,7 @@
 
 import { connectDB } from "@/lib/db/mongoose";
 import { auth } from "@/lib/auth/config";
+import { requirePermission } from "@/lib/auth/rbac";
 import { PurchaseOrder } from "@/models/PurchaseOrder";
 import { Supplier } from "@/models/Supplier";
 import { Product } from "@/models/Product";
@@ -256,6 +257,7 @@ export async function getPOProducts() {
 
 export async function createPurchaseOrder(data: unknown) {
   try {
+    await requirePermission("purchases:create");
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);
@@ -312,6 +314,7 @@ export async function createPurchaseOrder(data: unknown) {
 export async function approvePurchaseOrder(id: string) {
   try {
     await connectDB();
+    await requirePermission("purchases:approve");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -339,6 +342,7 @@ export async function approvePurchaseOrder(id: string) {
 
 export async function receivePurchaseOrder(id: string, items?: { productId: string; quantity: number }[]) {
   try {
+    await requirePermission("purchases:create");
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);
@@ -417,6 +421,7 @@ export async function receivePurchaseOrder(id: string, items?: { productId: stri
 
 export async function cancelPurchaseOrder(id: string) {
   try {
+    await requirePermission("purchases:create");
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);

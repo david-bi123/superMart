@@ -2,6 +2,7 @@
 
 import { connectDB } from "@/lib/db/mongoose";
 import { auth } from "@/lib/auth/config";
+import { requirePermission } from "@/lib/auth/rbac";
 import { Sale } from "@/models/Sale";
 import { Product } from "@/models/Product";
 import { Customer } from "@/models/Customer";
@@ -88,6 +89,7 @@ export async function getRevenueReport(dateRange: { from?: string; to?: string; 
 export async function getProfitReport(dateRange: { from?: string; to?: string }) {
   try {
     await connectDB();
+    await requirePermission("reports:financial");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -173,6 +175,7 @@ export async function getProfitReport(dateRange: { from?: string; to?: string })
 export async function getTaxReport(dateRange: { from?: string; to?: string }) {
   try {
     await connectDB();
+    await requirePermission("reports:financial");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -242,6 +245,7 @@ export async function getTaxReport(dateRange: { from?: string; to?: string }) {
 export async function getExpenseReport(dateRange: { from?: string; to?: string }) {
   try {
     await connectDB();
+    await requirePermission("reports:financial");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -612,6 +616,7 @@ export async function getSalesReport(dateRange: { from?: string; to?: string }) 
 export async function getCashFlow(dateRange: { from?: string; to?: string }) {
   try {
     await connectDB();
+    await requirePermission("reports:financial");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -708,6 +713,7 @@ export async function getCashFlow(dateRange: { from?: string; to?: string }) {
 export async function getGrossMargin(dateRange: { from?: string; to?: string }) {
   try {
     await connectDB();
+    await requirePermission("reports:financial");
     const session = await auth();
     const businessId = getBusinessId(session);
 

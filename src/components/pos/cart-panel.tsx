@@ -25,6 +25,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "@/components/ui/toast";
+import { createSale } from "@/actions/sales.actions";
+import { getReceipt } from "@/actions/receipt.actions";
 import { CustomerSelect } from "./customer-select";
 import { PaymentDialog } from "./payment-dialog";
 import { ReceiptPreview } from "./receipt-preview";
@@ -151,38 +153,41 @@ export function CartPanel() {
 
   const handleCompleteSale = async (data: { paymentMethod: string; amountPaid: number; change: number }) => {
     try {
-      const res = await fetch("/api/pos/sales", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          items: items.map((i) => ({
-            productId: i.productId,
-            name: i.name,
-            sku: i.sku,
-            quantity: i.quantity,
-            price: i.price,
-            discount: i.discount,
-            tax: i.tax,
-          })),
-          customerId,
-          paymentMethod: data.paymentMethod,
-          amountPaid: data.amountPaid,
+      const result = await createSale({
+        items: items.map((i) => ({
+          productId: i.productId,
+          name: i.name,
+          sku: i.sku,
+          quantity: i.quantity,
+          price: i.price,
+          discount: i.discount,
+          tax: i.tax,
+          total: i.price * i.quantity - i.discount + i.tax,
+        })),
+        customerId,
+        subtotal: totals.subtotal,
+        discountTotal: totals.discountTotal,
+        taxTotal: totals.taxTotal,
+        grandTotal: totals.grandTotal,
+        paymentMethod: data.paymentMethod === "split" ? "mixed" : data.paymentMethod,
+        paymentDetails: {
+          cash: data.paymentMethod === "cash" ? data.amountPaid : 0,
           change: data.change,
-        }),
+        },
       });
-      const json = await res.json();
-      if (!json.success) {
-        throw new Error(json.error || "Sale failed");
+
+      if (!result.success) {
+        throw new Error(result.error || "Sale failed");
       }
 
-      const receipt: ReceiptData = {
-        businessName: json.receipt?.businessName || "RetailFlow Store",
-        businessLogo: json.receipt?.businessLogo || "",
-        address: json.receipt?.address || "123 Main Street",
-        phone: json.receipt?.phone || "+1 (555) 000-0000",
-        tin: json.receipt?.tin,
-        cashier: json.receipt?.cashier || "Cashier",
-        customer: customerName,
+      let receipt: ReceiptData = {
+        businessName: "RetailFlow Store",
+        businessLogo: "",
+        address: "123 Main Street",
+        phone: "+1 (555) 000-0000",
+        tin: "",
+        cashier: "Cashier",
+        customer: customerName || "Walk-in Customer",
         items: items.map((i) => ({
           name: i.name,
           quantity: i.quantity,
@@ -196,16 +201,31 @@ export function CartPanel() {
         paymentMethod: data.paymentMethod,
         amountPaid: data.amountPaid,
         change: data.change,
-        receiptNumber: json.receipt?.receiptNumber || `RCP-${Date.now()}`,
+        receiptNumber: `RCP-${Date.now()}`,
         date: new Date(),
-        footer: json.receipt?.footer || "Thank you for your purchase!",
+        footer: "Thank you for your purchase!",
       };
+
+      const saleId = result.data?._id;
+      if (saleId) {
+        const receiptResult = await getReceipt(saleId);
+        if (receiptResult.success) {
+          receipt = {
+            ...receiptResult.data,
+            customer: receiptResult.data.customer || customerName || "Walk-in Customer",
+            paymentMethod: data.paymentMethod,
+            amountPaid: data.amountPaid,
+            change: data.change,
+          };
+        }
+      }
+
       setLastReceipt(receipt);
       setShowReceipt(true);
       clearCart();
       toast.success("Sale completed!");
-    } catch (err) {
-      throw err;
+    } catch (err: any) {
+      toast.error(err.message || "Sale failed");
     }
   };
 

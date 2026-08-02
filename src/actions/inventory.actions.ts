@@ -2,6 +2,7 @@
 
 import { connectDB } from "@/lib/db/mongoose";
 import { auth } from "@/lib/auth/config";
+import { requirePermission } from "@/lib/auth/rbac";
 import { Product } from "@/models/Product";
 import { Category } from "@/models/Category";
 import { Brand } from "@/models/Brand";
@@ -168,6 +169,7 @@ export async function getProduct(id: string) {
 export async function createProduct(data: unknown) {
   try {
     await connectDB();
+    await requirePermission("products:create");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -202,6 +204,7 @@ export async function createProduct(data: unknown) {
 export async function updateProduct(id: string, data: unknown) {
   try {
     await connectDB();
+    await requirePermission("products:update");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -243,6 +246,7 @@ export async function updateProduct(id: string, data: unknown) {
 export async function deleteProduct(id: string) {
   try {
     await connectDB();
+    await requirePermission("products:delete");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -265,6 +269,7 @@ export async function deleteProduct(id: string) {
 
 export async function restoreProduct(id: string) {
   try {
+    await requirePermission("products:update");
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);
@@ -288,6 +293,7 @@ export async function restoreProduct(id: string) {
 
 export async function bulkUploadCSV(rows: unknown[]) {
   try {
+    await requirePermission("products:create");
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);
@@ -389,6 +395,7 @@ export async function getCategories(businessId?: string) {
 
 export async function createCategory(data: unknown) {
   try {
+    await requirePermission("products:create");
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);
@@ -418,6 +425,7 @@ export async function createCategory(data: unknown) {
 
 export async function updateCategory(id: string, data: unknown) {
   try {
+    await requirePermission("products:update");
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);
@@ -453,6 +461,7 @@ export async function updateCategory(id: string, data: unknown) {
 
 export async function deleteCategory(id: string) {
   try {
+    await requirePermission("products:delete");
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);
@@ -502,6 +511,7 @@ export async function getBrands() {
 
 export async function createBrand(data: unknown) {
   try {
+    await requirePermission("products:create");
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);
@@ -528,6 +538,7 @@ export async function createBrand(data: unknown) {
 
 export async function updateBrand(id: string, data: unknown) {
   try {
+    await requirePermission("products:update");
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);
@@ -553,6 +564,7 @@ export async function updateBrand(id: string, data: unknown) {
 
 export async function deleteBrand(id: string) {
   try {
+    await requirePermission("products:delete");
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);
@@ -632,6 +644,7 @@ export async function getInventoryMovements(productId: string) {
 export async function adjustStock(productId: string, quantity: number, reason: string) {
   try {
     await connectDB();
+    await requirePermission("inventory:adjust");
     const session = await auth();
     const businessId = getBusinessId(session);
     const userId = session?.user?.id;
@@ -668,6 +681,7 @@ export async function adjustStock(productId: string, quantity: number, reason: s
 export async function transferStock(productId: string, fromBranch: string, toBranch: string, quantity: number) {
   try {
     await connectDB();
+    await requirePermission("inventory:transfer");
     const session = await auth();
     const businessId = getBusinessId(session);
     const userId = session?.user?.id;

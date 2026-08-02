@@ -17,6 +17,7 @@ import { PageHeader } from "@/components/ui/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PermissionGuard } from "@/components/auth/permission-guard";
 import {
   Select,
   SelectContent,
@@ -174,6 +175,7 @@ export default function FinancialReportsPage() {
   }
 
   return (
+    <PermissionGuard permission="reports:financial">
     <motion.div
       variants={containerVariants}
       initial="hidden"
@@ -337,5 +339,6 @@ export default function FinancialReportsPage() {
         </Card>
       </motion.div>
     </motion.div>
+    </PermissionGuard>
   );
 }

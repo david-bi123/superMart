@@ -12,7 +12,11 @@ import { AuditLog } from "@/models/AuditLog";
 import { signIn, signOut } from "@/lib/auth/config";
 import type { RegisterInput, LoginInput, ResetPasswordInput } from "@/lib/validations/auth";
 
-const JWT_SECRET = process.env.AUTH_SECRET || "fallback-secret";
+const envJWTSecret = process.env.AUTH_SECRET;
+if (!envJWTSecret) {
+  throw new Error("AUTH_SECRET environment variable is not configured");
+}
+const JWT_SECRET: string = envJWTSecret;
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
 export async function registerBusiness(data: RegisterInput) {
@@ -127,24 +131,28 @@ export async function forgotPassword(email: string) {
 export async function resetPassword(token: string, password: string) {
   try {
     await connectDB();
-    const user = await User.findOne({
+    const users = await User.find({
+      passwordResetToken: { $exists: true },
       passwordResetExpires: { $gt: new Date() },
     });
 
-    if (!user || !user.passwordResetToken) {
-      return { success: false, error: "Invalid or expired reset token" };
+    let matched: any = null;
+    for (const u of users) {
+      if (u.passwordResetToken && (await bcrypt.compare(token, u.passwordResetToken))) {
+        matched = u;
+        break;
+      }
     }
 
-    const isValid = await bcrypt.compare(token, user.passwordResetToken);
-    if (!isValid) {
+    if (!matched) {
       return { success: false, error: "Invalid or expired reset token" };
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
-    user.password = hashedPassword;
-    user.passwordResetToken = undefined;
-    user.passwordResetExpires = undefined;
-    await user.save();
+    matched.password = hashedPassword;
+    matched.passwordResetToken = undefined;
+    matched.passwordResetExpires = undefined;
+    await matched.save();
 
     return { success: true, message: "Password reset successfully. Please login with your new password." };
   } catch (error: any) {
@@ -154,7 +162,7 @@ export async function resetPassword(token: string, password: string) {
 
 export async function verifyEmail(token: string) {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { email: string };
+    const decoded = jwt.verify(token, JWT_SECRET) as unknown as { email: string };
     await connectDB();
     const user = await User.findOne({ email: decoded.email });
     if (!user) {

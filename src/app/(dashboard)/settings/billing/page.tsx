@@ -23,6 +23,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { toast } from "@/components/ui/toast"
 import { getSubscription, getPlans, upgradePlan, cancelSubscription, getInvoices } from "@/actions/subscriptions.actions"
 import { cn } from "@/lib/utils/cn"
+import { PermissionGuard } from "@/components/auth/permission-guard"
 
 const TIER_ORDER = ["free", "starter", "professional", "enterprise"]
 const TIER_ICONS: Record<string, React.ElementType> = {
@@ -122,6 +123,7 @@ export default function BillingPage() {
   const currentPlan = plans.find((p) => p.tier === currentTier)
 
   return (
+    <PermissionGuard permission="settings:manage">
     <div className="space-y-6 pb-8">
       <PageHeader
         title="Billing & Plan"
@@ -361,5 +363,6 @@ export default function BillingPage() {
         </>
       )}
     </div>
+    </PermissionGuard>
   )
 }

@@ -2,6 +2,7 @@
 
 import { connectDB } from "@/lib/db/mongoose";
 import { auth } from "@/lib/auth/config";
+import { requirePermission } from "@/lib/auth/rbac";
 import { Expense } from "@/models/Expense";
 import { ExpenseCategory } from "@/models/ExpenseCategory";
 import { AuditLog } from "@/models/AuditLog";
@@ -171,6 +172,7 @@ export async function getExpense(id: string) {
 export async function createExpense(data: unknown) {
   try {
     await connectDB();
+    await requirePermission("expenses:manage");
     const session = await auth();
     const businessId = getBusinessId(session);
     const userId = getUserId(session);
@@ -207,6 +209,7 @@ export async function createExpense(data: unknown) {
 export async function updateExpense(id: string, data: unknown) {
   try {
     await connectDB();
+    await requirePermission("expenses:manage");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -250,6 +253,7 @@ export async function updateExpense(id: string, data: unknown) {
 export async function deleteExpense(id: string) {
   try {
     await connectDB();
+    await requirePermission("expenses:manage");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -302,6 +306,7 @@ export async function getExpenseCategories() {
 
 export async function createExpenseCategory(data: unknown) {
   try {
+    await requirePermission("expenses:manage");
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);

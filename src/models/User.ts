@@ -13,6 +13,7 @@ export interface IUser extends Document {
   isVerified: boolean;
   twoFactorEnabled: boolean;
   twoFactorSecret?: string;
+  notificationPreferences: Record<string, { email: boolean; inApp: boolean }>;
   lastLogin?: Date;
   lastLoginIp?: string;
   permissions: string[];
@@ -43,6 +44,14 @@ const UserSchema = new Schema<IUser>(
     isVerified: { type: Boolean, default: false },
     twoFactorEnabled: { type: Boolean, default: false },
     twoFactorSecret: { type: String },
+    notificationPreferences: {
+      type: Map,
+      of: {
+        email: { type: Boolean, default: true },
+        inApp: { type: Boolean, default: true },
+      },
+      default: {},
+    },
     lastLogin: { type: Date },
     lastLoginIp: { type: String },
     permissions: [{ type: String }],

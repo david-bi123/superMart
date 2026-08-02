@@ -42,34 +42,44 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: "Dashboard", icon: <LayoutDashboard size={20} />, href: "/dashboard", permission: "pos:access" },
-  { label: "POS", icon: <ShoppingCart size={20} />, href: "/dashboard/pos", permission: "pos:access" },
+  { label: "POS", icon: <ShoppingCart size={20} />, href: "/pos", permission: "pos:access" },
   {
     label: "Inventory",
     icon: <Package size={20} />,
     permission: "products:read",
     children: [
-      { label: "Products", href: "/dashboard/inventory/products", permission: "products:read" },
-      { label: "Categories", href: "/dashboard/inventory/categories", permission: "products:read" },
-      { label: "Brands", href: "/dashboard/inventory/brands", permission: "products:read" },
-      { label: "Suppliers", href: "/dashboard/inventory/suppliers", permission: "suppliers:manage" },
+      { label: "Products", href: "/inventory/products", permission: "products:read" },
+      { label: "Categories", href: "/inventory/categories", permission: "products:read" },
+      { label: "Brands", href: "/inventory/brands", permission: "products:read" },
+      { label: "Suppliers", href: "/suppliers", permission: "suppliers:manage" },
     ],
   },
-  { label: "Purchases", icon: <Truck size={20} />, href: "/dashboard/purchases", permission: "purchases:create" },
-  { label: "Sales", icon: <Receipt size={20} />, href: "/dashboard/sales", permission: "sales:read" },
-  { label: "Customers", icon: <Users size={20} />, href: "/dashboard/customers", permission: "customers:manage" },
-  { label: "Expenses", icon: <Wallet size={20} />, href: "/dashboard/expenses", permission: "expenses:manage" },
+  { label: "Purchases", icon: <Truck size={20} />, href: "/purchases/orders", permission: "purchases:create" },
+  { label: "Sales", icon: <Receipt size={20} />, href: "/sales", permission: "sales:read" },
+  { label: "Customers", icon: <Users size={20} />, href: "/customers", permission: "customers:manage" },
+  { label: "Expenses", icon: <Wallet size={20} />, href: "/expenses", permission: "expenses:manage" },
   {
     label: "Reports",
     icon: <BarChart3 size={20} />,
     permission: "reports:read",
     children: [
-      { label: "Financial", href: "/dashboard/reports/financial", permission: "reports:financial" },
-      { label: "Inventory", href: "/dashboard/reports/inventory", permission: "reports:read" },
-      { label: "Sales", href: "/dashboard/reports/sales", permission: "reports:read" },
+      { label: "Financial", href: "/reports/financial", permission: "reports:financial" },
+      { label: "Inventory", href: "/reports/inventory", permission: "reports:read" },
+      { label: "Sales", href: "/reports/sales", permission: "reports:read" },
     ],
   },
-  { label: "Employees", icon: <UserCog size={20} />, href: "/dashboard/employees", permission: "users:manage" },
-  { label: "Settings", icon: <Settings size={20} />, href: "/dashboard/settings", permission: "settings:manage" },
+  { label: "Employees", icon: <UserCog size={20} />, href: "/employees", permission: "users:manage" },
+  {
+    label: "Settings",
+    icon: <Settings size={20} />,
+    permission: "settings:manage",
+    children: [
+      { label: "Profile", href: "/settings/profile", permission: "settings:manage" },
+      { label: "Users", href: "/settings/users", permission: "users:manage" },
+      { label: "Billing", href: "/settings/billing", permission: "settings:manage" },
+      { label: "Notifications", href: "/settings/notifications", permission: "settings:manage" },
+    ],
+  },
 ];
 
 function SidebarNavItem({ item, collapsed, onItemClick }: { item: NavItem; collapsed: boolean; onItemClick?: () => void }) {

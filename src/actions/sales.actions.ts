@@ -2,6 +2,7 @@
 
 import { connectDB } from "@/lib/db/mongoose";
 import { auth } from "@/lib/auth/config";
+import { requirePermission } from "@/lib/auth/rbac";
 import { Sale } from "@/models/Sale";
 import { Product } from "@/models/Product";
 import { Customer } from "@/models/Customer";
@@ -298,6 +299,7 @@ export async function getSale(id: string) {
 export async function createSale(data: unknown) {
   try {
     await connectDB();
+    await requirePermission("sales:create");
     const session = await auth();
     const businessId = getBusinessId(session);
     const userId = getUserId(session);
@@ -371,6 +373,7 @@ export async function createSale(data: unknown) {
 export async function cancelSale(id: string) {
   try {
     await connectDB();
+    await requirePermission("sales:cancel");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -418,6 +421,7 @@ export async function cancelSale(id: string) {
 export async function refundSale(id: string, data: unknown) {
   try {
     await connectDB();
+    await requirePermission("sales:refund");
     const session = await auth();
     const businessId = getBusinessId(session);
 

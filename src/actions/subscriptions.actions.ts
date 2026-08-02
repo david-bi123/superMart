@@ -4,6 +4,7 @@ import { connectDB } from "@/lib/db/mongoose";
 import { auth } from "@/lib/auth/config";
 import { Business } from "@/models/Business";
 import { Subscription } from "@/models/Subscription";
+import { User } from "@/models/User";
 import { AuditLog } from "@/models/AuditLog";
 import mongoose from "mongoose";
 
@@ -11,6 +12,16 @@ function getBusinessId(session: any): string {
   const bid = session?.user?.businessId;
   if (!bid) throw new Error("Not authenticated");
   return bid;
+}
+
+async function requireOwner(session: any, businessId: string) {
+  const uid = session?.user?.id;
+  if (!uid) throw new Error("Not authenticated");
+  if (session.user.role === "super_admin") return;
+  const user = await User.findById(new mongoose.Types.ObjectId(uid)).lean();
+  if (!user || user.businessId?.toString() !== businessId || user.role !== "business_owner") {
+    throw new Error("Only the business owner can manage the subscription");
+  }
 }
 
 const PLANS = [
@@ -170,6 +181,7 @@ export async function upgradePlan(tier: string) {
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);
+    await requireOwner(session, businessId);
 
     const plan = PLANS.find((p) => p.tier === tier);
     if (!plan) return { success: false as const, error: "Invalid plan tier" };
@@ -228,6 +240,7 @@ export async function cancelSubscription() {
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);
+    await requireOwner(session, businessId);
 
     const business = await Business.findById(new mongoose.Types.ObjectId(businessId));
     if (!business) return { success: false as const, error: "Business not found" };

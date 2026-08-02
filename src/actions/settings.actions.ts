@@ -2,6 +2,7 @@
 
 import { connectDB } from "@/lib/db/mongoose";
 import { auth } from "@/lib/auth/config";
+import { requirePermission } from "@/lib/auth/rbac";
 import { Business } from "@/models/Business";
 import { User } from "@/models/User";
 import { Tax } from "@/models/Tax";
@@ -89,6 +90,7 @@ export async function getBusinessSettings() {
 export async function updateBusinessProfile(data: unknown) {
   try {
     await connectDB();
+    await requirePermission("settings:manage");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -130,6 +132,7 @@ export async function updateBusinessProfile(data: unknown) {
 export async function updateBusinessSettings(data: unknown) {
   try {
     await connectDB();
+    await requirePermission("settings:manage");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -177,6 +180,7 @@ export async function getUsers(filters: {
 }) {
   try {
     await connectDB();
+    await requirePermission("users:manage");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -233,10 +237,16 @@ export async function getUsers(filters: {
 export async function createUser(data: unknown) {
   try {
     await connectDB();
+    await requirePermission("users:manage");
     const session = await auth();
     const businessId = getBusinessId(session);
 
     const parsed = createUserSchema.parse(data);
+
+    const actorRole = session?.user?.role;
+    if (parsed.role === "business_owner" && actorRole !== "super_admin" && actorRole !== "business_owner") {
+      return { success: false as const, error: "Only the business owner can assign the owner role" };
+    }
 
     const existing = await User.findOne({ email: parsed.email, businessId: new mongoose.Types.ObjectId(businessId) });
     if (existing) return { success: false as const, error: "A user with this email already exists" };
@@ -271,10 +281,29 @@ export async function createUser(data: unknown) {
 export async function updateUser(id: string, data: unknown) {
   try {
     await connectDB();
+    await requirePermission("users:manage");
     const session = await auth();
     const businessId = getBusinessId(session);
 
     const parsed = updateUserSchema.parse(data);
+
+    const actorRole = session?.user?.role;
+    if (parsed.role === "business_owner" && actorRole !== "super_admin" && actorRole !== "business_owner") {
+      return { success: false as const, error: "Only the business owner can assign the owner role" };
+    }
+
+    const target = await User.findOne({
+      _id: new mongoose.Types.ObjectId(id),
+      businessId: new mongoose.Types.ObjectId(businessId),
+    });
+    if (!target) return { success: false as const, error: "User not found" };
+
+    if (
+      (parsed.isActive === false && target.role === "business_owner") ||
+      (parsed.role && parsed.role !== "business_owner" && target.role === "business_owner")
+    ) {
+      return { success: false as const, error: "The business owner account cannot be demoted or deactivated" };
+    }
 
     const updateData: Record<string, unknown> = {};
     if (parsed.name !== undefined) updateData.name = parsed.name;
@@ -304,8 +333,22 @@ export async function updateUser(id: string, data: unknown) {
 export async function deleteUser(id: string) {
   try {
     await connectDB();
+    await requirePermission("users:manage");
     const session = await auth();
     const businessId = getBusinessId(session);
+
+    const target = await User.findOne({
+      _id: new mongoose.Types.ObjectId(id),
+      businessId: new mongoose.Types.ObjectId(businessId),
+    });
+    if (!target) return { success: false as const, error: "User not found" };
+
+    if (target.role === "business_owner") {
+      return { success: false as const, error: "The business owner account cannot be deactivated" };
+    }
+    if (target._id.toString() === session?.user?.id) {
+      return { success: false as const, error: "You cannot deactivate your own account" };
+    }
 
     const user = await User.findOneAndUpdate(
       { _id: new mongoose.Types.ObjectId(id), businessId: new mongoose.Types.ObjectId(businessId) },
@@ -354,6 +397,7 @@ export async function getTaxes() {
 export async function createTax(data: unknown) {
   try {
     await connectDB();
+    await requirePermission("settings:manage");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -388,6 +432,7 @@ export async function createTax(data: unknown) {
 export async function updateTax(id: string, data: unknown) {
   try {
     await connectDB();
+    await requirePermission("settings:manage");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -543,6 +588,7 @@ export async function getAuditLogs(filters: {
 }) {
   try {
     await connectDB();
+    await requirePermission("settings:manage");
     const session = await auth();
     const businessId = getBusinessId(session);
 
@@ -616,5 +662,44 @@ export async function getAuditLogs(filters: {
   } catch (error) {
     console.error("getAuditLogs error:", error);
     return { success: false as const, error: "Failed to fetch audit logs" };
+  }
+}
+
+export async function getNotificationPreferences() {
+  try {
+    await connectDB();
+    const session = await auth();
+    const userId = getUserId(session);
+
+    const user = await User.findById(userId).select("notificationPreferences").lean();
+    const prefs = (user?.notificationPreferences as Record<string, { email: boolean; inApp: boolean }>) || {};
+
+    return { success: true as const, data: prefs };
+  } catch (error) {
+    console.error("getNotificationPreferences error:", error);
+    return { success: false as const, error: "Failed to fetch notification preferences" };
+  }
+}
+
+export async function updateNotificationPreferences(prefs: Record<string, { email: boolean; inApp: boolean }>) {
+  try {
+    await connectDB();
+    const session = await auth();
+    const userId = getUserId(session);
+
+    const sanitized: Record<string, { email: boolean; inApp: boolean }> = {};
+    for (const [key, value] of Object.entries(prefs || {})) {
+      sanitized[key] = {
+        email: !!value?.email,
+        inApp: !!value?.inApp,
+      };
+    }
+
+    await User.findByIdAndUpdate(userId, { $set: { notificationPreferences: sanitized } });
+
+    return { success: true as const, data: { message: "Notification preferences saved" } };
+  } catch (error) {
+    console.error("updateNotificationPreferences error:", error);
+    return { success: false as const, error: "Failed to save notification preferences" };
   }
 }

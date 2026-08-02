@@ -2,6 +2,7 @@
 
 import { connectDB } from "@/lib/db/mongoose";
 import { auth } from "@/lib/auth/config";
+import { requirePermission } from "@/lib/auth/rbac";
 import { Customer } from "@/models/Customer";
 import { Sale } from "@/models/Sale";
 import { AuditLog } from "@/models/AuditLog";
@@ -177,6 +178,7 @@ export async function getCustomer(id: string) {
 
 export async function createCustomer(data: unknown) {
   try {
+    await requirePermission("customers:manage");
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);
@@ -208,6 +210,7 @@ export async function createCustomer(data: unknown) {
 
 export async function updateCustomer(id: string, data: unknown) {
   try {
+    await requirePermission("customers:manage");
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);
@@ -243,6 +246,7 @@ export async function updateCustomer(id: string, data: unknown) {
 
 export async function deleteCustomer(id: string) {
   try {
+    await requirePermission("customers:manage");
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);
@@ -266,6 +270,7 @@ export async function deleteCustomer(id: string) {
 
 export async function addLoyaltyPoints(customerId: string, points: number, reason?: string) {
   try {
+    await requirePermission("customers:manage");
     await connectDB();
     const session = await auth();
     const businessId = getBusinessId(session);

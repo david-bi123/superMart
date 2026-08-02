@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSession, signOut } from "next-auth/react";
 import { useTheme } from "@/providers/theme-provider";
@@ -12,6 +12,7 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback, getInitials } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
+import { getNotifications } from "@/actions/settings.actions";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -61,6 +62,7 @@ const breadcrumbMap: Record<string, string> = {
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { data: session } = useSession();
   const user = session?.user;
   const { theme, setTheme } = useTheme();
@@ -68,6 +70,13 @@ export function Navbar() {
   const { open } = useSidebar();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    getNotifications({ limit: 1 }).then((res) => {
+      if (res.success) setUnreadCount(res.unreadCount);
+    });
+  }, []);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -152,12 +161,16 @@ export function Navbar() {
             </kbd>
           </Button>
 
-          <Button variant="ghost" size="icon" className="relative text-muted-foreground" aria-label="Notifications">
-            <Bell size={18} />
-            <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground ring-2 ring-background">
-              3
-            </span>
-          </Button>
+          <Link href="/notifications" className="relative" aria-label="Notifications">
+            <Button variant="ghost" size="icon" className="relative text-muted-foreground">
+              <Bell size={18} />
+              {unreadCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground ring-2 ring-background">
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
+              )}
+            </Button>
+          </Link>
 
           <Button
             variant="ghost"
@@ -187,12 +200,12 @@ export function Navbar() {
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/settings/profile")}>
                 <User size={16} className="mr-2 text-muted-foreground" />
                 Profile
                 <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/settings/users")}>
                 <Settings size={16} className="mr-2 text-muted-foreground" />
                 Settings
                 <DropdownMenuShortcut>⌘,</DropdownMenuShortcut>
@@ -241,10 +254,10 @@ export function Navbar() {
               <div className="p-2">
                 <div className="px-3 py-2 text-xs font-medium text-muted-foreground/60 uppercase tracking-wider">Quick actions</div>
                 {[
-                  { label: "Create Product", href: "/dashboard/inventory/products/new" },
-                  { label: "New Sale", href: "/dashboard/pos" },
-                  { label: "Add Customer", href: "/dashboard/customers" },
-                  { label: "Purchase Order", href: "/dashboard/purchases/orders/new" },
+                  { label: "Create Product", href: "/inventory/products/new" },
+                  { label: "New Sale", href: "/pos" },
+                  { label: "Add Customer", href: "/customers" },
+                  { label: "Purchase Order", href: "/purchases/orders/new" },
                 ].map((action) => (
                   <Link
                     key={action.href}

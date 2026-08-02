@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, UserPlus, User, Phone, Mail, Check } from "lucide-react";
 import { useDebounce } from "@/hooks/use-debounce";
-import { cn } from "@/lib/utils/cn";
+import { getCustomers, createCustomer } from "@/actions/customers.actions";
 import {
   Dialog,
   DialogContent,
@@ -45,14 +45,19 @@ export function CustomerSelect({ open, onOpenChange, onSelect }: CustomerSelectP
   const fetchCustomers = useCallback(async () => {
     setLoading(true);
     try {
-      const params = new URLSearchParams();
-      if (debouncedSearch) params.set("search", debouncedSearch);
-      params.set("limit", "20");
-
-      const res = await fetch(`/api/customers?${params}`);
-      const json = await res.json();
-      if (json.success) {
-        setCustomers(json.data || []);
+      const result = await getCustomers({
+        search: debouncedSearch || undefined,
+        limit: 20,
+      });
+      if (result.success) {
+        setCustomers(
+          (result.data || []).map((c) => ({
+            _id: c._id,
+            name: c.name,
+            email: c.email,
+            phone: c.phone,
+          }))
+        );
       }
     } catch {
       // ignore
@@ -70,19 +75,18 @@ export function CustomerSelect({ open, onOpenChange, onSelect }: CustomerSelectP
     }
     setCreating(true);
     try {
-      const res = await fetch("/api/customers", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: newName.trim(), email: newEmail.trim(), phone: newPhone.trim() }),
+      const result = await createCustomer({
+        name: newName.trim(),
+        email: newEmail.trim() || undefined,
+        phone: newPhone.trim() || undefined,
       });
-      const json = await res.json();
-      if (json.success) {
+      if (result.success) {
         toast.success("Customer created");
-        onSelect(json.data._id || json.data.id, newName.trim());
+        onSelect(result.data._id, newName.trim());
         onOpenChange(false);
         resetForm();
       } else {
-        toast.error(json.error || "Failed to create customer");
+        toast.error(result.error || "Failed to create customer");
       }
     } catch {
       toast.error("Failed to create customer");

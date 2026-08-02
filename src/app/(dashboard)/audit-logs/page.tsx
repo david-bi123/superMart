@@ -36,6 +36,7 @@ import {
 import { toast } from "@/components/ui/toast"
 import { getAuditLogs } from "@/actions/settings.actions"
 import { cn } from "@/lib/utils/cn"
+import { PermissionGuard } from "@/components/auth/permission-guard"
 
 interface AuditLogRow {
   _id: string
@@ -106,6 +107,7 @@ export default function AuditLogsPage() {
   }
 
   return (
+    <PermissionGuard permission="settings:manage">
     <div className="space-y-6 pb-8">
       <PageHeader
         title="Audit Logs"
@@ -272,5 +274,6 @@ export default function AuditLogsPage() {
         )}
       </Card>
     </div>
+    </PermissionGuard>
   )
 }
