@@ -254,11 +254,22 @@ export function ProductGrid({ onCartToggle }: ProductGridProps) {
                         viewMode === "grid" ? "aspect-square" : "h-16 w-16 shrink-0 rounded-xl m-2"
                       )}>
                         {product.image ? (
-                          <img
-                            src={product.image}
-                            alt={product.name}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
+                          <>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <Package className={cn(
+                                "text-muted-foreground/50",
+                                viewMode === "grid" ? "h-8 w-8" : "h-5 w-5"
+                              )} />
+                            </div>
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              onError={(e) => {
+                                (e.currentTarget as HTMLImageElement).style.display = "none";
+                              }}
+                              className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            />
+                          </>
                         ) : (
                           <div className="flex items-center justify-center w-full h-full">
                             <Package className={cn(
