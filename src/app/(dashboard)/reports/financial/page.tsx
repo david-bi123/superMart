@@ -201,7 +201,7 @@ export default function FinancialReportsPage() {
       />
 
       <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-3">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <CalendarRange className="h-4 w-4 text-muted-foreground/50" />
           <Input
             type="date"
