@@ -24,6 +24,7 @@ import {
   BarChart3,
   UserCog,
   Settings,
+  GraduationCap,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -69,6 +70,7 @@ const navItems: NavItem[] = [
     ],
   },
   { label: "Employees", icon: <UserCog size={20} />, href: "/employees", permission: "users:manage" },
+  { label: "Tutorial", icon: <GraduationCap size={20} />, href: "/tutorial" },
   {
     label: "Settings",
     icon: <Settings size={20} />,
@@ -92,6 +94,7 @@ const superAdminNavItems: NavItem[] = [
       { label: "Support", href: "/support" },
     ],
   },
+  { label: "Tutorial", icon: <GraduationCap size={20} />, href: "/tutorial" },
   {
     label: "Settings",
     icon: <Settings size={20} />,

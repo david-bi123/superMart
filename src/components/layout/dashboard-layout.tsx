@@ -60,13 +60,13 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
       <Sidebar />
       <div
         className={cn(
-          "flex flex-1 flex-col transition-all duration-300 ease-in-out",
+          "flex flex-1 flex-col transition-all duration-300 ease-in-out min-w-0",
           "ml-0",
           isOpen ? "md:ml-72" : "md:ml-[72px]"
         )}
       >
         <Navbar />
-        <main className="flex-1 min-h-screen">
+        <main className="flex-1 min-w-0">
           <ScrollArea className="h-full">
             <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
               {children}
