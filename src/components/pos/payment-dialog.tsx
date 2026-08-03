@@ -134,7 +134,7 @@ export function PaymentDialog({ open, onOpenChange, onConfirm }: PaymentDialogPr
 
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">Payment Method</label>
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
               {paymentMethods.map((method) => {
                 const Icon = method.icon;
                 const isActive = paymentMethod === method.value;

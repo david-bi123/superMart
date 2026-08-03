@@ -43,7 +43,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 <div className="skeleton-shimmer h-3.5 w-48 rounded" />
               </div>
             </div>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {Array.from({ length: 4 }).map((_, i) => (
                 <div key={i} className="skeleton-shimmer h-28 rounded-xl" />
               ))}

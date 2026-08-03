@@ -91,9 +91,9 @@ function DataTable<TData, TValue>({
   return (
     <div className={cn("space-y-4", className)}>
       {(searchable || table.getAllColumns().length > 1) && (
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-3">
           {searchable && (
-            <div className="relative flex-1 max-w-sm">
+            <div className="relative flex-1 min-w-[180px] max-w-sm">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/50" />
               <input
                 value={globalFilter ?? ""}

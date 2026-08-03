@@ -202,45 +202,47 @@ export default function NewPurchaseOrderPage() {
                   key={index}
                   initial={{ opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="flex items-end gap-3 p-3 rounded-xl bg-muted/30 border border-border/30"
+                  className="flex flex-col sm:flex-row sm:items-end gap-3 p-3 rounded-xl bg-muted/30 border border-border/30"
                 >
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-foreground truncate">{item.name}</p>
                     {item.sku && <p className="text-xs text-muted-foreground">{item.sku}</p>}
                   </div>
-                  <div className="w-20">
-                    <Label className="text-[10px] text-muted-foreground">Qty</Label>
-                    <input
-                      type="number"
-                      min="1"
-                      value={item.quantity}
-                      onChange={(e) => updateItem(index, "quantity", parseInt(e.target.value) || 0)}
-                      className="mt-1 flex h-9 w-full rounded-lg border border-border/50 bg-muted px-3 py-1 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    />
+                  <div className="flex items-end gap-3">
+                    <div className="w-20">
+                      <Label className="text-[10px] text-muted-foreground">Qty</Label>
+                      <input
+                        type="number"
+                        min="1"
+                        value={item.quantity}
+                        onChange={(e) => updateItem(index, "quantity", parseInt(e.target.value) || 0)}
+                        className="mt-1 flex h-9 w-full rounded-lg border border-border/50 bg-muted px-3 py-1 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      />
+                    </div>
+                    <div className="w-24">
+                      <Label className="text-[10px] text-muted-foreground">Price</Label>
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={item.price}
+                        onChange={(e) => updateItem(index, "price", parseFloat(e.target.value) || 0)}
+                        className="mt-1 flex h-9 w-full rounded-lg border border-border/50 bg-muted px-3 py-1 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                      />
+                    </div>
+                    <div className="w-24 text-right">
+                      <Label className="text-[10px] text-muted-foreground">Total</Label>
+                      <p className="mt-1 text-sm font-semibold text-foreground">{formatMoney(item.total)}</p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-9 w-9 text-destructive hover:bg-destructive/10"
+                      onClick={() => removeItem(index)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
-                  <div className="w-24">
-                    <Label className="text-[10px] text-muted-foreground">Price</Label>
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={item.price}
-                      onChange={(e) => updateItem(index, "price", parseFloat(e.target.value) || 0)}
-                      className="mt-1 flex h-9 w-full rounded-lg border border-border/50 bg-muted px-3 py-1 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
-                    />
-                  </div>
-                  <div className="w-24 text-right">
-                    <Label className="text-[10px] text-muted-foreground">Total</Label>
-                    <p className="mt-1 text-sm font-semibold text-foreground">{formatMoney(item.total)}</p>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-9 w-9 text-destructive hover:bg-destructive/10"
-                    onClick={() => removeItem(index)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
                 </motion.div>
               ))}
 

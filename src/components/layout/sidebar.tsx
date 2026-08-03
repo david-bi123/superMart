@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -212,6 +212,14 @@ export function Sidebar({ onItemClick }: { onItemClick?: () => void }) {
   const user = session?.user;
   const role = user?.role ?? "";
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const wasMobile = useRef(isMobile);
+
+  useEffect(() => {
+    if (isMobile && !wasMobile.current) {
+      close();
+    }
+    wasMobile.current = isMobile;
+  }, [isMobile, close]);
 
   const handleLogout = async () => {
     await signOut({ callbackUrl: `${window.location.origin}/login` });
