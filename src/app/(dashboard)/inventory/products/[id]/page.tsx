@@ -26,6 +26,7 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EmptyState } from "@/components/ui/empty-state"
+import { ImageWithFallback } from "@/components/ui/image-with-fallback"
 import { toast } from "@/components/ui/toast"
 import { StockBadge } from "@/components/inventory/stock-badge"
 import {
@@ -238,11 +239,14 @@ export default function ProductDetailPage() {
         <PageHeader
           className="flex-1"
           icon={
-            product.images?.[0] ? (
-              <img src={product.images[0]} alt={product.name} className="h-10 w-10 rounded-xl object-cover" />
-            ) : (
-              <ImageOff className="h-5 w-5" />
-            )
+            <div className="h-10 w-10 shrink-0">
+              <ImageWithFallback
+                src={product.images?.[0]}
+                alt={product.name}
+                imgClassName="rounded-xl"
+                fallback={<ImageOff className="h-5 w-5" />}
+              />
+            </div>
           }
           title={product.name}
           description={[product.sku, product.barcode].filter(Boolean).join(" · ")}

@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { Edit3, Copy, Archive, ImageOff } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
 import { Button } from "@/components/ui/button"
+import { ImageWithFallback } from "@/components/ui/image-with-fallback"
 import { formatMoney } from "@/lib/format"
 import { StockBadge } from "@/components/inventory/stock-badge"
 
@@ -37,17 +38,12 @@ export function ProductCard({ product, onEdit, onDuplicate, onArchive, className
       )}
     >
       <div className="aspect-square relative overflow-hidden bg-muted/50">
-        {product.images?.[0] ? (
-          <img
-            src={product.images[0]}
-            alt={product.name}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-          />
-        ) : (
-          <div className="h-full w-full flex items-center justify-center text-muted-foreground/50">
-            <ImageOff className="h-10 w-10" />
-          </div>
-        )}
+        <ImageWithFallback
+          src={product.images?.[0]}
+          alt={product.name}
+          imgClassName="transition-transform duration-500 group-hover:scale-110"
+          fallback={<ImageOff className="h-10 w-10" />}
+        />
         <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
           {onEdit && (
             <Button

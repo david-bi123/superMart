@@ -175,7 +175,7 @@ export default function ProfileSettingsPage() {
               <div className="flex flex-col items-center gap-4">
                 <div className="h-32 w-32 rounded-2xl overflow-hidden border-2 border-dashed border-border/50 bg-muted flex items-center justify-center">
                   {form.logo ? (
-                    <img src={form.logo} alt="Logo" className="h-full w-full object-contain" />
+                    <img src={form.logo} alt="Logo" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none" }} className="h-full w-full object-contain" />
                   ) : (
                     <Store className="h-12 w-12 text-muted-foreground/30" />
                   )}

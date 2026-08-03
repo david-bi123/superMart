@@ -587,7 +587,7 @@ address: { street: "100", city: "Accra", state: "Greater Accra", zip: "GA-100", 
       const barcode = generateBarcode();
       const batchNum = t.bat ? `BATCH-${String(rand(1000,9999))}` : undefined;
       const expDate = t.exp ? new Date(Date.now() + rand(7, 180) * 86400000) : undefined;
-      const imgUrl = `https://res.cloudinary.com/demo/image/upload/v1/retailflow/products/${t.n.toLowerCase().replace(/[^a-z0-9]+/g,"-")}.jpg`;
+      const imgUrl = `https://placehold.co/600x600/f3f4f6/6b7280/png?text=Product`;
       const isArchived = Math.random() < 0.08;
       const branch = pick(branches.filter(b => b.businessId.toString() === biz._id.toString()));
       const trackBatch = t.bat || false;
@@ -1005,7 +1005,7 @@ address: { street: "100", city: "Accra", state: "Greater Accra", zip: "GA-100", 
     for (let i = 0; i < 20; i++) {
       imgDocs.push({
         businessId: biz._id,
-        url: `https://res.cloudinary.com/demo/image/upload/v1/retailflow/products/image_${i}.jpg`,
+        url: `https://placehold.co/600x600/f3f4f6/6b7280/png?text=Product`,
         publicId: `retailflow/products/image_${i}`,
         format: "jpg", width: rand(200, 800), height: rand(200, 800),
         bytes: rand(10000, 500000), isThumbnail: Math.random() < 0.3,

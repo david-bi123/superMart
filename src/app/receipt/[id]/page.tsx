@@ -143,6 +143,7 @@ export default function ReceiptPage({ params }: { params: Promise<{ id: string }
               <img
                 src={receipt.businessLogo}
                 alt="Logo"
+                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none" }}
                 className="h-16 mx-auto mb-3 object-contain"
               />
             )}

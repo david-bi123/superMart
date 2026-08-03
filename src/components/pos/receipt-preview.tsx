@@ -89,7 +89,7 @@ export function ReceiptPreview({ open, onOpenChange, receipt }: ReceiptPreviewPr
         >
           <div className="text-center mb-4">
             {receipt.businessLogo && (
-              <img src={receipt.businessLogo} alt="Logo" className="h-12 mx-auto mb-2 object-contain" />
+              <img src={receipt.businessLogo} alt="Logo" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none" }} className="h-12 mx-auto mb-2 object-contain" />
             )}
             <h2 className="text-base font-bold">{receipt.businessName}</h2>
             <p className="text-[10px] text-gray-600">{receipt.address}</p>

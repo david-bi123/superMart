@@ -37,6 +37,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EmptyState } from "@/components/ui/empty-state"
+import { ImageWithFallback } from "@/components/ui/image-with-fallback"
 import { toast } from "@/components/ui/toast"
 import { StockBadge } from "@/components/inventory/stock-badge"
 import { getProducts, getCategories, getBrands, deleteProduct, restoreProduct } from "@/actions/inventory.actions"
@@ -329,13 +330,11 @@ export default function ProductsPage() {
                       <td className="p-3">
                         <div className="flex items-center gap-3">
                           <div className="h-10 w-10 rounded-xl overflow-hidden bg-muted/50 flex-shrink-0">
-                            {product.images?.[0] ? (
-                              <img src={product.images[0]} alt="" className="h-full w-full object-cover" />
-                            ) : (
-                              <div className="h-full w-full flex items-center justify-center">
-                                <ImageOff className="h-4 w-4 text-muted-foreground/50" />
-                              </div>
-                            )}
+                            <ImageWithFallback
+                              src={product.images?.[0]}
+                              alt=""
+                              fallback={<ImageOff className="h-4 w-4 text-muted-foreground/50" />}
+                            />
                           </div>
                           <div>
                             <p className="text-sm font-medium text-foreground">{product.name}</p>

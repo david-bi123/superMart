@@ -84,6 +84,7 @@ export function ImageUpload({ images, onChange, maxImages = 10, className }: Ima
               <img
                 src={url}
                 alt={`Upload ${i + 1}`}
+                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none" }}
                 className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">

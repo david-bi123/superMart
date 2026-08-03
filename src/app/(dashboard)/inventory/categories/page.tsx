@@ -32,6 +32,7 @@ import {
 } from "@/components/ui/select"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EmptyState } from "@/components/ui/empty-state"
+import { ImageWithFallback } from "@/components/ui/image-with-fallback"
 import { toast } from "@/components/ui/toast"
 import { getCategories, createCategory, updateCategory, deleteCategory } from "@/actions/inventory.actions"
 
@@ -95,13 +96,11 @@ function CategoryRow({
           {expanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
         </button>
         <div className="h-10 w-10 rounded-xl overflow-hidden bg-muted flex-shrink-0">
-          {category.image ? (
-            <img src={category.image} alt="" className="h-full w-full object-cover" />
-          ) : (
-            <div className="h-full w-full flex items-center justify-center">
-              <FolderTree className="h-4 w-4 text-muted-foreground/40" />
-            </div>
-          )}
+          <ImageWithFallback
+            src={category.image}
+            alt=""
+            fallback={<FolderTree className="h-4 w-4 text-muted-foreground/40" />}
+          />
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium text-foreground truncate">{category.name}</p>

@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "res.cloudinary.com" },
+      { protocol: "https", hostname: "placehold.co" },
       { protocol: "https", hostname: "via.placeholder.com" },
     ],
     formats: ["image/avif", "image/webp"],
@@ -56,7 +57,7 @@ const nextConfig: NextConfig = {
               "default-src 'self'",
               "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-              "img-src 'self' data: blob: res.cloudinary.com via.placeholder.com",
+              "img-src 'self' data: blob: res.cloudinary.com placehold.co via.placeholder.com",
               "font-src 'self' https://fonts.gstatic.com",
               "connect-src 'self' https://res.cloudinary.com",
               "frame-src 'none'",

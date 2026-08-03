@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EmptyState } from "@/components/ui/empty-state"
+import { ImageWithFallback } from "@/components/ui/image-with-fallback"
 import { toast } from "@/components/ui/toast"
 import { getBrands, createBrand, updateBrand, deleteBrand } from "@/actions/inventory.actions"
 
@@ -161,11 +162,12 @@ export default function BrandsPage() {
                   </div>
                   <div className="flex flex-col items-center text-center gap-3">
                     <div className="h-16 w-16 rounded-2xl overflow-hidden bg-muted flex items-center justify-center">
-                      {brand.logo ? (
-                        <img src={brand.logo} alt={brand.name} className="h-full w-full object-contain p-2" />
-                      ) : (
-                        <Building2 className="h-7 w-7 text-muted-foreground/40" />
-                      )}
+                      <ImageWithFallback
+                        src={brand.logo}
+                        alt={brand.name}
+                        imgClassName="object-contain p-2"
+                        fallback={<Building2 className="h-7 w-7 text-muted-foreground/40" />}
+                      />
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground">{brand.name}</h3>
@@ -219,7 +221,12 @@ export default function BrandsPage() {
               />
               {formData.logo && (
                 <div className="mt-2 h-16 w-16 rounded-xl overflow-hidden border border-border/50">
-                  <img src={formData.logo} alt="Preview" className="h-full w-full object-contain" />
+                  <ImageWithFallback
+                    src={formData.logo}
+                    alt="Preview"
+                    imgClassName="object-contain"
+                    fallback={<Building2 className="h-6 w-6 text-muted-foreground/40" />}
+                  />
                 </div>
               )}
             </div>
