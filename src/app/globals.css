@@ -228,6 +228,10 @@
   display: none;
 }
 
+[data-radix-scroll-area-viewport] > div {
+  display: block !important;
+}
+
 ::selection {
   background: hsl(var(--primary) / 0.2);
   color: hsl(var(--primary));
