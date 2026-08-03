@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, ShoppingCart, Package, Grid3X3, List } from "lucide-react";
 import { usePosStore } from "@/store/use-pos";
 import { useDebounce } from "@/hooks/use-debounce";
+import { useMediaQuery } from "@/hooks/use-media-query";
 import { cn } from "@/lib/utils/cn";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -29,6 +30,7 @@ interface Product {
 
 interface ProductGridProps {
   onCartToggle?: () => void;
+  focusSignal?: number;
 }
 
 const containerVariants = {
@@ -65,7 +67,7 @@ function ProductSkeleton() {
   );
 }
 
-export function ProductGrid({ onCartToggle }: ProductGridProps) {
+export function ProductGrid({ onCartToggle, focusSignal }: ProductGridProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(true);
@@ -74,6 +76,14 @@ export function ProductGrid({ onCartToggle }: ProductGridProps) {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const isCompact = useMediaQuery("(max-width: 1024px)");
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (focusSignal && focusSignal > 0) {
+      searchRef.current?.focus();
+    }
+  }, [focusSignal]);
 
   const debouncedSearch = useDebounce(search, 300);
   const addItem = usePosStore((s) => s.addItem);
@@ -149,12 +159,29 @@ export function ProductGrid({ onCartToggle }: ProductGridProps) {
       <div className="flex items-center gap-3 p-4 pb-2 shrink-0">
         <div className="flex-1">
           <SearchInput
+            ref={searchRef}
             value={search}
             onChange={setSearch}
             placeholder="Search products by name, SKU, or barcode..."
             className="w-full"
           />
         </div>
+        {onCartToggle && isCompact && (
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={onCartToggle}
+            className="shrink-0 relative"
+            aria-label="Open cart"
+          >
+            <ShoppingCart className="h-4 w-4" />
+            {items.length > 0 && (
+              <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-destructive text-destructive-foreground text-[9px] font-bold flex items-center justify-center">
+                {items.length}
+              </span>
+            )}
+          </Button>
+        )}
         <Button
           variant="ghost"
           size="icon"

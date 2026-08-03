@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ShoppingCart,
@@ -124,7 +124,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove, onUpdateDiscount }: {
   );
 }
 
-export function CartPanel() {
+export function CartPanel({ openSignal = 0 }: { openSignal?: number }) {
   const store = usePosStore();
   const {
     items, customerName, customerId, paymentMethod,
@@ -141,6 +141,12 @@ export function CartPanel() {
   const [mobileCartOpen, setMobileCartOpen] = useState(false);
 
   const totals = useMemo(() => getTotals(), [items]);
+
+  useEffect(() => {
+    if (openSignal > 0 && isMobile) {
+      setMobileCartOpen(true);
+    }
+  }, [openSignal, isMobile]);
 
   const handleHoldSale = () => {
     if (items.length === 0) {

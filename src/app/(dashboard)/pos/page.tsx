@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { usePosStore } from "@/store/use-pos";
 import { ProductGrid } from "@/components/pos/product-grid";
@@ -9,6 +9,8 @@ import { toast } from "@/components/ui/toast";
 
 export default function POSPage() {
   const clearCart = usePosStore((s) => s.clearCart);
+  const [cartSignal, setCartSignal] = useState(0);
+  const [searchSignal, setSearchSignal] = useState(0);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -21,21 +23,10 @@ export default function POSPage() {
             toast.info("Cart cleared");
           }
           break;
-        case "F1":
-          e.preventDefault();
-          toast.info("F1: Quick Price Check");
-          break;
-        case "F2":
-          e.preventDefault();
-          toast.info("F2: Hold Sale");
-          break;
         case "F3":
+        case "/":
           e.preventDefault();
-          toast.info("F3: Search Products");
-          break;
-        case "F4":
-          e.preventDefault();
-          toast.info("F4: Reports");
+          setSearchSignal((s) => s + 1);
           break;
       }
     };
@@ -51,9 +42,12 @@ export default function POSPage() {
       className="flex-1 flex bg-background"
     >
       <div className="flex-1 flex flex-col min-w-0">
-        <ProductGrid />
+        <ProductGrid
+          onCartToggle={() => setCartSignal((s) => s + 1)}
+          focusSignal={searchSignal}
+        />
       </div>
-      <CartPanel />
+      <CartPanel openSignal={cartSignal} />
     </motion.div>
   );
 }
