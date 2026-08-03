@@ -34,12 +34,12 @@ const DialogContent = React.forwardRef<
     <DialogOverlay />
     <DialogPrimitive.Content asChild ref={ref} {...props}>
       <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 8 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 8 }}
+        initial={{ opacity: 0, scale: 0.95, x: "-50%", y: "-50%" }}
+        animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
+        exit={{ opacity: 0, scale: 0.95, x: "-50%", y: "-50%" }}
         transition={{ type: "spring", damping: 28, stiffness: 350 }}
         className={cn(
-          "fixed left-[50%] top-[50%] z-50 w-full max-w-lg translate-x-[-50%] translate-y-[-50%] rounded-xl border border-border/60 bg-background p-6 shadow-2xl max-h-[90vh] overflow-y-auto",
+          "fixed left-[50%] top-[50%] z-50 w-full max-w-lg rounded-xl border border-border/60 bg-background p-6 shadow-2xl max-h-[90vh] overflow-y-auto",
           className
         )}
       >
