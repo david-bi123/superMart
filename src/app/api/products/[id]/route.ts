@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth/config";
 import { connectDB } from "@/lib/db/mongoose";
 import { Product } from "@/models/Product";
+import { Category } from "@/models/Category";
+import { Brand } from "@/models/Brand";
+import { Supplier } from "@/models/Supplier";
 import { productSchema } from "@/lib/validations/inventory";
 import mongoose from "mongoose";
 
@@ -19,9 +22,9 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       _id: new mongoose.Types.ObjectId(id),
       businessId: new mongoose.Types.ObjectId(session.user.businessId),
     })
-      .populate("categoryId", "name slug")
-      .populate("brandId", "name slug")
-      .populate("supplierId", "name company email phone")
+      .populate({ path: "categoryId", select: "name slug", model: Category })
+      .populate({ path: "brandId", select: "name slug", model: Brand })
+      .populate({ path: "supplierId", select: "name company email phone", model: Supplier })
       .lean();
 
     if (!product) {

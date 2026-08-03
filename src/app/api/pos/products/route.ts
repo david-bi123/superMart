@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
     const [products, total] = await Promise.all([
       Product.find(filter)
         .select("name sku sellingPrice currentStock images categoryId barcode tax")
-        .populate("categoryId", "name")
+        .populate({ path: "categoryId", select: "name", model: Category })
         .sort({ name: 1 })
         .skip((page - 1) * limit)
         .limit(limit)

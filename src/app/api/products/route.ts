@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth/config";
 import { connectDB } from "@/lib/db/mongoose";
 import { Product } from "@/models/Product";
+import { Category } from "@/models/Category";
+import { Brand } from "@/models/Brand";
 import { productSchema } from "@/lib/validations/inventory";
 import mongoose from "mongoose";
 
@@ -58,8 +60,8 @@ export async function GET(req: NextRequest) {
 
     const [products, total] = await Promise.all([
       Product.find(query)
-        .populate("categoryId", "name")
-        .populate("brandId", "name")
+        .populate({ path: "categoryId", select: "name", model: Category })
+        .populate({ path: "brandId", select: "name", model: Brand })
         .sort(sortObj)
         .skip((page - 1) * limit)
         .limit(limit)
